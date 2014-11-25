@@ -1,0 +1,214 @@
+\documentclass[12pt,a4paper]{report}
+
+\usepackage{amsmath}
+\usepackage{bbm}
+\usepackage[utf8]{inputenc}
+\usepackage{longtable}
+\usepackage{amsthm}
+\usepackage{amscd}
+\usepackage{amssymb}
+\usepackage{amsfonts}
+\usepackage{amsmath}
+\usepackage{mathtools}
+\usepackage{enumitem}
+\usepackage[hyphens]{url}
+\usepackage[scale=3]{ccicons}  % per le icone creative commons
+\usepackage{hyperref}  % per i link nel pdf
+\usepackage[rmargin=3.0cm,lmargin=3.0cm]{geometry}
+%\usepackage{frontesp}  % prima pagina; il pacchetto frontesp.sty si trova nella stessa cartella del file .tex (deve essere adattato a mano)
+\usepackage{setspace}  % per l'interlinea
+\usepackage[english]{babel}  % per sillabazione
+\usepackage[all]{xy} %diagrammi di funzioni
+\usepackage{xspace} %per assicurare la corretta gestione degli spazi finali quando uso e.g. \AC. NB: sarebbe meglio trovare un'altra soluzione...cfr. http://tex.stackexchange.com/questions/15220/no-space-present-after-ensuremath
+
+
+
+\theoremstyle{definition}
+\newtheorem{teo}{Teorema}[section]  % resetta la numerazione dei teoremi per ogni capitolo
+\newtheorem{defn}[teo]{Definizione}  % la numerazione delle definizioni dipende da quella dei teoremi
+\newtheorem{es}[teo]{Esempio}  % idem
+\newtheorem{oss}[teo]{Osservazione}  % idem
+\newtheorem{prop}[teo]{Proposizione}  % idem
+\newtheorem{lemma}[teo]{Lemma}  % idem
+\newtheorem{corollario}[teo]{Corollario}  % idem
+
+%%% inizio comandi per stile per teoremi: "numero. Titolo" %%%
+\newtheoremstyle{num.custom-title}
+  {\topsep}   % ABOVESPACE
+  {\topsep}   % BELOWSPACE
+  {\normalfont}  % BODYFONT
+  {0pt}       % INDENT (empty value is the same as 0pt)
+  {\bfseries} % HEADFONT
+  {}         % HEADPUNCT
+  {5pt plus 1pt minus 1pt} % HEADSPACE
+  {\thmnumber{#2.}\thmnote{ #3}}
+  
+\theoremstyle{num.custom-title}  
+\newtheorem{teo_custom-title}[teo]{} % per usarlo basta \begin{teo_custom-title}[<Titolo teorema>] (usa automaticamente la numerazione di [teo])
+%%% fine comandi per stile per teoremi: "numero. Titolo" %%%
+
+\newenvironment{claim}[1]{\par\noindent\underline{Claim:}\space#1}{} %per i claim
+\newenvironment{claimproof}[1]{\par\noindent\underline{Proof:}\space#1}{\leavevmode\unskip\penalty9999 \hbox{}\nobreak\hfill\quad\hbox{$\blacksquare$}} %per le dimostrazioni dei claim
+
+
+\DeclareMathOperator{\dom}{dom}
+\DeclareMathOperator{\ran}{ran}
+\DeclareMathOperator{\orb}{orb}
+\DeclareMathOperator{\id}{id}
+\DeclareMathOperator{\Zdv}{Zdv}
+\DeclareMathOperator{\Hom}{Hom}
+\DeclareMathOperator{\End}{End}
+\DeclareMathOperator{\Ann}{Ann}
+\DeclareMathOperator{\A}{\mathcal{A}}
+\DeclareMathOperator{\B}{\mathcal{B}}
+\DeclareMathOperator{\PP}{\mathcal{P}}
+\DeclareMathOperator{\RR}{\mathcal{R}}
+\DeclareMathOperator{\LL}{\mathcal{L}}
+\DeclareMathOperator{\Hrtg}{\text{Hrtg}}
+\DeclareMathOperator{\Ord}{\text{Ord}}
+\DeclareMathOperator{\N}{\mathbb{N}}
+\DeclareMathOperator{\R}{\mathbb{R}}
+\DeclareMathOperator{\Z}{\mathbb{Z}}
+\DeclareMathOperator{\E}{\mathbb{E}}
+\DeclareMathOperator{\M}{\mathfrak{M}}
+\DeclareMathOperator{\U}{\mathfrak{U}}
+\DeclareMathOperator{\PPP}{\mathbb{P}}
+\DeclareMathOperator{\a01}{\{0,1\}^{\star}}
+\DeclareMathOperator{\imp}{\Rightarrow}
+\DeclareMathOperator{\sm}{\setminus}
+\DeclareMathOperator{\sse}{\subseteq}
+
+
+\newcommand{\AC}{\ensuremath{\mathsf{AC}}\xspace}
+\newcommand{\CC}{\ensuremath{\mathsf{CC}}\xspace}
+\newcommand{\DC}{\ensuremath{\mathsf{DC}}\xspace}
+\newcommand{\ZF}{\ensuremath{\mathsf{ZF}}\xspace}
+\newcommand{\ZFC}{\ensuremath{\mathsf{ZFC}}\xspace}
+\newcommand{\LS}{\ensuremath{\mathsf{LS}}\xspace}
+\newcommand{\AMC}{\ensuremath{\mathsf{AMC}}\xspace}
+\newcommand{\HRule}{\rule{\linewidth}{0.5mm}} %per la prima pagina
+\newcommand{\veedot}{\mathbin{\mathaccent\cdot\vee}}
+
+\renewcommand{\phi}{\varphi}
+\renewcommand{\S}{\mathcal{S}}
+\renewcommand{\P}{\mathbb{P}}
+\renewcommand{\1}{\mathbbm{1}}
+\renewcommand{\epsilon}{\varepsilon}
+\renewcommand{\Im}{\operatorname{Im}}
+
+
+%%%% INIZIO COMANDI PER EQUIVALENZE %%%%
+\newcommand{\Implies}[2]{$\text{\ref{statement#1}}\!\implies\!\text{\ref{statement#2}}$}% X => Y
+\newcommand{\punto}[1]{\item \label{statement#1}}
+
+
+\newenvironment{equivalence}
+    {\begin{enumerate}[label=(\arabic*),ref=(\arabic*)]
+    }
+    { 
+	\end{enumerate}
+    }
+%%%% FINE COMANDI PER EQUIVALENZE %%%
+
+
+
+% Interlinea 1.5
+%\onehalfspacing  
+
+
+%per le citazioni
+\def\signed #1{{\leavevmode\unskip\nobreak\hfil\penalty50\hskip2em
+  \hbox{}\nobreak\hfil(#1)%
+  \parfillskip=0pt \finalhyphendemerits=0 \endgraf}}
+
+\newsavebox\mybox
+\newenvironment{aquote}[1]
+  {\savebox\mybox{#1}\begin{quote}}
+  {\signed{\usebox\mybox}\end{quote}}
+
+%disabilita colore link
+\hypersetup{%
+    pdfborder = {0 0 0}
+}
+
+\begin{document}
+
+\noindent Andrea Gadotti \hfill 22/11/2014
+
+\paragraph{Exercise 22.} The $\sigma$-algebra of measurable sets of $(\Omega^*, \A^*, \P^*)=\left( \{0,1\}, \PP\{0,1\}, B(1,\frac{1}{2}) \right)^{\N}$ is generated by the set of the form 
+\[
+B=B_1 \times B_2 \times ... \times B_n \times \{0,1\} \times \{0,1\} \times ... 
+\]
+for some $n \in \N$ with $B_i \in \PP\{0,1\}$, i.e. $B_i=\emptyset, \{0\} ,\{1\}, \{0,1\}$. If $B_i=\emptyset$ for some $i$, then $B=\emptyset$ and its counterimage (the empty set) is of course measurable. Thus we can assume WLOG $B_i \neq \emptyset$ for all $i$. Let now $I \sse \{1,...,n\}$ be the set of indeces s.t. $i \in I \iff B_i=\{0,1\}$. In order to lighten the notation, suppose that $I=\{1,...,m\}$ with $m \leq n$. Then it is immediate to see that
+\[
+B= \biguplus_{\epsilon_1,...,\epsilon_m \in \{0,1\}} \{\epsilon_1\} \times \{\epsilon_2\} \times ... \times \{\epsilon_m\} \times B_{m+1} \times ... \times B_n \times \{0,1\} \times \{0,1\} \times ... 
+\]
+It is very easy to show that the preimage of every factor of the (disjoint) union is an interval, thus it is measurable, and therefore $B$ is measurable as well (the preimage of a union is the union of the preimages).\\
+Thus the preimage of every set like $B$ is measurable, and hence every set of the $\sigma$-algebra generated by them is measurable as well. So $\tau$ is measurable.\\
+To show that $\tau$ is injective, it is sufficient to observe that $\tau(\omega)$ is the binary expansion of $\omega$, and two different real numbers have different binary representations.\\
+Observe that any $s \in \{0,1\}^{\N}$ is a binary representation of some $\omega \in [0,1)$, so for all $s \in \{0,1\}^{\N}$ there exists $\omega \in [0,1)$ s.t. $\tau(\omega)=s$, unless $\omega$ has multiple (two) possible representations. This happens if and only if $\omega$ is a dyadic rational, i.e. $\omega = \frac{a}{2^b}$ for $a \in \Z$ and $b \in \N$. Thus, the set $\Omega^* \sm \tau[\Omega]$ corresponds to the representations of dyadic rationals which are not given by $(X_n(\omega))_{n \in \N}$ (and looking at the definition of the $X_n$'s, they are the infinitely long ones). But since the dyadic rationals are of course countable, then also $\Omega^* \sm \tau[\Omega]$ is countable, and since every singleton of $\Omega^*$ has measure $0$ (easy to check, just take any sequence of sets decreasing to the singleton), we obtain $\P[\Omega^* \sm \tau[\Omega]]=0$ (since countable union of null-measure sets has measure $0$).\\
+We want now to prove that $\P[\tau^{-1}A]=\P^*[A]$ for every $A \in \A^*$, i.e. $\P \circ \tau^{-1} \equiv \P^{*}$ are the same probability measure on $\Omega^*$. It is sufficient to check the equivalence on the rectangles (this is assured by many reasons: by definition of product measure, or by the fact that the rectangles are a semi-ring, or even a $\pi$-system). Consider then a rectangle $B$. Thanks to the first point (and using the same notation), the preimage of a rectangle is the disjoint union of $2^m$ intervals, and it is clear that all these intervals have measure $\frac{1}{2^n}$. Thus $\P \circ \tau^{-1} (B) = 2^m \cdot \frac{1}{2^n}=\frac{1}{2^{n-m}}$, which is exactly $\P^*[B]=\frac{1}{2^{m-n}}$ (since the only "fixed coordinates" are $m-n$).
+%
+% We want to check the equality only on the rectangles. We need the following:\\
+%\textbf{Claim.} The family of the preimages of the rectangles forms a $\pi$-system of $[0,1)$ which is a subset of $\B$.
+%\begin{proof}
+%We have already proven that the preimage of a rectangle is a union of intervals (and then a borel set). Furthermore, the family of preimages is always closed under intersection, since $\tau^{-1}[B_1] \cap \tau^{-1}[B_2] = \tau^{-1}[B_1 \cap B_2]$.
+%\end{proof}
+%Thanks to the claim (and the $pi$-system theorem), we have that a probability measure on $([0,1),\B)$ is completely determined by its values on the preimages of the rectangles.
+
+\paragraph{Exercise 24.} 
+\begin{itemize}
+ 
+\item[(a)] We follow the hint. \textbf{Note:} in order to lighten the notation, we deal with the particular case where the r.v. vectors are $(X_1,...,X_k)$ and $(X_{k+1},...,X_n)$, but it's clear that the argument can be repeated for every aribitrary disjoint couple of vectors $(X_{i_1},...,X_{i_k})$ and $(X_{j_1},...,X_{j_n})$.
+\begin{claim} $\big\{[(X_1,...,X_k) \in B_1 \times ... \times B_k] \mid B_1,...,B_k \in \B(\R) \big\}$ is a $\pi$-system and $\A(X_1,...,X_k)=\sigma \left( \big\{[(X_1,...,X_k) \in B_1 \times ... \times B_k] \mid B_1,...,B_k \in \B(\R) \big\}\right)$.
+\begin{claimproof}
+Consider the event notation ``$[(X_1,...,X_k) \in B_1 \times ... \times B_k]$''. This is just another way to write $\gamma^{-1}[B_1 \times ... \times B_k]$, where $\gamma: \Omega \to \R^k$, $\gamma(\omega)= \big( X_1(\omega),...,X_k(\omega) \big)$. Thus, the fact that our collection is a $\pi$-system follows trivially by the fact that, for any function $f$, $f^{-1}(S_1 \cap S_2)=f^{-1}(S_1) \cap f^{-1}(S_2)$. But the last equality holds even for the intersection or the union of arbitrary many sets (and thus even for countably many). Therefore our family generates the whole $\sigma$-algebra $\A(X_1,...,X_k)$, since the rectangles generate the whole $\B(\R^k)$.
+\end{claimproof}
+\end{claim}
+
+Thanks to the claim (and to the $\pi$-system lemma), we can check the independence only on (the preimages of) the rectangles. So
+\begin{align*}
+&\P \big[ [(X_1,...,X_k) \in B_1 \times ... \times B_k] \cap [(X_{k+1},...,X_n) \in B_{k+1} \times ... \times B_n] \big]\\
+=& \P \big[ (X_1,...,X_k) \in B_1 \times ... \times B_k, (X_{k+1},...,X_n) \in B_{k+1} \times ... \times B_n \big]\\
+=& \P \big[ (X_1 \in B_1,...,X_k \in B_k, X_{k+1} \in B_{k+1},...,X_n \in B_n \big]\\
+= & \big( \P[X_1 \in B_1] \cdot ... \cdot \P[X_k \in B_k] \big) \cdot \big( \P[X_{k+1} \in B_{k+1}] \cdot ... \cdot \P[X_n \in B_n] \big) \\
+=& \P \big[ X_1 \in B_1,...,X_k \in B_k \big] \cdot \P \big[X_{k+1} \in B_{k+1},...,X_n \in B_n \big]\\
+=& \P \big[ (X_1,...,X_k) \in B_1 \times ... \times B_k \big] \cdot \P \big[ (X_{k+1},...,X_n) \in B_{k+1} \times ... \times B_n \big],
+\end{align*}
+as wanted. 
+\item[(b)] Observe that
+\[
+\A(X_{k+1},X_{k+2},...) = \sigma \left( \bigcup_{n \in \N} \A(X_{k+1},...,X_{k+1+n}) \right)
+\]
+and that $\bigcup_{n \in \N} \A(X_{k+1},...,X_{k+1+n})$ is a $\pi$-system (trivial since the sequence of families is increasing, and thus every couple of sets is included in some element of the sequence, which of course contains their intersection).\\
+So we can check the independence just between $\A(X_1,...,X_{k})$ and $\bigcup_{n \in \N} \A(X_{k+1},..., X_{k+1+n})$. But this follows trivially from point (a), since every element of $\bigcup_{n \in \N} \A(X_{k+1},...,X_{k+1+n})$ is an element of $\A(X_{k+1},...,X_{k+1+\overline{n}})$ for some $\overline{n} \in \N$.\\
+We want now to show that $Y=f(X_1,...,X_k)$ and $Z=g(X_{k+1},X_{k+2},...)$ are indepentent. Let $B_1, B_2 \in \B(\R)$. Observe that
+\begin{multline*}
+\P[Y \in B_1, Z \in B_2]= \P\big[Y^{-1}[B_1] \cap Z^{-1}[B_2]\big]= \P\big[f^{-1}[B_1] \cap g^{-1}[B_2]\big]\\ 
+=\P\big[(X_1,...,X_k) \in f^{-1}[B_1], (X_{k+1},X_{k+2},...) \in g^{-1}[B_2]\big].
+\end{multline*}
+But since $f$ and $g$ are measurable, we have that $f^{-1}[B_1]$ and $g^{-1}[B_2]$ are Borel sets. Therefore, thanks to point (b), we can split the last term into the product of the two probabilities, and we are done.
+\item[(c)] It is sufficient to use (b) and repeat the same argument of the first part of (b): thanks to (b), $\A(Y_1,Y_2,...)$ is independent by $\A(X_1,...,X_n)$ for every $n \in \N$, and thus is independent by $\bigcup_{n \in \N} \A(X_1,...,X_n)$ and therefore is independent by $\sigma \left( \bigcup_{n \in \N} \A(X_1,...,X_n) \right) = \A(X_1,X_2,...)$.
+\end{itemize}
+
+\paragraph{Exercise 25.}
+\begin{itemize}
+\item[(a)] $\E \left( e^{itX} \right) = \theta e^{it} + (1-\theta)$.
+\item[(b)] Since $X$ and $Y$ are independent, even $e^{itX}$ and $e^{itY}$ are independent, thus $\E \left( e^{it(X+Y)} \right) = \E \left( e^{itX}e^{itY} \right) = \E \left( e^{itX} \right) \E \left( e^{itY} \right) = \phi_X(t) \phi_Y(t)$.
+\item[(c)] $X= Y_1 + ... + Y_n$ where $Y_n \sim B(1,\theta)$. Therefore $\phi_X(t) = \phi_{Y_1}(t) \cdot ... \cdot \phi_{Y_n}(t) = \left( \phi_{Y_1}(t) \right)^n$.
+\end{itemize}
+
+\paragraph{Exercise 26.}
+\begin{itemize}
+\item[(a)] $\phi_X(t)=\E[e^{itX}]=\sum_{x=0}^\infty [e^{it}]^x e^{-\lambda}\frac1{x!}\lambda^x=e^{-\lambda}\sum_{x=0}^{\infty}\frac{(\lambda e^{it})^x}{x!}=e^{-\lambda}e^{\lambda e^{it}}=e^{\lambda (e^{it}-1)}$.
+\item[(b)] $\phi_X(t)=\E[e^{itX}]=\E[\cos(tX)+i\sin(tX)]=\E[\cos(tX)]+\E[i\sin(tX)]= \int_{0}^{1} \cos(tx) dx + i\int_{0}^{1} \sin(tx) dx = \frac{1}{t} (\sin(t)-\sin(0)) - \frac{i}{t} (\cos(t)-\cos(0))= \frac{\sin(t)}{t}-i \frac{\cos(t)-1}{t}$.
+\item[(c)] $\phi_X(t)=\E[e^{itX}]= \int_0^{\infty} e^{itx}  \lambda e^{-\lambda x } dx = \lambda \int_0^{\infty} e^{(it-\lambda)x} dx = \frac{\lambda}{it - \lambda} e^{(it - \lambda)x}\bigg|_0^{\infty} = \frac{\lambda}{ \lambda- it}$. \\
+Please note that, while the result is correct, this solution is actually wrong/highly informal, since we are basically using the substitution $z:=(it-\lambda)x$, so $z \in \mathbb C$, while $x \in \R$, and our integration theory for substitution doesn't cover this case. One possible solution is the boring way, i.e. to write $e^{itx}$ as $\cos(tx)+i\sin(tx)$ and do the computations (see \url{http://www.statlect.com/ucdexp1.htm}). \\
+A more elegant approach relies on Complex Analysis results, and proceeds (euristically) this way: define $\gamma: \R^+ \to \mathbb C$ by $\gamma(x)=-\lambda x + it x$. Observe that it is a semi-diagonal in the fourth quadrant. Define $\delta: \R^+ \to \mathbb C$ by $\delta(x)=x$. If we can prove that $\int_\gamma e^z dz = \int_\delta e^z dz \ (=\int_{\R^+} e^{(it-\lambda)x} dx)$ we are done. Consider now the obvious right-angled triangles we can form with the restrictions of $\gamma$ and $\delta$. Since $e^z$ is olomorph, thanks to Cauchy's theorem we have that its integral on every such circuit is $0$. But the integral on the full triangle is the sum of the integrals computed on every single side of the triangle. But the integral on the vertical side goes to $0$ (or, at least, should do) when the length goes to infinity. So considering the limit to infinity of the sum we are done (since one of the two integrals must have ``minus'' sign because of ``orientation of the circuit'' reasons).
+\end{itemize}
+
+
+
+
+
+\end{document}

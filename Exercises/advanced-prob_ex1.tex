@@ -1,0 +1,280 @@
+\documentclass[12pt,a4paper]{report}
+
+\usepackage{amsmath}
+\usepackage{bbm}
+\usepackage[utf8]{inputenc}
+\usepackage[italian]{babel}
+\usepackage{longtable}
+\usepackage{amsthm}
+\usepackage{amscd}
+\usepackage{amssymb}
+\usepackage{amsfonts}
+\usepackage{amsmath}
+\usepackage{mathtools}
+\usepackage{enumitem}
+\usepackage[hyphens]{url}
+\usepackage[scale=3]{ccicons}  % per le icone creative commons
+\usepackage{hyperref}  % per i link nel pdf
+\usepackage[rmargin=3.0cm,lmargin=3.0cm]{geometry}
+%\usepackage{frontesp}  % prima pagina; il pacchetto frontesp.sty si trova nella stessa cartella del file .tex (deve essere adattato a mano)
+\usepackage{setspace}  % per l'interlinea
+\usepackage[italian]{babel}  % per sillabazione
+\usepackage[all]{xy} %diagrammi di funzioni
+\usepackage{xspace} %per assicurare la corretta gestione degli spazi finali quando uso e.g. \AC. NB: sarebbe meglio trovare un'altra soluzione...cfr. http://tex.stackexchange.com/questions/15220/no-space-present-after-ensuremath
+
+
+
+\theoremstyle{definition}
+\newtheorem{teo}{Teorema}[section]  % resetta la numerazione dei teoremi per ogni capitolo
+\newtheorem{defn}[teo]{Definizione}  % la numerazione delle definizioni dipende da quella dei teoremi
+\newtheorem{es}[teo]{Esempio}  % idem
+\newtheorem{oss}[teo]{Osservazione}  % idem
+\newtheorem{prop}[teo]{Proposizione}  % idem
+\newtheorem{lemma}[teo]{Lemma}  % idem
+\newtheorem{corollario}[teo]{Corollario}  % idem
+
+%%% inizio comandi per stile per teoremi: "numero. Titolo" %%%
+\newtheoremstyle{num.custom-title}
+  {\topsep}   % ABOVESPACE
+  {\topsep}   % BELOWSPACE
+  {\normalfont}  % BODYFONT
+  {0pt}       % INDENT (empty value is the same as 0pt)
+  {\bfseries} % HEADFONT
+  {}         % HEADPUNCT
+  {5pt plus 1pt minus 1pt} % HEADSPACE
+  {\thmnumber{#2.}\thmnote{ #3}}
+  
+\theoremstyle{num.custom-title}  
+\newtheorem{teo_custom-title}[teo]{} % per usarlo basta \begin{teo_custom-title}[<Titolo teorema>] (usa automaticamente la numerazione di [teo])
+%%% fine comandi per stile per teoremi: "numero. Titolo" %%%
+
+
+\DeclareMathOperator{\dom}{dom}
+\DeclareMathOperator{\ran}{ran}
+\DeclareMathOperator{\orb}{orb}
+\DeclareMathOperator{\id}{id}
+\DeclareMathOperator{\Zdv}{Zdv}
+\DeclareMathOperator{\Hom}{Hom}
+\DeclareMathOperator{\End}{End}
+\DeclareMathOperator{\Ann}{Ann}
+\DeclareMathOperator{\A}{\mathcal{A}}
+\DeclareMathOperator{\B}{\mathcal{B}}
+\DeclareMathOperator{\PP}{\mathcal{P}}
+\DeclareMathOperator{\LL}{\mathcal{L}}
+\DeclareMathOperator{\Hrtg}{\text{Hrtg}}
+\DeclareMathOperator{\Ord}{\text{Ord}}
+\DeclareMathOperator{\N}{\mathbb{N}}
+\DeclareMathOperator{\R}{\mathbb{R}}
+\DeclareMathOperator{\Z}{\mathbb{Z}}
+\DeclareMathOperator{\E}{\mathbb{E}}
+\DeclareMathOperator{\M}{\mathfrak{M}}
+\DeclareMathOperator{\U}{\mathfrak{U}}
+\DeclareMathOperator{\PPP}{\mathbb{P}}
+\DeclareMathOperator{\a01}{\{0,1\}^{\star}}
+\DeclareMathOperator{\imp}{\Rightarrow}
+\DeclareMathOperator{\sm}{\setminus}
+\DeclareMathOperator{\sse}{\subseteq}
+
+
+\newcommand{\AC}{\ensuremath{\mathsf{AC}}\xspace}
+\newcommand{\CC}{\ensuremath{\mathsf{CC}}\xspace}
+\newcommand{\DC}{\ensuremath{\mathsf{DC}}\xspace}
+\newcommand{\ZF}{\ensuremath{\mathsf{ZF}}\xspace}
+\newcommand{\ZFC}{\ensuremath{\mathsf{ZFC}}\xspace}
+\newcommand{\LS}{\ensuremath{\mathsf{LS}}\xspace}
+\newcommand{\AMC}{\ensuremath{\mathsf{AMC}}\xspace}
+\newcommand{\HRule}{\rule{\linewidth}{0.5mm}} %per la prima pagina
+
+\renewcommand{\phi}{\varphi}
+\renewcommand{\S}{\mathcal{S}}
+\renewcommand{\P}{\mathbb{P}}
+\renewcommand{\1}{\mathbbm{1}}
+
+
+%%%% INIZIO COMANDI PER EQUIVALENZE %%%%
+\newcommand{\Implies}[2]{$\text{\ref{statement#1}}\!\implies\!\text{\ref{statement#2}}$}% X => Y
+\newcommand{\punto}[1]{\item \label{statement#1}}
+
+
+\newenvironment{equivalence}
+    {\begin{enumerate}[label=(\arabic*),ref=(\arabic*)]
+    }
+    { 
+	\end{enumerate}
+    }
+%%%% FINE COMANDI PER EQUIVALENZE %%%
+
+
+
+% Interlinea 1.5
+%\onehalfspacing  
+
+
+%per le citazioni
+\def\signed #1{{\leavevmode\unskip\nobreak\hfil\penalty50\hskip2em
+  \hbox{}\nobreak\hfil(#1)%
+  \parfillskip=0pt \finalhyphendemerits=0 \endgraf}}
+
+\newsavebox\mybox
+\newenvironment{aquote}[1]
+  {\savebox\mybox{#1}\begin{quote}}
+  {\signed{\usebox\mybox}\end{quote}}
+
+%disabilita colore link
+\hypersetup{%
+    pdfborder = {0 0 0}
+}
+
+\begin{document}
+
+
+\paragraph{Exercise 1.} $\P \left( \bigcup_{n=1}^\infty A_n \right) \le \sum_{n=1}^\infty \P(A_n)$
+\begin{proof}
+First of all, observe that any probability measure is monotone, since $B \supseteq A \imp \P(B)=\P(B \sm A \uplus A)=\P(B \sm A) + \P(A) \ge \P(A)$.\\
+Define $A'_0:=A_0$ and $A'_n:=A_n \sm \bigcup_{i=1}^{n-1} A_i$. It's immediate to check that $\bigcup_{n=1}^\infty A'_n = \bigcup_{n=1}^\infty A_n$. Of course, $i \ne j \imp A'_i \cap A'_j \ne \emptyset$ and $A'_n \sse A_n$ for all $n$. Therefore
+\[
+\P \left( \bigcup_{n=1}^\infty A_n \right) = \P \left( \bigcup_{n=1}^\infty A'_n \right) = \sum_{n=1}^\infty \P(A'_n) \le \sum_{n=1}^\infty \P(A_n).
+\]
+\end{proof}
+
+\paragraph{Exercise 2.}
+TO-DO %$\liminf \P(A_n) = \sup\{\inf\{\P(A_m) \mid m \ge n\} \mid n \in \N\} \le  \P(\liminf A_n) = \P(\bigcup_{n=1}^\infty \bigcap_{m=n}^\infty A_m) \le \sum_{n=1}^\infty \P(\bigcap_{m=n}^\infty A_m)  $\\
+$P(\liminf A_n)=\P(\bigcup_{n=1}^\infty \bigcap_{m=n}^\infty A_m)$. Define $B_n := \bigcap_{m=n}^\infty A_m$ and observe that $B_n \sse B_{n+1}$, thus by continuity $\P(\bigcup_{n=1}^\infty \bigcap_{m=n}^\infty A_m)=\P(\lim_{n \to \infty} \bigcup_{n=1}^\infty B_n) = \lim_{n \to \infty} \P(\bigcup_{n=1}^\infty B_n) = \liminf \P(\bigcup_{n=1}^\infty B_n)$
+
+\paragraph{Exercise 3.} Prove the Borel-Cantelli lemma:
+\[
+\sum_{n=1}^\infty \P(A_n)<\infty \imp \P(\limsup A_n)=0.
+\]
+\begin{proof}
+Since $\sum_{n=1}^\infty \P(A_n)<\infty$, we have necessarily that 
+\[
+\lim_{m \to \infty} \sum_{n=m}^\infty \P(A_n)=0. 
+\]
+Then, by monotony
+\[
+\P(\limsup A_n) = \P \left( \bigcap_{m=1}^\infty \bigcup_{n=m}^\infty A_n \right) \le \P \left( \bigcup_{n=m}^\infty A_n \right), \; \; \; \forall m \in \N
+\]
+But, by countable subadditivity
+\[
+\P \left( \bigcup_{n=m}^\infty A_n \right) \le \sum_{n=m}^\infty \P(A_n) \stackrel{n \to \infty}{\longrightarrow} 0
+\]
+and we are done.
+\end{proof}
+
+\paragraph{Exercise 4.} \
+\begin{proof}
+\begin{multline*}
+\sum_{i \in I} \P(A \mid B_i) \P(B_i) = \sum_{\{i \in I : \P(B_i)\ne 0\}} \frac{\P(A \cap B_i)}{\P(B_i)} \P(B_i) = \sum_{i \in I} \P(A \cap B_i) = \\
+ = \P \left( \biguplus_{i \in I} A \cap B_i \right) = \P \left( A \cap \biguplus_{i \in I} B_i \right) = \P(A).
+\end{multline*}
+\end{proof}
+
+\paragraph{Exercise 5.} $\P(A \mid B)=\P(B \mid A) \cdot \kappa$. Determine $\kappa$.
+\begin{proof}
+Since $\P(A)=0 \vee \P(B)=0 \imp \P(A \mid B)=\P(B \mid A)=0$, in that case we can choose an arbitrary $\kappa$, for example $\kappa=0$.\\
+If $\P(A) \ne 0 \ne \P(B)$, then $\P(B \mid A)=0 \imp \P(B \cap A)=0 \imp \P(A \mid B)=0$, and we can choose an arbitrary $\kappa$ again. If we suppose $P(A \mid B)$ too, then
+\[
+\frac{\P(A \mid B)}{\P(B \mid A)} = \frac{\ \ \frac{\P(A \cap B)}{\P(B)} \ \ }{\frac{\P(B \cap A)}{\P(A)}} = \frac{\P(A)}{\P(B)}.
+\]
+So $\kappa=\frac{\P(A)}{\P(B)}$.
+\end{proof}
+
+\paragraph{Exercise 6.}
+\begin{itemize}
+\item Let $D_i^C$ be the event ``the ball drawn from $i$-th urn is of colour $C$''. Of course $D_1^R \uplus D_1^W = \Omega$. So, by Exercise 4, we obtain
+\[
+\P(D_2^R) = \P(D_2^R \mid D_1^R) \cdot \P(D_1^R) + \P(D_2^R \mid D_1^W) \cdot \P(D_1^W) = 7/10 \cdot 3/10 + 6/10 \cdot 7/10 = 63/100.
+\]
+\item By Exercise 5 (Bayes' formula) we obtain
+\[
+\P(D_1^W \mid D_2^W) = \P(D_2^W \mid D_1^W) \frac{\P(D_1^W)}{\P(D_2^W)} = \P(D_2^W \mid D_1^W) \frac{\P(D_1^W)}{1-\P(D_2^R)} = 4/10 \cdot \frac{7/10}{37/100}=28/37.
+\]
+\end{itemize}
+
+\paragraph{Exercise 7.} 
+\begin{proof}
+We want to prove that for any $n \in \N$ and any set $\{A_1,...,A_n\} \in \PP(\Omega)$ the following holds:
+\begin{multline*}
+\forall \{i_1,...,i_k\} \sse \{1,...,n\} \ \ \big[ \P(A_{i_1} \cap A_{i_2} \cap ... \cap A_{i_k}) = \P(A_{i_1}) \P(A_{i_2}) ... \P(A_{i_k}) \big] \\ 
+\Updownarrow \\ 
+\forall \{\epsilon_1,...,\epsilon_n\} \sse \{-1,1\} \ \ \big[ \P(A_1^{\epsilon_1} \cap ... \cap A_n^{\epsilon_n}) = \P(A_1^{\epsilon_1}) ... \P(A_n^{\epsilon_n}) \big]
+\end{multline*}
+$(\Longrightarrow)$ We proceed by induction on $N:=|\{\epsilon_i : \epsilon_i=-1\}|$. For the case $n=1$, observe that 
+\[
+\P(A)=\P(A \cap B) + \P(A \cap B^c),
+\]
+so
+\[
+\P(A \cap B^c)=\P(A)-\P(A \cap B)= \P(A)-\P(A) \P(B) =\P(A)(1-\P(B))=\P(A)\P(B^c)
+\]
+$(\Longleftarrow)$ Fix $n \in \N$. We proceed by induction on $d=n-k$.
+If $d=0$ there is nothing to prove. Now suppose that the statement holds for $n-k=d$, i.e. for $k=n-d$. We want to show that it holds for $d=n-k+1$, i.e. for $n-d=k-1$. Observe that
+\begin{multline*}
+\P(A_{i_1} \cap ... \cap A_{i_{k-1}}) = \P(A_{i_1} \cap ... \cap A_{i_{k-1}} \cap B) + \P(A_{i_1} \cap ... \cap A_{i_{k-1}} \cap B^c) = \\
+\P(A_{i_1}) ... \P(A_{i_{k-1}}) \P(B) + \P(A_{i_1}) ... \P(A_{i_{k-1}}) \P(B^c) = \\
+\P(A_{i_1}) ... \P(A_{i_{k-1}}) \P(B) + \P(A_{i_1}) ... \P(A_{i_{k-1}}) (1-\P(B)) =  \P(A_{i_1}) ... \P(A_{i_{k-1}})
+\end{multline*}
+where the second equality holds thanks to the inductive hypothesis.\\
+Since $n$ is arbitrary, the proof above holds for any set of events $\{A_1,...,A_n\}$.
+
+%Suppose now that the following holds for any set $\{A_1,...,A_n\}$:
+%\begin{multline*}
+%\forall \{i_1,...,i_k\} \sse \{1,...,n\} \ \ \big[ \P(A_{i_1} \cap A_{i_2} \cap ... \cap A_{i_k}) = \P(A_{i_1}) \P(A_{i_2}) ... \P(A_{i_k}) \big] \\ 
+%\Updownarrow \\ 
+%\forall \{\epsilon_1,...,\epsilon_n\} \sse \{-1,1\} \ \ \big[ \P(A_1^{\epsilon_1} \cap ... \cap A_n^{\epsilon_n}) = \P(A_1^{\epsilon_1}) ... \P(A_n^{\epsilon_n}) \big]
+%\end{multline*}
+%We want to prove that the same holds for $n+1$.\\
+%$(\Longrightarrow)$ Let $\{\epsilon_1,...,\epsilon_{n+1}\} \sse \{-1,1\}$ and suppose $\epsilon_{n+1}=-1$. Then
+%\begin{multline*}
+%\P(A_1^{\epsilon_1} \cap ... \cap A_n^{\epsilon_n})=\P(A_1^{\epsilon_1} \cap ... \cap A_n^{\epsilon_n} \cap A_{n+1}^{\epsilon_{n+1}}) + \P(A_1^{\epsilon_1} \cap ... \cap A_n^{\epsilon_n} \cap A_{n+1}^{\overline{\epsilon_{n+1}}})
+%\end{multline*}
+\end{proof}
+
+\paragraph{Exercise 8.} 
+\begin{proof}
+$i \ne j \imp \P(A_i \cap A_j) = 1/4 = 2/4 \cdot 2/4 = \P(A_i) \P(A_j).$\\
+But $\P(A_1 \cap A_2 \cap A_3)=1/4 \ne 2/4 \cdot 2/4 \cdot 2/4 = \P(A_1) \P(A_2) \P(A_3)$.
+\end{proof}
+
+
+
+
+\paragraph{Lezione 14/10}\ \\
+\textbf{Remark:} d'ora in poi consideriamo le RV \emph{uguali} se $\P[X=X']=1$.
+
+\begin{defn}
+The \emph{expectation} (or \emph{expected value, mean}) of $X$ is 
+\[
+\E(X):=\int_{\Omega} X d\P
+\]
+if the integral exists.
+\end{defn}
+
+\textbf{Reminder:} Construction of Lebesgue integral:
+\begin{enumerate}
+\item Simple RV:
+\[
+X=\sum_{i=1}^n c_i \1
+\]
+with $c_i \in \R$, $A_i \in \A$. Then
+\[
+\E(X):=\sum_{i=1}^n c_i \P(A_i)
+\]
+\end{enumerate}
+
+COPIARE
+
+
+<PIC. I>
+
+
+
+
+
+
+
+
+
+
+
+\end{document}

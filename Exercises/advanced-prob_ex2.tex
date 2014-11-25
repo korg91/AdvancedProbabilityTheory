@@ -1,0 +1,316 @@
+\documentclass[12pt,a4paper]{report}
+
+\usepackage{amsmath}
+\usepackage{bbm}
+\usepackage[utf8]{inputenc}
+\usepackage{longtable}
+\usepackage{amsthm}
+\usepackage{amscd}
+\usepackage{amssymb}
+\usepackage{amsfonts}
+\usepackage{amsmath}
+\usepackage{mathtools}
+\usepackage{enumitem}
+\usepackage[hyphens]{url}
+\usepackage[scale=3]{ccicons}  % per le icone creative commons
+\usepackage{hyperref}  % per i link nel pdf
+\usepackage[rmargin=3.0cm,lmargin=3.0cm]{geometry}
+%\usepackage{frontesp}  % prima pagina; il pacchetto frontesp.sty si trova nella stessa cartella del file .tex (deve essere adattato a mano)
+\usepackage{setspace}  % per l'interlinea
+\usepackage[english]{babel}  % per sillabazione
+\usepackage[all]{xy} %diagrammi di funzioni
+\usepackage{xspace} %per assicurare la corretta gestione degli spazi finali quando uso e.g. \AC. NB: sarebbe meglio trovare un'altra soluzione...cfr. http://tex.stackexchange.com/questions/15220/no-space-present-after-ensuremath
+
+
+
+\theoremstyle{definition}
+\newtheorem{teo}{Teorema}[section]  % resetta la numerazione dei teoremi per ogni capitolo
+\newtheorem{defn}[teo]{Definizione}  % la numerazione delle definizioni dipende da quella dei teoremi
+\newtheorem{es}[teo]{Esempio}  % idem
+\newtheorem{oss}[teo]{Osservazione}  % idem
+\newtheorem{prop}[teo]{Proposizione}  % idem
+\newtheorem{lemma}[teo]{Lemma}  % idem
+\newtheorem{corollario}[teo]{Corollario}  % idem
+
+%%% inizio comandi per stile per teoremi: "numero. Titolo" %%%
+\newtheoremstyle{num.custom-title}
+  {\topsep}   % ABOVESPACE
+  {\topsep}   % BELOWSPACE
+  {\normalfont}  % BODYFONT
+  {0pt}       % INDENT (empty value is the same as 0pt)
+  {\bfseries} % HEADFONT
+  {}         % HEADPUNCT
+  {5pt plus 1pt minus 1pt} % HEADSPACE
+  {\thmnumber{#2.}\thmnote{ #3}}
+  
+\theoremstyle{num.custom-title}  
+\newtheorem{teo_custom-title}[teo]{} % per usarlo basta \begin{teo_custom-title}[<Titolo teorema>] (usa automaticamente la numerazione di [teo])
+%%% fine comandi per stile per teoremi: "numero. Titolo" %%%
+
+
+\DeclareMathOperator{\dom}{dom}
+\DeclareMathOperator{\ran}{ran}
+\DeclareMathOperator{\orb}{orb}
+\DeclareMathOperator{\id}{id}
+\DeclareMathOperator{\Zdv}{Zdv}
+\DeclareMathOperator{\Hom}{Hom}
+\DeclareMathOperator{\End}{End}
+\DeclareMathOperator{\Ann}{Ann}
+\DeclareMathOperator{\A}{\mathcal{A}}
+\DeclareMathOperator{\B}{\mathcal{B}}
+\DeclareMathOperator{\PP}{\mathcal{P}}
+\DeclareMathOperator{\RR}{\mathcal{R}}
+\DeclareMathOperator{\LL}{\mathcal{L}}
+\DeclareMathOperator{\Hrtg}{\text{Hrtg}}
+\DeclareMathOperator{\Ord}{\text{Ord}}
+\DeclareMathOperator{\N}{\mathbb{N}}
+\DeclareMathOperator{\R}{\mathbb{R}}
+\DeclareMathOperator{\Z}{\mathbb{Z}}
+\DeclareMathOperator{\E}{\mathbb{E}}
+\DeclareMathOperator{\M}{\mathfrak{M}}
+\DeclareMathOperator{\U}{\mathfrak{U}}
+\DeclareMathOperator{\PPP}{\mathbb{P}}
+\DeclareMathOperator{\a01}{\{0,1\}^{\star}}
+\DeclareMathOperator{\imp}{\Rightarrow}
+\DeclareMathOperator{\sm}{\setminus}
+\DeclareMathOperator{\sse}{\subseteq}
+
+
+\newcommand{\AC}{\ensuremath{\mathsf{AC}}\xspace}
+\newcommand{\CC}{\ensuremath{\mathsf{CC}}\xspace}
+\newcommand{\DC}{\ensuremath{\mathsf{DC}}\xspace}
+\newcommand{\ZF}{\ensuremath{\mathsf{ZF}}\xspace}
+\newcommand{\ZFC}{\ensuremath{\mathsf{ZFC}}\xspace}
+\newcommand{\LS}{\ensuremath{\mathsf{LS}}\xspace}
+\newcommand{\AMC}{\ensuremath{\mathsf{AMC}}\xspace}
+\newcommand{\HRule}{\rule{\linewidth}{0.5mm}} %per la prima pagina
+
+\renewcommand{\phi}{\varphi}
+\renewcommand{\S}{\mathcal{S}}
+\renewcommand{\P}{\mathbb{P}}
+\renewcommand{\1}{\mathbbm{1}}
+\renewcommand{\epsilon}{\varepsilon}
+
+
+%%%% INIZIO COMANDI PER EQUIVALENZE %%%%
+\newcommand{\Implies}[2]{$\text{\ref{statement#1}}\!\implies\!\text{\ref{statement#2}}$}% X => Y
+\newcommand{\punto}[1]{\item \label{statement#1}}
+
+
+\newenvironment{equivalence}
+    {\begin{enumerate}[label=(\arabic*),ref=(\arabic*)]
+    }
+    { 
+	\end{enumerate}
+    }
+%%%% FINE COMANDI PER EQUIVALENZE %%%
+
+
+
+% Interlinea 1.5
+%\onehalfspacing  
+
+
+%per le citazioni
+\def\signed #1{{\leavevmode\unskip\nobreak\hfil\penalty50\hskip2em
+  \hbox{}\nobreak\hfil(#1)%
+  \parfillskip=0pt \finalhyphendemerits=0 \endgraf}}
+
+\newsavebox\mybox
+\newenvironment{aquote}[1]
+  {\savebox\mybox{#1}\begin{quote}}
+  {\signed{\usebox\mybox}\end{quote}}
+
+%disabilita colore link
+\hypersetup{%
+    pdfborder = {0 0 0}
+}
+
+\begin{document}
+
+\paragraph{Exercise 10.}
+\begin{proof}
+To prove that the two sums are equal, first observe that 
+\[
+\{|X|>n\}= \biguplus_{k \geq n} \{k < |X| \leq k+1\}
+\]
+and thus 
+\[
+\P[|X|>n] = \sum_{k=n}^\infty \P[k < |X| \leq k+1].
+\]
+Therefore
+\begin{multline*}
+\sum_{n=1}^\infty \P[|X|>n] = \sum_{n=1}^\infty \sum_{k=n}^\infty \P[k < |X| \leq k+1] = \sum_{k=1}^\infty \sum_{n=1}^k \P[k < |X| \leq k+1] =\\
+\sum_{k=1}^\infty \P[k < |X| \leq k+1] \sum_{n=1}^k 1 = \sum_{k=1}^\infty \P[k < |X| \leq k+1] \cdot k.
+\end{multline*}
+So the two sums are equal. Now we want to prove that 
+\[
+\int_\Omega |X| d\P < \infty \iff \sum_{k=1}^\infty k \P[k < |X| \leq k+1] < \infty.
+\]
+($\Longrightarrow$)
+\begin{multline*}
+\infty > \int_\Omega |X| d\P > \int_\Omega \sum_{k=1}^\infty \left( k \cdot \1_{\{\omega : k<|X(\omega)| \leq k+1\}} \right) d\P= \sum_{k=1}^\infty \int_\Omega k \cdot \1_{\{\omega : k<|X(\omega)| \leq k+1\}} d\P=\\
+\sum_{k=1}^\infty k \int_\Omega \1_{\{\omega : k<|X(\omega)| \leq k+1\}} d\P = \sum_{k=1}^\infty k \P[k < |X| \leq k+1].
+\end{multline*}
+($\Longleftarrow$)
+\begin{multline*}
+\int_\Omega |X| d\P \leq \int_\Omega \sum_{k=0}^\infty \left( (k+1) \cdot \1_{\{\omega : k<|X(\omega)| \leq k+1\}} \right) d\P = \sum_{k=0}^\infty \int_\Omega (k+1) \cdot \1_{\{\omega : k<|X(\omega)| \leq k+1\}} d\P=\\
+\sum_{k=0}^\infty (k+1) \int_\Omega \1_{\{\omega : k<|X(\omega)| \leq k+1\}} d\P = \sum_{k=0}^\infty (k+1) \P[k < |X| \leq k+1] < \infty.
+\end{multline*}
+
+\end{proof}
+
+
+
+
+
+
+
+
+
+
+
+\paragraph{Exercise 11.} 
+\begin{proof}
+Suppose $\sum^{\infty}_{n=1}\P(A_n)=\infty$. We want to show $1-\P(\limsup_{n \rightarrow \infty} A_n) = 0$. First of all note that for all $N \in \N$ we have $\sum^{\infty}_{n=N}\P(A_n)=\infty$. Now observe that
+\begin{multline*}
+1 - \P(\limsup_{n \rightarrow \infty} A_n)  = 
+1 - \P\left(\left(\bigcap_{N=1}^{\infty} \bigcup_{n=N}^{\infty}A_n\right)\right) =
+\P\left(\left(\bigcap_{N=1}^{\infty} \bigcup_{n=N}^{\infty}A_n\right)^c \, \right) =\\
+=\P\left(\bigcup_{N=1}^{\infty} \bigcap_{n=N}^{\infty}A_n^{c}\right)
+= \P\left(\liminf_{n \rightarrow \infty}A_n^{c}\right)= \lim_{N \rightarrow \infty}\P\left(\bigcap_{n=N}^{\infty}A_n^{c}\right).
+\end{multline*}
+So it is enough to show that $\P\left(\bigcap_{n=N}^{\infty}A_n^{c}\right) = 0$ for all $N \in \N$. Since the $(A_n)^{\infty}_{n = 1}$ are independent and $1-x \leq e^{-x}$ for all $x \in \R^+$:
+\begin{align*}
+\P\left(\bigcap_{n=N}^{\infty}A_n^{c}\right) 
+&= \prod^{\infty}_{n=N}\P\left(A_n^{c}\right) \\
+&= \prod^{\infty}_{n=N}\left(1-\P\left(A_n\right)\right) \\
+&\leq \prod^{\infty}_{n=N}e^{-\P(A_n)}\\
+&=e^{-\sum^{\infty}_{n=N}\P(A_n)}\\
+&=e^{-\infty}\\
+&= 0,
+\end{align*}
+and we are done.\\
+The first $(\Longrightarrow)$ is the Borel-Cantelli lemma (already proven). So we proved both the $(\Longrightarrow)$'s implications. Now it's just a matter of elementary logic to see that the $(\Longleftarrow)$'s hold as well (observe before that the sums must exist since they are sums of non-negative numbers).
+\end{proof}
+
+\paragraph{Exercise 12.} Let $\S$ be a semiring over $X$ and let $\RR(\S)$ the ring generated by $\S$. Then
+\[
+\RR(\S)=\left\{ A \sse X \mid A=\biguplus_{i=1}^n S_i \text{ for some disjoint elements of } \S \right\} =:\A
+\]
+\begin{proof}
+The inclusion $\supseteq$ is trivial.\\
+We will show now that $\A$ is a ring. Take any $A,B \in \A$, i.e.
+\[
+A=\bigcup_{i=1}^m S_i \text{ and } B=\bigcup_{j=1}^n T_j
+\]
+for some disjoint collections $\{S_i\}$ and $\{T_j\}$ in $\S$. Then
+\begin{align*}
+A \sm B
+&= \left( \bigcup_{i=1}^m S_i \right) \cap \left( \bigcup_{j=1}^n T_j \right)^c\\
+&= \left( \bigcup_{i=1}^m S_i \right) \cap \left( \bigcap_{j=1}^n T_j^c \right)\\
+&= \bigcup_{i=1}^m \left(  S_i \cap \left( \bigcap_{j=1}^n T_j^c \right)\right)\\
+&= \bigcup_{i=1}^m \left\{ \bigcap_{j=1}^n  (S_i \sm T_j) \right\}. \tag{a}
+\end{align*}
+Since $\S$ is a semiring, we have 
+\[
+S_i \sm T_j = \biguplus_{l=1}^{L_{ij}} H_{ijl}
+\]
+for some disjoint $\{H_{ijl}\}$ of $\S$. Thus
+\begin{align*}
+\bigcap_{j=1}^n  (S_i \sm T_j)
+&=\bigcap_{j=1}^n \biguplus_{l=1}^{L_{ij}} H_{ijl}\\
+&= \left( \biguplus_{l_1=1}^{L_{i1}} H_{i1l_1} \right) \cap \left( \biguplus_{l_2=1}^{L_{i2}} H_{i2l_2} \right) \cap ... \cap \left( \biguplus_{l_n=1}^{L_{in}} H_{inl_n} \right)\\
+&= \bigcup_{l_1=1}^{L_{i1}} \bigcup_{l_2=1}^{L_{i2}} ...  \bigcup_{l_n=1}^{L_{in}} (H_{i1l_1} \cap H_{i2l_2} \cap ... \cap  H_{inl_n}), \tag{b}
+\end{align*}
+which is a disjoint union. Furthermore, since $\S$ is a semiring, we have
+\[
+H_{i1l_1} \cap H_{i2l_2} \cap ... \cap  H_{inl_n} \in \S.
+\]
+Therefore, combining (a) and (b), we see that $A \sm B$ is a disjoint union of sets of $\S$, i.e. $A \sm B \in \A$.\\
+A similar argument shows that $S_i \cup T_j \in \S$ as well. So 
+\[
+A \cap B = \left( \bigcup_{i=1}^m S_i \right) \cap \left( \bigcup_{j=1}^n T_j \right) = \bigcup_{i=1}^m \bigcup_{j=1}^n (S_i \cap T_j) \in \A.
+\]
+Then $A \cup B = (A \sm B) \cup (B \sm A) \cup (A \cap B)$ is a disjoint union of sets that we have seen above are in $\A$, so $A \cup B \in \A$.\\
+We have therefore proven that $\A$ is a ring. Since $\S \sse \A$, this implies $\RR(\S) \sse \A$.
+\end{proof}
+Let now $\mu : \S \to [0,+\infty)$ be a finitely additive (finite) measure on $\S$. Then $\mu^* : \RR(\S) \to [0,+\infty)$ given by
+\[
+\mu^*(A)=\mu^* \left( \biguplus_{i=1}^n S_i \right) = \sum_{i=1}^n \mu(S_i)
+\]
+is the unique extension of $\mu$ to a finitely additive measure on $\RR(\S)$.
+\begin{proof}
+The proof that $\mu^*$ is a measure on $\RR(\S)$ is immediate.\\
+It is also trivial that it is unique, since 
+\[
+\mu'(A) \neq \mu^*(A) \imp 
+\mu' \left( \biguplus_{i=1}^n S_i \right) \neq \mu^* \left( \biguplus_{i=1}^n S_i \right) \imp  \sum_{i=1}^n \mu'(S_i) \neq  \sum_{i=1}^n \mu(S_i)
+\]
+which means that $\mu'$ does not extend $\mu$.
+\end{proof}
+
+\paragraph{Exercise 13.}
+\begin{proof}
+First observe that $\mu^*$ is monotone:
+\[
+A \sse B \imp \mu^*(B) = \mu^*(A \uplus (B \sm A)) = \mu^*(A)+\mu^*(B \sm A) \geq \mu^*(A).
+\]
+Thus $\mu^*(\biguplus_{i=1}^\infty A_i) \geq \mu^*(\biguplus_{i=1}^N A_i)$ for all $N \in \N$ (note that a priori $\mu$ is not defined on the partial union). So we obtain
+\begin{multline*}
+\mu \left( \biguplus_{i=1}^\infty A_i \right) = \mu^* \left( \biguplus_{i=1}^\infty A_i \right) \geq \sup_{N \in \N} \left\{ \mu^* \left( \biguplus_{i=1}^N A_i \right) \right\}= \\
+\sup_{N \in \N} \left\{\sum_{i=1}^N \mu^*(A_i) \right\} = \sum_{i=1}^\infty \mu^*(A_i) = \sum_{i=1}^\infty \mu(A_i).
+\end{multline*}
+\end{proof}
+
+\paragraph{Exercise 14.}
+\begin{proof}
+Immediate.
+\end{proof}
+
+
+\paragraph{Exercise 15.}
+\begin{proof}
+First of all, observe that every open and closed interval is an element of $\RR(\S)$, since $\RR(\S)$ is closed under complement (and intersection).\\
+Choose an arbitrary $\epsilon>0$. Since $F$ is right continuous, we can find $d>a$ such that $F(a) \leq F(d) \leq F(a) + \epsilon$. This means that 
+\[
+\mu((d,b])-\mu((a,b])=F(b)-F(d)-(F(b)-F(a))=F(a)-F(d) \geq - \epsilon,
+\]
+i.e. $\mu((d,b]) \geq \mu((a,b])- \epsilon$.
+
+Thus, consider the closed interval $[d,b] \sse (a,b]$. We trivially obtain
+\[
+\mu^*([d,b]) \geq \mu((d,b]) \geq \mu((a,b]) - \epsilon.
+\]
+\textbf{Claim.} For all $n \in \N$ we can find $(a_n,d_n) \supseteq (a_n,b_n]$ s.t.
+\[
+\sum_{n=1}^\infty \mu^*((a_n,d_n)) \leq \sum_{n=1}^\infty \mu^*((a_n,b_n])+\epsilon.
+\]
+We will prove the claim later. Now observe that $\{(a_n,d_n)\}_{n \in \N}$ is an open cover of $[d,b]$, which is a compact set. Thus there exists a finite open subcover $\{(a_n,d_n)\}_{n \in F}$ of $[d,b]$. Therefore
+\[
+\mu^*([d,b]) \leq \mu^* \left( \bigcup_{n \in F} (a_n,d_n) \right) \leq \sum_{n \in F} \mu^*((a_n,d_n)) \leq \sum_{n=1}^\infty \mu^*((a_n,d_n)),
+\]
+where the second inequality holds because every additive measure is finitely sub-additive (to show this, just repeat the proof of the Exercise 1. in the finite case). Therefore
+\[
+\mu((a,b]) - \epsilon \leq \mu^*([d,b]) \leq \sum_{n=1}^\infty \mu^*((a_n,d_n)) \leq \sum_{n=1}^\infty \mu^*((a_n,b_n])+\epsilon.
+\]
+that is
+\[
+\mu((a,b]) \leq \sum_{n=1}^\infty \mu((a_n,b_n])+2\epsilon.
+\]
+Thanks to the arbitrary choice of $\epsilon$, we are done.
+\end{proof}
+\noindent\emph{Proof of the Claim.} Take any $b_n$. Since $F$ is right continuous, we can find $d_n > b_n$ such that $F(b_n) \leq F(d_n) \leq F(b_n) + \frac{\epsilon}{2^n}$. This means that
+\[
+\mu((a_n,b_n])-\mu((a_n,d_n])=F(b_n)-F(a_n)-(F(d_n)-F(a_n))=F(b_n)-F(d_n) \geq - \frac{\epsilon}{2^n},
+\]
+i.e. $\mu^*((a_n,d_n)) \leq \mu((a_n,d_n]) \leq \mu((a_n,b_n])+ \frac{\epsilon}{2^n}$.\\
+Thus, we obtain
+\[
+\sum_{n=1}^\infty \mu^*((a_n,d_n)) \leq \sum_{n=1}^\infty \left( \mu^*((a_n,b_n])+\frac{\epsilon}{2^n} \right) = \sum_{n=1}^\infty \mu^*((a_n,b_n])+\epsilon,
+\]
+which is what we wanted to prove. \qed
+
+
+
+\end{document}
