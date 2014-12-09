@@ -1,0 +1,322 @@
+\documentclass[12pt,a4paper]{report}
+
+\usepackage{amsmath}
+\usepackage{bbm}
+\usepackage[utf8]{inputenc}
+\usepackage{longtable}
+\usepackage{amsthm}
+\usepackage{amscd}
+\usepackage{amssymb}
+\usepackage{amsfonts}
+\usepackage{amsmath}
+\usepackage{mathtools}
+\usepackage{enumitem}
+\usepackage[hyphens]{url}
+\usepackage[scale=3]{ccicons}  % per le icone creative commons
+\usepackage{hyperref}  % per i link nel pdf
+\usepackage[rmargin=3.0cm,lmargin=3.0cm]{geometry}
+%\usepackage{frontesp}  % prima pagina; il pacchetto frontesp.sty si trova nella stessa cartella del file .tex (deve essere adattato a mano)
+\usepackage{setspace}  % per l'interlinea
+\usepackage[english]{babel}  % per sillabazione
+\usepackage[all]{xy} %diagrammi di funzioni
+\usepackage{xspace} %per assicurare la corretta gestione degli spazi finali quando uso e.g. \AC. NB: sarebbe meglio trovare un'altra soluzione...cfr. http://tex.stackexchange.com/questions/15220/no-space-present-after-ensuremath
+
+
+
+\theoremstyle{definition}
+\newtheorem{teo}{Teorema}[section]  % resetta la numerazione dei teoremi per ogni capitolo
+\newtheorem{defn}[teo]{Definizione}  % la numerazione delle definizioni dipende da quella dei teoremi
+\newtheorem{es}[teo]{Esempio}  % idem
+\newtheorem{oss}[teo]{Osservazione}  % idem
+\newtheorem{prop}[teo]{Proposizione}  % idem
+\newtheorem{lemma}[teo]{Lemma}  % idem
+\newtheorem{corollario}[teo]{Corollario}  % idem
+
+%%% inizio comandi per stile per teoremi: "numero. Titolo" %%%
+\newtheoremstyle{num.custom-title}
+  {\topsep}   % ABOVESPACE
+  {\topsep}   % BELOWSPACE
+  {\normalfont}  % BODYFONT
+  {0pt}       % INDENT (empty value is the same as 0pt)
+  {\bfseries} % HEADFONT
+  {}         % HEADPUNCT
+  {5pt plus 1pt minus 1pt} % HEADSPACE
+  {\thmnumber{#2.}\thmnote{ #3}}
+  
+\theoremstyle{num.custom-title}  
+\newtheorem{teo_custom-title}[teo]{} % per usarlo basta \begin{teo_custom-title}[<Titolo teorema>] (usa automaticamente la numerazione di [teo])
+%%% fine comandi per stile per teoremi: "numero. Titolo" %%%
+
+\newenvironment{claim}[1]{\par\noindent\underline{Claim:}\space#1}{} %per i claim
+\newenvironment{claimproof}[1]{\par\noindent\underline{Proof:}\space#1}{\leavevmode\unskip\penalty9999 \hbox{}\nobreak\hfill\quad\hbox{$\blacksquare$}} %per le dimostrazioni dei claim
+
+
+\DeclareMathOperator{\dom}{dom}
+\DeclareMathOperator{\ran}{ran}
+\DeclareMathOperator{\orb}{orb}
+\DeclareMathOperator{\id}{id}
+\DeclareMathOperator{\Zdv}{Zdv}
+\DeclareMathOperator{\Hom}{Hom}
+\DeclareMathOperator{\End}{End}
+\DeclareMathOperator{\Ann}{Ann}
+\DeclareMathOperator{\A}{\mathcal{A}}
+\DeclareMathOperator{\B}{\mathcal{B}}
+\DeclareMathOperator{\PP}{\mathcal{P}}
+\DeclareMathOperator{\RR}{\mathcal{R}}
+\DeclareMathOperator{\LL}{\mathcal{L}}
+\DeclareMathOperator{\Hrtg}{\text{Hrtg}}
+\DeclareMathOperator{\Ord}{\text{Ord}}
+\DeclareMathOperator{\N}{\mathbb{N}}
+\DeclareMathOperator{\Z}{\mathbb{Z}}
+\DeclareMathOperator{\E}{\mathbb{E}}
+\DeclareMathOperator{\M}{\mathfrak{M}}
+\DeclareMathOperator{\U}{\mathfrak{U}}
+\DeclareMathOperator{\Var}{Var}
+\DeclareMathOperator{\PPP}{\mathbb{P}}
+\DeclareMathOperator{\a01}{\{0,1\}^{\star}}
+\DeclareMathOperator{\imp}{\Rightarrow}
+\DeclareMathOperator{\sm}{\setminus}
+\DeclareMathOperator{\sse}{\subseteq}
+
+\newcommand{\R}{\mathbb{R}}
+
+
+\newcommand{\AC}{\ensuremath{\mathsf{AC}}\xspace}
+\newcommand{\CC}{\ensuremath{\mathsf{CC}}\xspace}
+\newcommand{\DC}{\ensuremath{\mathsf{DC}}\xspace}
+\newcommand{\ZF}{\ensuremath{\mathsf{ZF}}\xspace}
+\newcommand{\ZFC}{\ensuremath{\mathsf{ZFC}}\xspace}
+\newcommand{\LS}{\ensuremath{\mathsf{LS}}\xspace}
+\newcommand{\AMC}{\ensuremath{\mathsf{AMC}}\xspace}
+\newcommand{\HRule}{\rule{\linewidth}{0.5mm}} %per la prima pagina
+\newcommand{\veedot}{\mathbin{\mathaccent\cdot\vee}}
+
+\renewcommand{\phi}{\varphi}
+\renewcommand{\S}{\mathcal{S}}
+\renewcommand{\P}{\mathbb{P}}
+\renewcommand{\1}{\mathbbm{1}}
+\renewcommand{\epsilon}{\varepsilon}
+\renewcommand{\Im}{\operatorname{Im}}
+
+
+%%%% INIZIO COMANDI PER EQUIVALENZE %%%%
+\newcommand{\Implies}[2]{$\text{\ref{statement#1}}\!\implies\!\text{\ref{statement#2}}$}% X => Y
+\newcommand{\punto}[1]{\item \label{statement#1}}
+
+
+\newenvironment{equivalence}
+    {\begin{enumerate}[label=(\arabic*),ref=(\arabic*)]
+    }
+    { 
+	\end{enumerate}
+    }
+%%%% FINE COMANDI PER EQUIVALENZE %%%
+
+
+
+% Interlinea 1.5
+%\onehalfspacing  
+
+
+%per le citazioni
+\def\signed #1{{\leavevmode\unskip\nobreak\hfil\penalty50\hskip2em
+  \hbox{}\nobreak\hfil(#1)%
+  \parfillskip=0pt \finalhyphendemerits=0 \endgraf}}
+
+\newsavebox\mybox
+\newenvironment{aquote}[1]
+  {\savebox\mybox{#1}\begin{quote}}
+  {\signed{\usebox\mybox}\end{quote}}
+
+%disabilita colore link
+\hypersetup{%
+    pdfborder = {0 0 0}
+}
+
+\begin{document}
+
+\noindent Andrea Gadotti \hfill 22/11/2014
+
+\paragraph{Exercise 27.} First, we want show that
+\[
+m_k := \E[X^k] = \frac{1}{\sqrt{2\pi}} \int_\R x^k e^{-\frac{x^2}{2}} dx =
+\begin{cases}
+(k-1)!! & \text{if $k$ is even;}\\
+0 & \text{if $k$ is odd.}
+\end{cases}
+\]
+Let's define
+\[
+I(k):= \int_\R x^k e^{-\frac{x^2}{2}} dx.
+\]
+If we can prove the following claim, we are done.
+\begin{claim}{}
+For all $p \in \N$, we have 
+\begin{enumerate}
+\item $I(2p)=(2p-1)!!\sqrt{2\pi}$;
+\item $I(2p+1)=0$. 
+\end{enumerate}
+\begin{claimproof} Both the proofs proceed by induction on $p$.
+\begin{enumerate}
+\item Suppose $p=0$. Then 
+\[
+I(2p)=I(0)= \int_\R e^{-\frac{x^2}{2}} dx = \sqrt{2\pi} = (2\cdot 0 -1)!!\sqrt{2\pi}
+\]
+Suppose now $p>0$. We have
+\begin{align*}
+I(2p) 
+&= \int_\R x^{2p} e^{-\frac{x^2}{2}} dx\\
+&= \int_\R -x^{2p-1} \left[ -x e^{-\frac{x^2}{2}} \right] dx\\
+&= -x^{2p-1} e^{-\frac{x^2}{2}} \Bigg|_{-\infty}^{+\infty} + (2p-1) \int_\R x^{2p-2} e^{-\frac{x^2}{2}} dx\\
+&=0 + (2p-1) [(2p-3)!! \sqrt{2\pi}]\\
+&= (2p-1)!!\sqrt{2\pi}.
+\end{align*}
+\item For $p=0$ we obtain
+\[
+I(2p+1)=I(1)= \int_\R x e^{-\frac{x^2}{2}} dx = \E[X] = 0.
+\]
+For $p>0$, proceeding similarly to point (1), we obtain
+\[
+I(2p+1)= \int_\R x^{2p+1} e^{-\frac{x^2}{2}} dx = -x^{2p} e^{-\frac{x^2}{2}} \Bigg|_{-\infty}^{+\infty} + 2p \int_\R x^{2p-1} e^{-\frac{x^2}{2}} dx = 0+0=0.
+\]
+\end{enumerate}
+\end{claimproof}
+\end{claim}\ \\
+Now we want to show that
+\[
+|m|_k := \E[|X|^k] = \frac{1}{\sqrt{2\pi}} \int_\R |x|^k e^{-\frac{x^2}{2}} dx =
+\begin{cases}
+(k-1)!! & \text{if $k$ is even;}\\
+(k-1)!!\sqrt{\frac{2}{\pi}} & \text{if $k$ is odd.}
+\end{cases}
+\]
+If $k$ is even, the statement follows trivially by $m_k=|m|_k$. Suppose then $p$ odd. If we can prove the following claim, we are done.
+\begin{claim}{}
+For all $p \in \N$, we have
+\[
+\int_\R |x|^{2p+1} e^{-\frac{x^2}{2}} dx = (2p)!! \cdot 2.
+\]
+\begin{claimproof} The proof proceeds by induction on $p$.
+Suppose $p=0$. Then 
+\[
+\int_\R |x|^{2p+1} e^{-\frac{x^2}{2}} dx = \int_\R |x| e^{-\frac{x^2}{2}} dx = 2 \int_0^{+\infty} |x| e^{-\frac{x^2}{2}} dx = -2 e^{-\frac{x^2}{2}} \Bigg|_0^{+\infty} = 0+2 = (2\cdot 0)!! \cdot 2.
+\]
+Suppose now $p>0$. We have
+\begin{align*}
+I(2p+1) 
+&= \int_\R |x|^{2p+1} e^{-\frac{x^2}{2}} dx\\
+&= \int_\R -x^{2p} \left[ -|x| e^{-\frac{x^2}{2}} \right] dx\\
+&= 2 \int_0^{+\infty} -x^{2p} \left[ -x e^{-\frac{x^2}{2}} \right] dx\\
+&= -2x^{2p} e^{-\frac{x^2}{2}} \Bigg|_0^{+\infty} + 4p \int_0^{+\infty} x^{2p-1} e^{-\frac{x^2}{2}} dx\\
+&= 0+ 2p \int_\R |x|^{2p-1} e^{-\frac{x^2}{2}} dx\\
+&= 2p [(2p-2)!!\cdot 2] = (2p)!!\cdot 2
+\end{align*}
+\end{claimproof}
+\end{claim}\ \\
+In order to find the characteristic function, we will soon need the following:
+\begin{lemma}
+For every $p \in \N_{\geq 1}$ we have
+\[
+\log 1 \log 2 + ... + \log p \geq \int_1^p \log x dx.
+\]
+\begin{proof}
+\begin{align*}
+\log 1 + \log 2 + ... + \log p 
+&= 0 + \log 2 \int_1^2 1 dx + \log 3 \int_2^3 1 dx + ... + \log p \int_{p-1}^p 1 dx\\
+&= \int_1^2 \log 2 dx + \int_2^3 \log 3 dx + ... + \int_{p-1}^p \log p dx\\
+&\geq \int_1^2 \log x dx + \int_2^3 \log x dx + ... + \int_{p-1}^p \log x dx\\
+&= \int_1^p \log x dx,
+\end{align*}
+where the inequality holds since $\log$ is an increasing function, thus $\log x \leq \log (i+1)$ for all $x \in [i,i+1]$.
+\end{proof}
+\end{lemma}
+To lighten the notation, suppose WLOG that $k=2p$ for some $p \in \N$. Observe now that
+\begin{align*}
+\lim_{k \to +\infty} \left( \frac{|m|_k}{k!} \right)^{\frac{1}{k}}
+&\leq \lim_{k \to +\infty} \left( \frac{(k-1)!!}{k!} \right)^{\frac{1}{k}}\\ 
+&= \lim_{k \to +\infty} \left( \frac{1}{k!!} \right)^{\frac{1}{k}} \tag{since $k!! \geq (k/2)!$}\\
+&\leq \lim_{k \to +\infty} \left( \frac{1}{(k/2)!} \right)^{\frac{1}{k}}\\
+&= \lim_{p \to +\infty} \left( \frac{1}{p!} \right)^{\frac{2}{p}}\\
+&= \lim_{p \to +\infty} e^{ {\frac{2}{p}} \log \left( \frac{1}{p!} \right)}\\
+&= \lim_{p \to +\infty} e^{ - {\frac{2}{p}} \left( \log p! \right)}\\
+&= \lim_{p \to +\infty} e^{ - {\frac{2}{p}} \left( \log 1 + \log 2 + ... + \log p \right)}\\
+&\leq \lim_{p \to +\infty} e^{ - {\frac{2}{p}} \int_1^p \log x dx} \tag{thanks to the lemma}\\
+&= \lim_{p \to +\infty} e^{ - {\frac{2}{p}} \left( p \log p -p +1 \right) }\\
+&= \lim_{p \to +\infty} e^{ - 2 \log p +2 -\frac{2}{p} } = e^{-\infty} = 0.
+\end{align*}
+This means that we can apply the corollary we saw during the lecture, i.e.
+\[
+\phi(t)= \sum_{k=0}^\infty m_k \frac{(it)^k}{k!}.
+\]
+Since $m_k=0$ if $k$ is odd, we obtain
+\[
+\sum_{k=0}^\infty m_k \frac{(it)^k}{k!} 
+= \sum_{h=0}^\infty m_{2h} \frac{(it)^{2h}}{(2h)!} 
+= \sum_{h=0}^\infty (2h-1)!! (-1)^h \frac{t^{2h}}{(2h)!}
+= \sum_{h=0}^\infty (-1)^h \frac{t^{2h}}{(2h)!!}.
+\]
+It is very easy to check that $(2h)!!=2^h h!$, for all $h \in \N$. Therefore
+\[
+\sum_{h=0}^\infty (-1)^h \frac{t^{2h}}{(2h)!!} 
+= \sum_{h=0}^\infty (-1)^h \frac{t^{2h}}{2^h h!}
+= \sum_{h=0}^\infty \frac{\left( -\frac{t^2}{2} \right)^h}{h!}
+= e^{-\frac{t^2}{2}}.
+\]
+That is, $\phi(t)= e^{-\frac{t^2}{2}}$.
+
+\paragraph{Exercise 28.}
+\[
+\phi_{aX+b}(t) = \E \left[ e^{it(aX+b)} \right] = \E \left[ e^{itaX}e^{itb} \right] = \E \left[ e^{itaX} \right] \E \left[ e^{itb} \right] = \phi_X(at) e^{itb}.
+\]
+Thus, since $X \sim N(\mu, \sigma^2) \imp X=\sigma Y+\mu$ with $Y \sim N(0,1)$, we have
+\[
+\phi_X(t)=\phi_{\sigma Y+\mu}(t)=e^{-\frac{\sigma^2t^2}{2}} e^{it\mu} = e^{it\mu-\frac{1}{2} \sigma^2t^2}.
+\]
+
+\paragraph{Exercise 29.} We easily have
+\[
+\phi_{-X}(t) = \E \left[ e^{i(-t)X} \right] = \phi_X(-t)
+\]
+and thus
+\[
+\phi_{X-Y}(t) = \E \left[ e^{it(X+(-Y))} \right] = \phi_X(t) \phi_X(-t).
+\]
+Now:
+\begin{itemize}
+\item[a)] Consider $f(t):=e^{2(\cos t -1)}$. We want to find explicity a random variable $Z$ such that $\phi_Z(t)=f(t)$. Let $Y$ be a Bernoulli r.v. with $\P[0]=\P[1]=\frac{1}{2}$. Then
+\[
+\phi_Y(t)=\frac{1}{2} e^{-it} + \frac{1}{2} e^{it} = \cos t.
+\]
+Now let $N$ be distributed like a Poisson distribution of parameter $\lambda$, and let $(Y_j)$ be i.i.d. random variables, independent with $N$. Define 
+\[
+S=\sum_{j=1}^N Y_j.
+\]
+We have 
+\begin{align*}
+\phi_S(t)= \E \left[ e^{itS} \right] 
+&= \E \left[ e^{it \sum\limits_{j=1}^N Y_j} \right] \\
+&= \E \left[ \sum_{n \geq 0} e^{it \sum\limits_{j=1}^n Y_j} \1_{\{N=n\}} \right] \\
+&= \sum_{n \geq 0} \E \left[ e^{it \sum\limits_{j=1}^n Y_j} \right] \cdot \E \left[ \1_{\{N=n\}} \right] \tag{$N$ and $(Y_j)$ indep.} \\
+&= \sum_{n \geq 0} \E \left[ e^{it \sum\limits_{j=1}^n Y_j} \right] \cdot \P[N=n] \\
+&= \sum_{n \geq 0} \underbrace{\phi_{Y_1}(t)^n}_{\mathbb{E}e^{it \sum_{j=1}^n Y_j}} \cdot \underbrace{e^{-\lambda} \frac{\lambda^n}{n!}}_{\P[N=n]}= e^{\lambda(\phi_{Y_1}(t)-1)}.
+\end{align*}
+Therefore, if we take
+\[
+Z:= \sum_{j=1}^N Y_j
+\]
+with $(Y_j)$ i.i.d. Bernoulli symmetric r.v. with range $\{1,-1\}$ and $N \sim \text{Pois}(2)$ independent with $(Y_j)$, we obtain 
+\[
+\phi_Z(t) = e^{2(\cos t -1)},
+\]
+as wanted.
+\item Consider $f(t)=e^{-|t|^3}$. We have
+\[
+f'(t)=-3|t|te^{-|t|^3}
+\]
+and
+\[
+f''(t)= -3 \left( |t|e^{-|t|^3} + |t|e^{-|t|^3} -3|t|te^{-|t|^3}|t|t \right).
+\]
+So $f'(0)=f''(0)=0$. Let $X$ be a random variable. We now that $\phi'_X(0)=i\E[X]$. So, if $f(t)=\phi_X(t)$, we would have $\E[X]=0$. But since $\phi''_X(0)=-\E[X^2]=\E[(X-0)^2]=\Var[X]$, we would have $\Var[X]=0$. Therefore $X$ must be the constant function in $0$. But the characteristic function of $X \equiv 0$ is trivially $e^{it0}=1 \neq e^{-|t|^3}$. Thus $e^{-|t|^3}$ is not the characteristic function of any random variable.
+\end{itemize}
+\end{document}

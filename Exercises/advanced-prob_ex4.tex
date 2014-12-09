@@ -156,7 +156,36 @@ We want now to prove that $\P[\tau^{-1}A]=\P^*[A]$ for every $A \in \A^*$, i.e. 
 %\end{proof}
 %Thanks to the claim (and the $pi$-system theorem), we have that a probability measure on $([0,1),\B)$ is completely determined by its values on the preimages of the rectangles.
 
-\paragraph{Exercise 24.} 
+\paragraph{Exercise 24.} \ 
+\\
+\\
+\textbf{$\pi$-system Lemma.} Let $(\Omega,\mathcal F, \P)$ be a probability space. Suppose that $\mathcal G$ and $\mathcal H$ are subsets of $\mathcal F$, and that $\mathcal I$ and $\mathcal J$ are $\pi$-systems with
+\[
+\sigma(\mathcal I) = \mathcal G, \ \sigma(\mathcal J)= \mathcal H.
+\]
+Then $\mathcal G$ and $\mathcal H$ are independent if and only if $\mathcal I$ and $\mathcal J$ are independent, that is
+\[
+\P[I \cap J] = \P[I] \P[J] \quad \text{ for all } I \in \mathcal I, J \in \mathcal J.
+\]
+\begin{proof}
+We prove only the non-trivial implication. For any fixed $I \in \mathcal I$, the functions
+\[
+H \mapsto \P[I \cap H] \text{ and } H \mapsto \P[I]\P[H]
+\]
+are measures on $(\Omega, \mathcal H)$, they have the same total mass $\P[I]$ (and thus they are finite), and agree on $\mathcal J$. Therefore, by the second sheet of exercises\footnote{Actually, we know this result just for semirings and \emph{probability} measures. It is not a problem since: (1) The argument can be easily adapted to any couple of \emph{finite} measures with the same total mass (i.e. the total mass has not to be necessarily $1$). (2) We will apply this lemma in the case of semirings. Nevertheless, we aim to the maximum generality, therefore we prefer to talk about $\pi$-system, and we are allowed to do that because the (almost) uniqueness of measures also holds for simple $\pi$-systems.}, we know that they must agree on $\sigma(\mathcal J)=\mathcal H$. Hence, 
+\[
+\P[I \cap H] = \P[I] \P[H] \quad \text{ for all } I \in \mathcal I, H \in \mathcal H.
+\]
+Thus, for any fixed $H \in \mathcal H$, the functions
+\[
+G \mapsto \P[G \cap H] \text{ and } H \mapsto \P[G]\P[H]
+\]
+are measures on $(\Omega, \mathcal G)$, they have the same total mass $\P[H]$ (and thus they are finite), and agree on $\mathcal I$. They therefore agree on $\sigma(\mathcal I) = \mathcal G$. Hence,
+\[
+\P[G \cap H] = \P[G] \P[H] \quad \text{ for all } G \in \mathcal G, H \in \mathcal H
+\]
+and this is precisely what we wanted to prove.
+\end{proof}
 \begin{itemize}
  
 \item[(a)] We follow the hint. \textbf{Note:} in order to lighten the notation, we deal with the particular case where the r.v. vectors are $(X_1,...,X_k)$ and $(X_{k+1},...,X_n)$, but it's clear that the argument can be repeated for every aribitrary disjoint couple of vectors $(X_{i_1},...,X_{i_k})$ and $(X_{j_1},...,X_{j_n})$.
