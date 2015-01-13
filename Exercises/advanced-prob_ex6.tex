@@ -1,0 +1,220 @@
+\documentclass[12pt,a4paper]{report}
+
+\usepackage{amsmath}
+\usepackage{bbm}
+\usepackage[utf8]{inputenc}
+\usepackage{longtable}
+\usepackage{amsthm}
+\usepackage{amscd}
+\usepackage{amssymb}
+\usepackage{amsfonts}
+\usepackage{amsmath}
+\usepackage{mathtools}
+\usepackage{enumitem}
+\usepackage[hyphens]{url}
+\usepackage[scale=3]{ccicons}  % per le icone creative commons
+\usepackage{hyperref}  % per i link nel pdf
+\usepackage[rmargin=3.0cm,lmargin=3.0cm]{geometry}
+%\usepackage{frontesp}  % prima pagina; il pacchetto frontesp.sty si trova nella stessa cartella del file .tex (deve essere adattato a mano)
+\usepackage{setspace}  % per l'interlinea
+\usepackage[english]{babel}  % per sillabazione
+\usepackage[all]{xy} %diagrammi di funzioni
+\usepackage{xspace} %per assicurare la corretta gestione degli spazi finali quando uso e.g. \AC. NB: sarebbe meglio trovare un'altra soluzione...cfr. http://tex.stackexchange.com/questions/15220/no-space-present-after-ensuremath
+
+
+
+\theoremstyle{definition}
+\newtheorem{teo}{Teorema}[section]  % resetta la numerazione dei teoremi per ogni capitolo
+\newtheorem{defn}[teo]{Definizione}  % la numerazione delle definizioni dipende da quella dei teoremi
+\newtheorem{es}[teo]{Esempio}  % idem
+\newtheorem{oss}[teo]{Osservazione}  % idem
+\newtheorem{prop}[teo]{Proposizione}  % idem
+\newtheorem{lemma}[teo]{Lemma}  % idem
+\newtheorem{corollario}[teo]{Corollario}  % idem
+
+%%% inizio comandi per stile per teoremi: "numero. Titolo" %%%
+\newtheoremstyle{num.custom-title}
+  {\topsep}   % ABOVESPACE
+  {\topsep}   % BELOWSPACE
+  {\normalfont}  % BODYFONT
+  {0pt}       % INDENT (empty value is the same as 0pt)
+  {\bfseries} % HEADFONT
+  {}         % HEADPUNCT
+  {5pt plus 1pt minus 1pt} % HEADSPACE
+  {\thmnumber{#2.}\thmnote{ #3}}
+  
+\theoremstyle{num.custom-title}  
+\newtheorem{teo_custom-title}[teo]{} % per usarlo basta \begin{teo_custom-title}[<Titolo teorema>] (usa automaticamente la numerazione di [teo])
+%%% fine comandi per stile per teoremi: "numero. Titolo" %%%
+
+\newenvironment{claim}[1]{\par\noindent\underline{Claim:}\space#1}{} %per i claim
+\newenvironment{claimproof}[1]{\par\noindent\underline{Proof:}\space#1}{\leavevmode\unskip\penalty9999 \hbox{}\nobreak\hfill\quad\hbox{$\blacksquare$}} %per le dimostrazioni dei claim
+
+
+\DeclareMathOperator{\dom}{dom}
+\DeclareMathOperator{\ran}{ran}
+\DeclareMathOperator{\orb}{orb}
+\DeclareMathOperator{\id}{id}
+\DeclareMathOperator{\Zdv}{Zdv}
+\DeclareMathOperator{\Hom}{Hom}
+\DeclareMathOperator{\End}{End}
+\DeclareMathOperator{\Ann}{Ann}
+\DeclareMathOperator{\A}{\mathcal{A}}
+\DeclareMathOperator{\B}{\mathcal{B}}
+\DeclareMathOperator{\PP}{\mathcal{P}}
+\DeclareMathOperator{\RR}{\mathcal{R}}
+\DeclareMathOperator{\LL}{\mathcal{L}}
+\DeclareMathOperator{\Hrtg}{\text{Hrtg}}
+\DeclareMathOperator{\Ord}{\text{Ord}}
+\DeclareMathOperator{\N}{\mathbb{N}}
+\DeclareMathOperator{\Z}{\mathbb{Z}}
+\DeclareMathOperator{\E}{\mathbb{E}}
+\DeclareMathOperator{\M}{\mathfrak{M}}
+\DeclareMathOperator{\U}{\mathfrak{U}}
+\DeclareMathOperator{\Var}{Var}
+\DeclareMathOperator{\PPP}{\mathbb{P}}
+\DeclareMathOperator{\a01}{\{0,1\}^{\star}}
+\DeclareMathOperator{\imp}{\Rightarrow}
+\DeclareMathOperator{\sm}{\setminus}
+\DeclareMathOperator{\sse}{\subseteq}
+
+\newcommand{\R}{\mathbb{R}}
+
+
+\newcommand{\AC}{\ensuremath{\mathsf{AC}}\xspace}
+\newcommand{\CC}{\ensuremath{\mathsf{CC}}\xspace}
+\newcommand{\DC}{\ensuremath{\mathsf{DC}}\xspace}
+\newcommand{\ZF}{\ensuremath{\mathsf{ZF}}\xspace}
+\newcommand{\ZFC}{\ensuremath{\mathsf{ZFC}}\xspace}
+\newcommand{\LS}{\ensuremath{\mathsf{LS}}\xspace}
+\newcommand{\AMC}{\ensuremath{\mathsf{AMC}}\xspace}
+\newcommand{\HRule}{\rule{\linewidth}{0.5mm}} %per la prima pagina
+\newcommand{\veedot}{\mathbin{\mathaccent\cdot\vee}}
+\newcommand{\F}{\mathcal{F}}
+
+\renewcommand{\phi}{\varphi}
+\renewcommand{\S}{\mathcal{S}}
+\renewcommand{\P}{\mathbb{P}}
+\renewcommand{\1}{\mathbbm{1}}
+\renewcommand{\epsilon}{\varepsilon}
+\renewcommand{\Im}{\operatorname{Im}}
+
+
+%%%% INIZIO COMANDI PER EQUIVALENZE %%%%
+\newcommand{\Implies}[2]{$\text{\ref{statement#1}}\!\implies\!\text{\ref{statement#2}}$}% X => Y
+\newcommand{\punto}[1]{\item \label{statement#1}}
+
+
+\newenvironment{equivalence}
+    {\begin{enumerate}[label=(\arabic*),ref=(\arabic*)]
+    }
+    { 
+	\end{enumerate}
+    }
+%%%% FINE COMANDI PER EQUIVALENZE %%%
+
+
+
+% Interlinea 1.5
+%\onehalfspacing  
+
+
+%per le citazioni
+\def\signed #1{{\leavevmode\unskip\nobreak\hfil\penalty50\hskip2em
+  \hbox{}\nobreak\hfil(#1)%
+  \parfillskip=0pt \finalhyphendemerits=0 \endgraf}}
+
+\newsavebox\mybox
+\newenvironment{aquote}[1]
+  {\savebox\mybox{#1}\begin{quote}}
+  {\signed{\usebox\mybox}\end{quote}}
+
+%disabilita colore link
+\hypersetup{%
+    pdfborder = {0 0 0}
+}
+
+\begin{document}
+
+\noindent Andrea Gadotti \hfill 13/01/2015
+
+\paragraph{Exercise 31.} Let $Y=\E[X \mid \F]$. We know that $Y$ is constant over every $C_j$, i.e. $Y_{|_{C_j}} = y_j \in \R$. Furthermore, we know
+\[
+y_j = \frac{\E[X \cdot \1_{C_j}]}{\P[C_j]}.
+\]
+Now observe that $X_{|_{C_j}}= -1$ for all $j \geq 3$. So $\E[X \cdot \1_{C_j}] = -1$. Since $\P[C_j] = 2^{-j+1}-2^{-j} = 2^{-j}$, we obtain
+\[
+y_j = - 2^{-j} \quad \forall j \geq 3.
+\]
+We shall compute $y_1$ and $y_2$. We have $C_1 = (1/2,1]$ and $C_2 = (1/4,1/2]$. So
+\[
+\E[X \cdot \1_{C_1}] = 0 \cdot \left( \frac{2}{3}-\frac{1}{2} \right) + 1 \cdot \left( 1-\frac{2}{3} \right) = \frac{1}{3}
+\]
+and
+\[
+\E[X \cdot \1_{C_2}] = -1 \cdot \left( \frac{1}{4}-0 \right) + 0 \cdot \left( \frac{1}{3}-\frac{1}{4} \right) = -\frac{1}{4}.
+\]
+Finally:
+\[
+y_1 = \frac{1}{3} \cdot 2^1 = \frac{2}{3} \quad \text{and} \quad y_2 = -\frac{1}{4} \cdot 2^2 = -1.
+\]
+\qed
+
+\paragraph{Exercise 32.} Observe that, for every r.v. $X$, we have
+\[
+X = \frac{X(\omega)+X(-\omega)}{2} + \frac{X(\omega)-X(-\omega)}{2}.
+\]
+Now define $X_1(\omega) := \frac{X(\omega)+X(-\omega)}{2}$ and $X_2 := \frac{X(\omega)-X(-\omega)}{2}$. By linearity of conditional expectation, we get
+$\E[X \mid \F] = \E[X_1 \mid \F] + \E[X_2 \mid \F]$.\\
+Now let $A \in \F$. We have
+\[
+\int_A X_2 \ d\P = \frac{1}{2} \int_A X_2 \ d\lambda = 0,
+\]
+since $X_2$ is an odd function and $A$ is symmetric. So (by uniqueness) it follows that $\E[X_2 \mid \F] \equiv 0$.\\
+Now observe that $X_1$ is an even function, and it is immediate to see that every even function is $\F$-measurable.
+Thus, by the theory (but actually it's immediate by the definition of conditional expectation), $\E[X_1 \mid \F] = X$, whereby $\E[X \mid \F] = X$. \qed
+
+\paragraph{Exercise 33.}
+\newcommand{\Y}{\mathcal{Y}}
+
+First, observe that $\F_{n-1} := \sigma(Y_1,...,Y_{n-1})$ is atomic. In fact, calling $\mathbf{Y} := (Y_1,...,Y_{n-1})$ the r.v. $\Omega \to \Y^{n-1}$, we have $\F_{n-1} = \sigma(\mathbf{Y}) = \{\mathbf{Y}^{-1}(S) \mid S \sse \Y^{n-1} \}$. 
+Observe that
+\[
+\mathbf{Y}^{-1}(S) = \bigcup_{s \in S} \mathbf{Y}^{-1}(\{s\}).
+\]
+Since $\Y$ is countable, $\Y^{n-1}$ is countable as well, and so is every subset $S \sse \Y^{n-1}$. This implies that the union above is actually a countable union. It follows that
+\[
+\sigma(\mathbf{Y}) = \sigma \big( \{\mathbf{Y}^{-1}(\{s\}) \mid s \in \Y^{n-1} \} \big).
+\] 
+We have trivially 
+\[
+\biguplus_{s \in \Y^{n-1}} \mathbf{Y}^{-1}(\{s\}) = \Omega.
+\]
+Finally, since $\Y^{n-1}$ is countable, the union above is countable. So $\F_{n-1}$ is atomic, where the atoms are the sets of the form $\mathbf{Y}^{-1}(\{s\})$.\\
+Now we can proceed with the exercise.
+\begin{enumerate}
+\item By the theory, we immediately have
+\[
+\E[X \mid Y_1, \ldots, Y_{n-1}] \upharpoonright \mathbf{Y}^{-1}(\{s\}) =
+\frac{\E[X \cdot \1_{\mathbf{Y}^{-1}(\{s\})}]}{\P[\mathbf{Y}^{-1}(\{s\})]}
+= \frac{\E[X \cdot \1_{\mathbf{Y}^{-1}(\{s\})}]}{p_{n-1}(s_1,\ldots,s_{n-1})}
+\]
+where $s = (s_1,...,s_{n-1})$.
+\item If $X_n = g_n(Y_1,...,Y_n)$, then $X_n \cdot \1_{\mathbf{Y}^{-1}(\{s\})} = g_n(s_1,...,s_{n-1}, Y_n)$. So
+\[
+\E[X_n \mid Y_1, \ldots, Y_{n-1}] \upharpoonright \mathbf{Y}^{-1}(\{s\}) =
+\frac{\E[g_n(s_1,\ldots,s_{n-1}, Y_n)]}{p_{n-1}(s_1,\ldots,s_{n-1})}.
+\]
+\item 
+\begin{itemize}
+\item $X_n$ is $\F_n$-measurable. By the way $X_n$ is defined, this is equivalent to say that $g_n$ is $\F_n$-measurable.
+\item $\E[|X_n|] < \infty$ for all $n \in \N$.
+\item $\E[X_n \mid \F_{n-1}] = X_{n-1}$, i.e. 
+\[
+\frac{\E[g_n(s_1,\ldots,s_{n-1}, Y_n)]}{p_{n-1}(s_1,\ldots,s_{n-1})} = X_{n-1} \upharpoonright \mathbf{Y}^{-1}(\{s\}), \quad \forall s \in \Y^{n-1}.
+\]
+\end{itemize}
+\end{enumerate}
+
+
+\end{document}
