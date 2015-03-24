@@ -319,4 +319,28 @@ f''(t)= -3 \left( |t|e^{-|t|^3} + |t|e^{-|t|^3} -3|t|te^{-|t|^3}|t|t \right).
 \]
 So $f'(0)=f''(0)=0$. Let $X$ be a random variable. We now that $\phi'_X(0)=i\E[X]$. So, if $f(t)=\phi_X(t)$, we would have $\E[X]=0$. But since $\phi''_X(0)=-\E[X^2]=\E[(X-0)^2]=\Var[X]$, we would have $\Var[X]=0$. Therefore $X$ must be the constant function in $0$. But the characteristic function of $X \equiv 0$ is trivially $e^{it0}=1 \neq e^{-|t|^3}$. Thus $e^{-|t|^3}$ is not the characteristic function of any random variable.
 \end{itemize}
+
+\paragraph{Exercise 30.} 
+\begin{align*}
+\int_{-c}^c e^{-ita} \phi(t) dt
+=& \int_{-c}^c e^{-ita} \int_\R e^{itx} dF(x) \ dt \\
+=& \int_{-c}^c \int_\R e^{it(x-a)} dF(x) \ dt \\
+=& \int_{-c}^c \int_\R \cos t(x-a) + i\sin t(x-a) dF(x) \ dt \\
+=& \int_\R \left[ \int_{-c}^c \cos t(x-a) + i\sin t(x-a) dt \right] \ dF(x) \\
+=& \int_\R \left[ \int_{-c}^c \cos t(x-a) dt \right] \ dF(x) \\
+=& \int_\R \left[ \int_{-c}^c \1_{\R \sm \{a\}} \cos t(x-a) + \1_{\{a\}} dt \right] \ dF(x) \\
+=& \int_\R \left[ \1_{\R \sm \{a\}} \frac{\sin t(x-a)}{x-a} \Bigg|_{-c}^c + \1_{\{a\}} x \Bigg|_{-c}^c \right] \ dF(x) \\
+=& \int_{\R \sm \{a\}} 2\frac{\sin c(x-a)}{x-a} dF(x) + \int_{\{a\}} 2c dF(x). 
+\end{align*}
+So
+\begin{align*}
+\lim_{c \to +\infty} \frac{1}{2c} \int_{-c}^c e^{-ita} \phi(t) dt
+=& \lim_{c \to +\infty} \frac{1}{2c} \int_{\R \sm \{a\}} 2\frac{\sin c(x-a)}{x-a} dF(x) + \lim_{c \to +\infty} \frac{1}{2c} \int_{\{a\}} 2c \ dF(x) \\
+=& \lim_{c \to +\infty} \int_{\R \sm \{a\}} \frac{\sin c(x-a)}{c(x-a)} dF(x) + \int_{\{a\}} 1 \ dF(x) \\
+=& \int_{\R \sm \{a\}} \lim_{c \to +\infty} \frac{\sin c(x-a)}{c(x-a)} dF(x) + \int_{\{a\}} 1 \ dF(x) \\
+=& \ 0 + \int_{\{a\}} 1 \ dF(x) \\
+=& \ F(x) - F(x^-).
+\end{align*}
+
+
 \end{document}
