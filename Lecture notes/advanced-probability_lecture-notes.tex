@@ -1,0 +1,1999 @@
+\documentclass[12pt,a4paper]{report}
+
+\usepackage{amsmath}
+\usepackage{bbm}
+\usepackage[utf8]{inputenc}
+\usepackage{longtable}
+\usepackage{amsthm}
+\usepackage{amscd}
+\usepackage{amssymb}
+\usepackage{amsfonts}
+\usepackage{amsmath}
+\usepackage{mathtools}
+\usepackage[shortlabels]{enumitem}
+\usepackage[hyphens]{url}
+\usepackage[scale=3]{ccicons}  % per le icone creative commons
+\usepackage{hyperref}  % per i link nel pdf
+\usepackage[rmargin=3.0cm,lmargin=3.0cm]{geometry}
+%\usepackage{frontesp}  % prima pagina; il pacchetto frontesp.sty si trova nella stessa cartella del file .tex (deve essere adattato a mano)
+\usepackage{setspace}  % per l'interlinea
+\usepackage[english]{babel}  % per sillabazione
+\usepackage[all]{xy} %diagrammi di funzioni
+\usepackage{xspace} %per assicurare la corretta gestione degli spazi finali quando uso e.g. \AC. NB: sarebbe meglio trovare un'altra soluzione...cfr. http://tex.stackexchange.com/questions/15220/no-space-present-after-ensuremath
+\usepackage{stmaryrd}
+\usepackage{xfrac}
+\usepackage{tikz-cd}
+\usetikzlibrary{matrix,positioning,decorations.pathreplacing}
+\usepackage{graphicx}
+%\usepackage{parskip} %modifica la gestione degli spazi nei paragrafi, in particolare disabilita l'indentazione e aumenta lo spazio verticale tra i paragrafi
+
+
+
+\theoremstyle{definition}
+\newtheorem{theorem}{Theorem}[chapter] % resetta la numerazione dei teoremi per ogni capitolo
+\newtheorem{corollary}[theorem]{Corollary} % la numerazione delle definizioni dipende da quella dei teoremi
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{Remark}[theorem]{Remark}
+\newtheorem*{addendum}{Addendum}
+\newtheorem*{examples}{Examples}
+\newtheorem*{remark}{Remark}
+\newtheorem*{remex}{Remarks and Examples}
+
+%%% inizio comandi per stile per teoremi: "numero. Titolo" %%%
+\newtheoremstyle{num.custom-title}
+  {\topsep}   % ABOVESPACE
+  {\topsep}   % BELOWSPACE
+  {\normalfont}  % BODYFONT
+  {0pt}       % INDENT (empty value is the same as 0pt)
+  {\bfseries} % HEADFONT
+  {}         % HEADPUNCT
+  {5pt plus 1pt minus 1pt} % HEADSPACE
+  {\thmnumber{#2.}\thmnote{ #3}}
+  
+\theoremstyle{num.custom-title}  
+\newtheorem{teo_custom-title}[theorem]{} % per usarlo basta \begin{teo_custom-title}[<Titolo teorema>] (usa automaticamente la numerazione di [teo])
+%%% fine comandi per stile per teoremi: "numero. Titolo" %%%
+
+\newenvironment{claim}[1]{\par\noindent\underline{Claim#1:}\space}{} %per i claim
+\newenvironment{claimproof}[1]{\par\noindent\underline{Proof:}\space#1}{\leavevmode\unskip\penalty9999 \hbox{}\nobreak\hfill\quad\hbox{$\blacksquare$}} %per le dimostrazioni dei claim
+
+\DeclareMathOperator{\dom}{dom}
+\DeclareMathOperator{\ran}{ran}
+\DeclareMathOperator{\orb}{orb}
+\DeclareMathOperator{\id}{id}
+\DeclareMathOperator{\rk}{rk}
+\DeclareMathOperator{\tor}{tor}
+\let\o\relax % elimina \o dai comandi già definiti
+\DeclareMathOperator{\o}{\mathsf{o}}
+\let\Im\relax % elimina \o dai comandi già definiti
+\DeclareMathOperator{\Im}{Im}
+\DeclareMathOperator{\Zdv}{Zdv}
+\DeclareMathOperator{\Hom}{Hom}
+\DeclareMathOperator{\End}{End}
+\DeclareMathOperator{\Ann}{Ann}
+\DeclareMathOperator{\A}{\mathcal{A}}
+\DeclareMathOperator{\B}{\mathcal{B}}
+\DeclareMathOperator{\E}{\mathbb{E}}
+\DeclareMathOperator{\PP}{\mathcal{P}}
+\DeclareMathOperator{\LL}{\mathcal{L}}
+\DeclareMathOperator{\Hrtg}{\text{Hrtg}}
+\DeclareMathOperator{\Ord}{\text{Ord}}
+\DeclareMathOperator{\J}{\mathcal{J}}
+\DeclareMathOperator{\N}{\mathbb{N}}
+\DeclareMathOperator{\R}{\mathbb{R}}
+\DeclareMathOperator{\Z}{\mathbb{Z}}
+\DeclareMathOperator{\U}{\mathfrak{U}}
+\DeclareMathOperator{\PPP}{\mathbb{P}}
+\DeclareMathOperator{\V}{\mathcal{V}}
+\DeclareMathOperator{\Var}{Var}
+\DeclareMathOperator{\Cov}{Cov}
+\DeclareMathOperator{\a01}{\{0,1\}^{\star}}
+\DeclareMathOperator{\imp}{\Rightarrow}
+\DeclareMathOperator{\pmi}{\Leftarrow}
+\DeclareMathOperator{\Pic}{Pic}
+\DeclareMathOperator{\sm}{\setminus}
+\DeclareMathOperator{\sse}{\subseteq}
+\DeclareMathOperator{\cl}{cl}
+\DeclareMathOperator{\Spec}{Spec}
+\DeclareMathOperator{\Tr}{Tr}
+\DeclareMathOperator{\spn}{span}
+\DeclareMathOperator{\q}{\mathsf{q}}
+\DeclareMathOperator{\h}{h}
+\DeclareMathOperator{\GL}{GL}
+\DeclareMathOperator{\D}{D}
+\let\S\relax % elimina \S dai comandi già definiti
+\DeclareMathOperator{\S}{S}
+\DeclareMathOperator{\Cont}{Cont}
+%\DeclareMathOperator{\gcd}{GCD}
+
+
+\newcommand{\AC}{\ensuremath{\mathsf{AC}}\xspace}
+\newcommand{\CC}{\ensuremath{\mathsf{CC}}\xspace}
+\newcommand{\DC}{\ensuremath{\mathsf{DC}}\xspace}
+\newcommand{\ZF}{\ensuremath{\mathsf{ZF}}\xspace}
+\newcommand{\ZFC}{\ensuremath{\mathsf{ZFC}}\xspace}
+\newcommand{\LS}{\ensuremath{\mathsf{LS}}\xspace}
+\newcommand{\AMC}{\ensuremath{\mathsf{AMC}}\xspace}
+\newcommand{\HRule}{\rule{\linewidth}{0.5mm}} %per la prima pagina
+\newcommand{\qedblack}{\hfill $\blacksquare$}
+\newcommand{\ol}{\overline}
+\newcommand{\ul}{\underline}
+\newcommand{\C}{\mathbb{C}}
+\newcommand{\F}{\mathcal{F}}
+\newcommand{\I}{\mathcal{I}}
+\newcommand{\M}{\mathcal{M}}
+\newcommand{\Q}{\mathbb{Q}}
+\newcommand{\g}{\mathfrak{g}}
+\newcommand{\p}{\mathfrak{p}}
+\newcommand{\m}{\mathfrak{m}}
+\newcommand{\T}{\mathcal{T}}
+\newcommand{\X}{\mathbf{X}}
+\newcommand{\x}{\mathbf{x}}
+\newcommand{\IFF}{\Longleftrightarrow}
+\newcommand{\RR}{\mathcal{R}}
+
+\newcommand{\ndivides}{%
+  \mathrel{\mkern.5mu % small adjustment
+    % superimpose \nmid to \big|
+    \ooalign{\hidewidth$\big|$\hidewidth\cr$\nmid$\cr}%
+  }%
+}
+
+\renewcommand{\epsilon}{\varepsilon}
+\renewcommand{\phi}{\varphi}
+\renewcommand{\H}{\mathcal{H}}
+%\renewcommand{\S}{\mathcal{S}}
+\renewcommand{\1}{\mathbbm{1}}
+\renewcommand{\O}{\mathcal{O}}
+\renewcommand{\P}{\mathbb{P}}
+\renewcommand{\u}{\mathbf{u}}
+\renewcommand{\iff}{\Leftrightarrow}
+
+
+
+%%%% INIZIO COMANDI PER EQUIVALENZE %%%%
+\newcommand{\Implies}[2]{$\text{\ref{statement#1}}\!\implies\!\text{\ref{statement#2}}$}% X => Y
+\newcommand{\punto}[1]{\item \label{statement#1}}
+
+
+\newenvironment{equivalence}
+    {\begin{enumerate}[label=(\arabic*),ref=(\arabic*)]
+    }
+    { 
+	\end{enumerate}
+    }
+%%%% FINE COMANDI PER EQUIVALENZE %%%
+
+
+
+% Interlinea 1.5
+%\onehalfspacing  
+
+
+%per le citazioni
+\def\signed #1{{\leavevmode\unskip\nobreak\hfil\penalty50\hskip2em
+  \hbox{}\nobreak\hfil(#1)%
+  \parfillskip=0pt \finalhyphendemerits=0 \endgraf}}
+
+\newsavebox\mybox
+\newenvironment{aquote}[1]
+  {\savebox\mybox{#1}\begin{quote}}
+  {\signed{\usebox\mybox}\end{quote}}
+
+%disabilita colore link
+%\hypersetup{%
+%    pdfborder = {0 0 0}
+%}
+
+\begin{document}
+
+\chapter{Basics}
+
+\section{Probability spaces.}
+
+\begin{definition}
+Let $\Omega$ be a set. We say that $\A \sse \PP(\Omega)$ is a \emph{$\sigma$-algebra on $\Omega$} if:
+\begin{enumerate}
+\item $\emptyset \in \A$.
+\item $A \in \A \imp \Omega \sm A \in \A$.
+\item $\A$ is closed under countable union, i.e. 
+\[
+\forall n \in \N \; (A_n \in \A) \imp \bigcup_{i=1}^\infty A_i \in \A.
+\]
+\end{enumerate}
+\end{definition}
+
+\begin{definition}
+Let $\Omega$ be a set and $\A$ a $\sigma$-algebra on $\Omega$. We say that $\P : \A \to [0,1]$ is a \emph{probability measure on $\A$} if:
+\begin{enumerate}
+\item $\P(\emptyset)=0$ and $\P(\Omega)=1$.
+\item $\P$ is $\sigma$-additive, i.e.
+\[
+\Big[ \forall n \in \N \; (A_n \in \A) \wedge \forall i \neq j \; (A_i \cap A_j = \emptyset) \Big] \imp \P \left[ \bigcup_{i=1}^\infty A_n \right] = \sum_{i=1}^\infty \P[A_i].
+\]
+\end{enumerate}
+\end{definition}
+
+\begin{definition}
+A \emph{probability space} is a triple $(\Omega, \A, \P)$, where $\Omega$ is a set (called also \emph{sample space}), $\A$ is a $\sigma$-algebra of subsets of $\Omega$ and $\P$ is a probability measure on $\A$. The elements of $\A$ are called \emph{events}.
+\end{definition}
+
+\begin{remark}
+If $\Omega$ is at most countable, then we usually set $\A := \PP(\Omega)$. If $\Omega = \R^d$ (or, more generally, $\Omega$ is a topological space), we often set $\A := \B$, where $\B$ is the Borel $\sigma$-algebra (i.e. the smallest $\sigma$-algebra containing all open sets).
+\end{remark}
+
+We now recall some properties of probability measures. The reader should know them already, therefore we omit a proof.
+
+\begin{proposition}
+Let $(\Omega, \A, \P)$ be a probability space. Let $A,B,A_n \in \A$, for all $n \in \N$. The following holds:
+\begin{itemize}
+\item \emph{Monotony:} $A,B \in \A$, $A \sse B \imp \P[A] \leq \P[B]$.
+\item $\P[A^c] = 1-\P[A]$.
+\item $\P[A \cup B] = \P[A]+\P[B] - \P[A \cap B]$.
+\item \emph{Continuity:} 
+\begin{itemize}
+\item $\forall n \; [A_n \sse A_{n+1}] \imp \P(A_n) \nearrow \P \left[ \bigcup_{n=1}^\infty A_n \right]$.
+\item $\forall n \; [A_{n+1} \sse A_n] \imp \P(A_n) \searrow \P \left[ \bigcap_{n=1}^\infty A_n \right]$.
+\end{itemize}
+\item Let 
+\[
+\limsup A_n := \bigcap_{k=1}^\infty \bigcup_{n \geq k} A_n \quad \text{and} \quad \liminf A_n := \bigcup_{k=1}^\infty \bigcap_{n \geq k} A_n.
+\]
+Then
+\[
+INSERT CHAIN OF INEQUALITIES.
+\]
+\item $\displaystyle \P \left[ \bigcup_{n=1}^\infty A_n \right] \leq \sum_{n=1}^\infty \P[A_n]$.
+\item \textbf{Borel-Cantelli lemma:} If $\sum_{n=1}^\infty \P[A_n] < \infty$, then $\P[\limsup A_n]=0$. (NOTA: inserire versione più potente)
+\end{itemize}
+\end{proposition}
+
+\section{Measurable functions and random variables.}
+
+\begin{definition}\label{def_meas_fun}
+Let $(\Omega_1,\A_1)$ and $(\Omega_2,\A_2)$ be couples of sets and $\sigma$-algebras. We say that a function $f : \Omega_1 \to \Omega_2$ is \emph{measurable} if
+\[
+\forall A_2 \in \A_2 \Big( f^{-1}[A_2] \in \A_1 \Big).
+\]
+We call \emph{algebra induced by $f$} the set
+\[
+f^{-1}(\A_2) := \{f^{-1}[A_2] \mid A_2 \in \A_2\}.
+\]
+Observe that $f^{-1}(\A_2)$ is the smallest $\sigma$-algebra on $\Omega$ such that $f : (\Omega_1, \A_1) \to (\Omega_2, \A_2)$ is measurable. We denote $f^{-1}(\A_2)$ by $\sigma(f)$ and we call it \emph{$\sigma$-algebra generated by $f$}.\\
+If $\P_1$ is a probability measure on $(\Omega_1,\A_1)$, then $\P_2 : \A_2 \to [0,1]$ given by $\P_2[A_2] := \P_1[f^{-1}[A_2]]$ is a probability measure on $(\Omega_2,\A_2)$, and it's called \emph{probability measure induced by $f$}.
+\end{definition}
+
+\noindent\textbf{Notation.} Pensare a un modo decente per spiegare la notazione $[\phi(x)]$ e la nozione di ``almost surely''.
+
+\begin{definition}
+Let $\Omega$ be a set and $\F \sse \PP(\Omega)$. We define $\sigma(\F)$ as the smallest $\sigma$-algebra on $\Omega$ which contains $\F$.\footnote{Observe that $\sigma(\F)$ is always well-defined, since $\PP(\Omega)$ is a $\sigma$-algebra, and the intersection of $\sigma$-algebras is again a $\sigma$-algebra.}
+\end{definition}
+
+\begin{definition}
+Let $(\Omega, \A, \P)$ be a probability space. A \emph{random variable} is a measurable function $X : (\Omega, \A) \to (\ol{\R}, \ol{\B})$, where $\ol{\R} = \R \cup \{-\infty, +\infty\}$ and $\ol{\B} = \sigma(\{I \sse \ol{R} \mid I $ is an interval$\})$.
+\end{definition}
+
+\begin{definition}
+Let $X$ be a random variable on a probability space. Then $P^X : \ol{\B} \to [0,1]$ given by $P^X[B] := \P[X \in B]$ is a probability measure on $(\ol{\R},\ol{\B})$. $P^X$ is called \emph{distribution of $X$}.
+\end{definition}
+
+\begin{remark}
+We usually work with random variables $X$ such that $\P[|X|=\infty]=0$.
+\end{remark}
+
+\begin{examples} Let $(\Omega, \A, \P)$ be a probability space. The following $X$'s are random variables:
+\begin{enumerate}
+\item \emph{Discrete equidistribution on $\{x_1,...,x_N\}$.} We have that $\ran X = \{x_1,...,x_N\} \sse \ol{R}$ and $\P[X=x_k] = \frac{1}{N}$. So, by additivity, $\P[B] = \frac{|B \cap \{x_1,...,x_N\}|}{N}$.
+\item \emph{Bernoulli distribution.} $X = \1_A$, where $A \in \A$ and $\1_A$ is the indicator function of $A$, i.e. $\1_A(\omega)=1$ if $\omega \in A$ and $0$ elsewhere. Let $\theta := \P(A)$. We write $X \sim B(1,\theta)$, because $\P[X=1]=\theta$ and $\P[X=0]=1-\theta$. We obtain immediately that
+\[
+P^X[B] =
+\begin{cases}
+1, &\text{if } 0,1 \in B\\
+\theta, &\text{if } 1 \in B \text{ and } 0 \not\in B\\
+1-\theta, &\text{if } 1 \not\in B \text{ and } 0 \in B\\
+1, &\text{if } 0,1 \not\in B.
+\end{cases}
+\]
+\item \emph{Binomial distribution.} We write $X \sim B(n,\theta)$ and we have that $\ran X = \{0,...,n\}$. The distribution of $X$ is given by
+\[
+P^X(\{k\}) = \binom{n}{k} \theta^k (1-\theta)^{n-k}.
+\]
+\item \emph{Hypergeometric distribution.} NOTA: inserire.
+\item \emph{Poisson distribution.} NOTA: inserire.
+\item \emph{Continuous uniform distribution on $[a,b]$.} We have $\ran X = [a,b]$ with $a,b \in \R$. The distribution of $X$ is given by $P^X(B)=\frac{\lambda(B)}{b-a}$, where $\lambda$ is the Lebesgue measure on $\R$.
+\item \emph{Exponential distribution.} NOTA: inserire.
+\item \emph{Normal distribution.} NOTA: inserire.
+\end{enumerate}
+\end{examples}
+
+\begin{remark}
+Let $X,X'$ be random variables on the same probability space. Write $X \sim X'$ iff $\P[X=X']=1$. This is trivially an equivalence relation. From now on, we look at random variables which lay in the same equivalence class as they are the same random variable. \\
+Of course, all of our objects will be well-defined with respect to this convention.\footnote{This convention is motivated by the following fact: all the properties of random variables we are interested in, are always related to the Lebesgue integral. But the Lebesgue integral ``can't see'' sets wich have zero measure.}
+\end{remark}
+
+\begin{definition}
+Let $X$ be a random variable be a random variable on the probability space $(\Omega,\A,\P)$. The \emph{expectation} (or \emph{expected value, mean}) of $X$ is
+\[
+\E[X] = \int_\Omega X \ d\P,
+\]
+if the above Lebesgue integral exists.
+\end{definition}
+
+We now recall the construction of the Lebesgue integral. For semplicity we focus only on random variables.
+
+\paragraph{Construction of the Lebesgue integral.}
+\begin{enumerate}
+\item A random variable is called \emph{simple} if it is of the form $X = \sum_{i=1}^n c_i \1_{A_i}$, with $c_i \in \R^+$ and $A_i \in \A$. For such a random variable, we define
+\[
+\E[X] := \sum_{i=1}^n c_i \P[A_i].
+\]
+\item Let $X$ be a non-negative random variable. Then we define
+\[
+\E[X] := \sup\{\E[Y] \mid 0 \leq Y \leq X, \text{ with $Y$ simple r.v.}\}.
+\]
+\item Prove \emph{Monotone Convergence Theorem}: If $(X_n)_{n \in \N}$ is a sequence of random variables such that $0 \leq X_n \leq X_{n+1}$ and $X_n \nearrow X$, then $\E[X_n] \nearrow \E[X]$.
+\item Show that for any non-negative random variable $X$ there is a sequence $(X_n)_{n \in \N}$ of simple random variables such that $0 \leq X_n \leq X_{n+1}$ almost surely.\\
+The sequence can be constructed as follows:
+\[
+X_n := \underbrace{ \sum_{k=0}^{n2^n-1} \frac{k}{2^n} \1_{\left[ \frac{k}{2^n} \leq X < \frac{k+1}{2^n} \right]} }_{=:Y_n} + n \1_{\left[ X \geq n \right]}.
+\]
+Observe that $\left[ \frac{k}{2^n} \leq X < \frac{k+1}{2^n} \right]$ and $\left[ X \geq n \right]$ are both in $\sigma(X)$.
+
+\textbf{Corollary.}
+\begin{enumerate}
+\item By monotone convergence we immediately have
+\[
+\E[X] = \lim_{n \to \infty} \sum_{k=0}^{n2^n-1} \frac{k}{2^n} \P \left[ \frac{k}{2^n} \leq X < \frac{k+1}{2^n} \right] + n \P \left[ X \geq n \right].
+\]
+\item If $\P[X=+\infty]>0$, then $\E[X]=+\infty$. This is because $\P[X \geq n] \nearrow \P[X = \infty]$.
+\item If $E[X]<+\infty$, then $n\P[X \geq n] \to 0$.
+\begin{proof}
+First observe that $Y_n \leq Y_{n+1}$ for all $n \in \N$. Now, if $X(\omega) < \infty$, then $\exists n_0 \in \N$ s.t. $X(\omega) \geq n_0$. So $n \1_{[X_n \geq n]}(\omega)=0$ for all $n > n_0$, i.e. $X(\omega) = \lim_n Y_n(\omega)$. Thus $Y_n \nearrow X \cdot \1_{[X<+\infty]}$ almost surely, because by (b) we have $\E[X]<+\infty \imp \P[X<+\infty]=1$.\\
+Therefore $Y_n \leq X_n \leq X$, and hence by monotone convergence we obtain $\E[Y_n] \to \E[X]$ and $\E[X_n] \to \E[X]$. Since $\E[X]<+\infty$, we can finally conclude that $\E[X_n] - \E[Y_n] \to 0$, i.e. $n\P[X \geq n] \to 0$.
+\end{proof}
+\end{enumerate}
+\item Let $X$ be an arbitrary random variable. We can write $X = X^+-X^-$. So the expected value of $X$ is defined as
+\[
+\E[X]:=\E[X^+]-\E[X^-],
+\]
+unless $\E[X^+]$ and $\E[X^-]$ are both $+\infty$.
+\end{enumerate}
+
+\begin{definition}
+A random variable $X$ is called \emph{integrable} if $\E[X]$ exists and is finite (i.e. $\E[|X|] < \infty$).
+\end{definition}
+
+\begin{theorem}
+Let $(\Omega,\A,\P)$ be a probability space, $(\Omega^*,\A^*)$ a measurable space, $Y: (\Omega,\A) \to (\Omega^*,\A^*)$ a measurable function. Consider the following probability measure on $(\Omega^*,\A^*)$: for any $A^* \in \A^*$, define
+\[
+\P^*[A^*] := \P[Y^{-1}[A^*]] = \P[Y \in A^*].
+\]
+Let $f: (\Omega^*, \A^*) \to (\ol{\R},\ol{\B})$. The following holds:
+
+If $\int_{\Omega^*} f \ d\P^*$ exists, then $\int_\Omega f(Y) \ d\P$ exists\footnote{Of course, $f(Y) : \Omega \to \ol{R}$ means just $f \circ Y$.} and
+\[
+\int_\Omega f(Y) \ d\P = \int_{\Omega^*} f \ d\P^*.
+\]
+\begin{proof}
+In order to lighten the notation, for all $\omega \in \Omega$ we define $\omega^* := Y(\omega)$.\\
+The proof follows almost completely the argument for the construction of the expected value. We proceed by steps:
+\begin{enumerate}
+\item Suppose $f$ is simple, i.e. $f = \sum_{i=1}^n c_i \1_{A_i^*}$. Then $f \circ Y = \sum_{i=1}^n c_i \1_{Y^{-1}[A_i^*]}$. So
+\[
+\int_\Omega f(Y) \ d\P = \sum_{i=1}^n c_i \P[Y^{-1}[A_i^*]] = \sum_{i=1}^n c_i \P^*[A_i^*] = \int_{\Omega^*} f \ d\P^*.
+\]
+\item If $f \geq 0$, we already know that we can find a sequence $(f_n)_{n \in \N}$ of simple functions such that $0 \leq f_n \leq f_{n+1} \nearrow f$. So, by monotone convergence we obtain
+\[
+\int_\Omega f(Y) \ d\P = \lim_{n \to \infty} \int_\Omega f_n(Y) \ d\P = \lim_{n \to \infty} \int_{\Omega^*} f_n \ d\P^* = \int_{\Omega^*} f \ d\P^*,
+\]
+where the second equality holds by first point.
+\item Finally, for any general $f$, it is sufficient to write $f=f^+-f^-$.
+\end{enumerate}
+\end{proof}
+\end{theorem}
+
+As a special case of the last theorem, we obtain the following:
+
+\begin{corollary}
+Let $X$ be a random variable on $(\Omega,\A,\P)$ a.s. finite. Let $f: (\R,\B) \to (\R,\B)$ measurable. If $\int_{\R} f \ dP^X$ exists, then 
+\[
+\E[f(X)] = \int_{\R} f \ dP^X.
+\]
+\end{corollary}
+
+\begin{definition}
+Let $X$ be a random variable, a.s. finite. The \emph{distribution function of $X$} is $F_X : \R \to [0,1]$ given by
+\[
+F_X(t) = \P[X \leq t] = P^X[(-a,t]].
+\]
+\end{definition}
+
+We now recall some properties of distribution functions. The reader should know them already, therefore we omit a proof.
+
+\begin{proposition}\label{prop_distr_fun}
+Let $F_X$ be a distribution function. The following hold:
+\begin{enumerate}
+\item $F$ is monotone increasing.
+\item $F$ is continuous from the right\footnote{Roughly speaking, a function is right-continuous if no jump occurs when the limit point is approached from the right. Formally, $F$ is said to be right-continuous at the point $c$ if the following holds: $\forall \epsilon > 0 \ \exists \delta>0 \ \forall x\  [c < x <c+\delta \imp |f(x)-f(c)|<\epsilon]$.}, but $\lim_{t \to t_0^-} F(t) = \P[X<t]$ is not necessarily equal to $\P[X \leq t]$.
+\item $\lim_{t \to +\infty} F(t) = 1$.
+\item $\lim_{t \to -\infty} F(t) = 0$.
+\end{enumerate}
+\end{proposition}
+
+\begin{theorem}[Measure theory]
+If $F: \R \to [0,1]$ is a function with the properties (1)--(4) of Proposition \ref{prop_distr_fun}, then there exists a unique probability measure $\P$ on $(\R,\B)$ such that, for any interval $(a.b]$, $\P[(a,b]] = F(b)-F(a)$.
+\end{theorem}
+
+\noindent\textbf{Notation.} If $\P$ is a probability measure on $\R$ and $f : \R \to \R$ measurable, we write
+\[
+\int_{\R} f \ dF := \int_{\R} f(t) \ dF(t) := \int_{\R} f \ d\P,
+\]
+where the latter is the Lebesgue integral.
+
+\begin{lemma}
+Let $F$ be a distribution function. Suppose $F$ is continuous on $\R$, differentiable (???) except for finitely many point and continuous integrable (???). Then $\int_{\R} f \ d\P = \int_{-\infty}^{+\infty} f(t) F'(t) \ dt$.
+\end{lemma}
+
+\section{Independence of random variables.}
+
+In this section we always work in a probability space $(\Omega,\A,\P)$.
+
+\begin{definition}
+Two sub-$\sigma$-algebras $\A_1,\A_2 \sse \A$ are called \emph{independent} if
+\[
+\forall A_1 \in \A_1, A_2 \in \A_2 \ \Big( \P[A_1 \cap A_2] = \P[A_1] \P[A_2] \Big).
+\]
+Sub-$\sigma$-algebras $\A_1,...,\A_n \sse \A$ are called \emph{independent} if $\forall A_i \in \A_i$ with $i=1,...,n$, $A_1,...,A_n$ are mutually independent, i.e. if for all choices of indeces $\{i_1,...,i_k\} \sse \{1,...,n\}$ we have
+\[
+\P[A_{i_1} \cap \ldots \cap A_{i_k}] = \P[A_{i_1}] \cdot \ldots \cdot \P[A_{i_k}].\footnotemark
+\]
+\footnotetext{By Exercise 7, this condition in equivalent to the following: for all choices of $\epsilon_1,...,\epsilon_n \in \{1,-1\}$, $\P[A_1^{\epsilon_1} \cap ... \cap A_n^{\epsilon_n}] = \P[A_1^{\epsilon_1}] \cdot ... \cdot \P[A_n^{\epsilon_n}]$, where $A_i^1=A_i$ and $A_i^{-1}=A_i^c$.}
+Arbitrarily many sub-$\sigma$-algebras $A_i \sse \A$, $i \in I$ are called \emph{independent} if they are independent for any finite subset of $I$.
+\end{definition}
+
+\begin{definition}
+Let $(\Omega_i,\A_i)$ with $i \in I$ be measurable spaces. Let $f_i : (\Omega,\A,\P) \to (\Omega_i,\A_i)$ be a measurable function for any $i \in I$. The $f_i$'s are called \emph{independent} if the sub-$\sigma$-algebras $\sigma(f_i) \sse \A$ generated by them are independent (cfr. Definition \ref{def_meas_fun}).
+\end{definition}
+
+\begin{examples}
+Let $X_1,...,X_n$ be discrete random variables (NOTA: AGGIUNGERE DEFINIZIONE). Define $p_i(x) := \P[X_i=x]$ and suppose $\sum_{x \in \R} p_i(x) = 1$. Consider the random vector
+\[
+(X_1,\ldots,X_n) : (\Omega,\A) \to (\R^n,\B_{\R^n}),
+\]
+which of course is discrete as well. Define
+\[
+P_{X_1,\ldots,X_n}(x_1,\ldots,x_n) := \P[X_1=x_1,\ldots,X_n=x_n] = \P \left[ \bigcap_{i=1}^n X_i^{-1}[\{x_i\}] \right].
+\]
+Then:
+\begin{lemma}
+$X_1,...,X_n$ are independent if and only if $P_{X_1,...,X_n}(x_1,...,x_n)=p(x_1) \cdot ... \cdot p(x_n)$, for all $x_1,...,x_n$.
+\end{lemma}
+\end{examples}
+\begin{proposition}
+Let $X_1,...,X_n$ be continuous random variables. Suppose they have density functions $f_1,...,f_n$ w.r.t. Lebesgue measure. Now consider the random vector $(X_1,...,X_n) \colon (\Omega,\A,\P) \to (\R^n, \B_{\R^n})$. Suppose it has density function $f(x_1,...,x_n)$ w.r.t. Lebesgue measure on $\R^n$. Then
+\begin{enumerate}
+\item $\P[(X_1,...,X_n) \in B] = \int_B f \ d\lambda_n$, where $\lambda_n$ is the Lebesgue measure on $\R_n$ and $B \in \B_{\R^n}$.
+\item  The following are equivalent:
+\begin{enumerate}
+\item $X_1,...,X_n$ are independent.
+\item $f(x_1,...,x_n)=f_1(x_1) \ldots f_n(x_n)$ a.s.
+\end{enumerate}
+\begin{proof}\ \\
+(b)$\imp$(a): By hypothesis
+\[
+\P[(X_1,\ldots,X_n) \in B] = \int_B f_1(x_1) \ldots f_n(x_n) \ \underbrace{d\lambda_n(x_1,\ldots,x_n)}_{dx_1 \ldots dx_n},
+\]
+for all $B \in B_{\R^n}$. Now take $B_i \in \B_{\R}$. So we have
+\begin{multline*}
+\P[X_1 \in B_1, \ldots, X_n \in B_n] = \int_{B_1 \times \ldots \times B_n} f_1(x_1) \ldots f_n(x_n) \ d\lambda_n(x_1,\ldots,x_n) \\ 
+= \int_{B_1} f_1 \ d\lambda \int_{B_2} f_2 \ d\lambda \ldots \int_{B_n} f_n \ d\lambda = \P[x_1 \in B_1] \ldots \P[x_n \in B_n].
+\end{multline*}
+(a)$\imp$(b): This is now clear. (??? ho solo un'uguaglianza di integrali...come faccio a passare all'uguaglianza puntuale?)
+\end{proof}
+\end{enumerate}
+\end{proposition}
+
+
+\chapter{The law of large numbers and Birkhoff's Ergodic theorem}
+
+Throughout the whole chapter, all the random variables live in a probability space $(\Omega,\A,\P)$, unless stated otherwise.
+
+\begin{theorem}
+Let $(X_n)$ be a sequence of i.i.d. real random variables with $\E[X_n]=\mu$ and $\Var[X_n]=\sigma^2<\infty$. Define
+\[
+\ol{X}_n := \frac{1}{n}(X_1 + \ldots + X_n).
+\]
+Then $\ol{X}_n \to \mu$ \emph{in probability}, i.e.
+\[
+\P[|\ol{X}_n - \mu| \geq a] \leq \frac{\sigma^2}{na^2} \to 0.
+\]
+\begin{proof}
+We split the proof in four steps.
+\begin{enumerate}
+\item \textbf{Markov's inequality:}
+\begin{center}
+If $X$ is a non-negative random variable, then $\P[X \geq a\E[X]] \leq \frac{1}{a}$ for all $a>0$.
+\end{center}
+In order to prove this, first observe that if $\E[X] = 0$, then $X=0$ a.s., and thus the statement holds (??? a me non sembra che funzioni). Suppose now $\E[X]>0$. Of course $X \geq X \1_{[X \geq a\mu]}$, therefore
+\[
+\E[X] \geq \E[X \1_{[X \geq a\mu]}] \geq \E[a \mu \1_{[X \geq a\mu]}] = a \E[X] \P[X \geq a \E[X]].
+\]
+\item \textbf{Chebyshev's inequality.}
+\begin{center}
+If $\Var[X]<\infty$, then $\displaystyle\P[|X-E[X]| \geq a] \leq \frac{\Var[X]}{a^2}$ for all $a>0$.
+\end{center}
+The proof follows immediately by Markov's inequality, since
+\[
+\P[|X-\mu| \geq a] = \P \bigg[ \underbrace{(X-\mu)^2}_{=: Y \geq 0} \geq \frac{a^2}{\sigma^2} \underbrace{\sigma^2}_{= \E[Y] = \Var[X]} \bigg] \leq \frac{\sigma^2}{a^2}.
+\]
+\item The following holds:
+\begin{center}
+If $X_1$ and $X_2$ are independent then $\Var[X_1+X_2] = \Var[X_1]+\Var[X_2]$.
+\end{center}
+Indeed, observe that
+\begin{multline*}
+\Var[X_1+X_2] = \E[((X_1-\mu_1)+(X_2+\mu_2))^2] \\
+= \E[(X_1-\mu_1)^2] + \E[(X_2-\mu_2)^2] + \underbrace{2\E[(X_1-\mu_1)(X_2-\mu_2)]}_{=0} = \Var[X_1] + \Var[X_2].
+\end{multline*}
+\item Finally, observe that
+\[
+\E[\ol{X}_n] = \mu \quad \text{and} \quad
+\Var[\ol{X}_n] = \Var \left[ \frac{1}{n}(X_1 + \ldots X_n) \right] = \frac{1}{n^2} n \sigma^2 = \frac{\sigma^2}{n}.
+\]
+So the statement immediately follows by Chebyshev's inequality.
+\end{enumerate}
+\end{proof}
+\end{theorem}
+
+\begin{definition}
+Let $(X_n)$ and $X$ be random variables. We say that
+\begin{itemize}
+\item $X_n \to X$ \emph{in probability} if $\P[|X_n-X| \geq a] \to 0$ for all $a>0$.
+\item $X_n \to X$ \emph{a.s.} if $\P[X_n \to X]=1$, that is
+\[
+\Omega_0 \in \A \quad \text{and} \quad \P[\Omega_0] = 1,
+\]
+where $\Omega_0 := \{\omega \in \Omega \mid \lim_n X_n(\omega)$ exists and is equal to $X(\omega)\}$.
+\end{itemize}
+\end{definition}
+
+\begin{lemma}
+A.s. convergence implies convergence in probability.
+\begin{proof}
+Define $U_k := \sup\{|X_n-X| : n \geq k\}$. Then $X_n \to X$ a.s. implies $U_k \to 0$ in probability.
+\end{proof}
+\end{lemma}
+
+\begin{theorem}[Strong law of large numbers]
+Let $(X_n)$ be iid and suppose $\E[X_n] = \mu < \infty$ for all $n \in \N$. Then $\ol{X}_n \to \mu$ a.s.
+\end{theorem}
+
+\section{Products of probability spaces.}
+
+\textbf{Question.} Given a probability measure $P$ on $(\R,\B)$, is there a probability space $(\Omega,\A,\P)$ on which one can define a sequence of iid random variables $X_n$ with distribution $P$?\\
+\textit{Answer.} Yes. Define $(\Omega,\A,\P) := \times_{n \in N} (\R,\B,P)$. (??? e poi?)
+
+\subsection{Finitely many spaces}
+
+Let $(\Omega_i,\A_i,\P_i)$ be probability spaces, with $i=1,2$. Define
+\begin{itemize}
+\item $\Omega := \Omega_1 \times \Omega_2$
+\item $\A_1 \otimes \A_2 := \sigma(\{A_1 \times A_2 \mid A_i \in \A_i\})$
+\item $\P_0[A_1 \times A_2] := \P_1[A_1] \P_2[A_2]$.
+\end{itemize}
+
+It's easy to show that $\P_0$ can be uniquely extended to a $\sigma$-additive probability measure $\P$ on $\A_1 \otimes \A_2$. So we can define $(\Omega_1,\A_1,\P_1) \times (\Omega_2,\A_2,\P_2) := (\Omega,\A,\P)$.
+
+\subsection{Countably many spaces}\label{count-prod}
+
+Let $(\Omega_n,\A_n,\P_n)$ be probability spaces for all $n \in \N$. Define
+\begin{itemize}
+\item $\Omega := \times_{n \in \N} \Omega_n$
+\item $\A := \sigma(\{ A_1 \times ... \times A_n \times \Omega_{n+1} \times ... \mid A_i \in \A_i, n \in \N \})$
+\item $\P_0[A_1 \times ... \times A_n \times \Omega_{n+1} \times ...] := \P_1[A_1] \P_2[A_2] ... \P_n[A_n] \cdot 1 \cdot 1 \cdot ...$
+\end{itemize}
+
+\noindent\textbf{Construction.}\\
+For all $n \in \N$, define
+\[
+(\Omega^{(n)},\A^{(n)},\P^{(n)}) := \bigotimes_{i=1}^n (\Omega_i,\A_i,\P_i).
+\]
+By abuse of notation, we identify 
+\[
+(\Omega^{(n)},\A^{(n)},\P^{(n)}) \quad \text{and} \quad (\Omega,\{A^{(n)} \times \Omega_{n+1} \times ... \mid A^{(n)} \in \A^{(n)} \}, \P^{(n)}).
+\]
+Observe that $\A^{(n-1)} \sse \A^{(n)}$, since
+\[
+\underbrace{(A^{(n-1)} \times \Omega_n)}_{\in \A^{(n)}} \times \Omega_{n+1} \times \ldots
+\]
+Now define
+\[
+\RR := \bigcup_{n \in \N} \A^{(n)}.
+\]
+$\RR$ is not a $\sigma$-algebra, but it is an algebra over $\Omega$. Now, if $A \in \RR$, then $A \in \A^{(j)}$ for some $j \in \N$. Thus we can define the measure $\P$ on $\RR$ given by
+\[
+\P[A] := \P^{(j)}(A), \tag{$*$}
+\]
+which is well-defined since $\P^{(n)} \upharpoonright \A^{(n-1)} = \P^{(n-1)}$ for all $n \in \N$. Of course $\P$ is finitely additive.
+
+\begin{theorem}
+$\P$ is $\sigma$-additive on $\RR$. This also implies that $\P$ can be uniquely extended to $\sigma(\RR)=\A$.
+\begin{proof}
+We need more notation. Define
+\begin{itemize}
+\item $\Omega^{(k,n)} := \Omega_{k+1} \times ... \times \Omega_1$, so $\Omega^{(n)} = \Omega^{(0,n)}$.
+\item $\Omega^{[k]} := \Omega^{(k,\infty)}$ so $\Omega = \Omega^{[0]}$.
+\item $\A^{(k,n)} := \A_{k+1} \otimes ... \otimes \A_n$, so $\A^{(n)} = \A^{(0,n)}$.
+\item $\P^{(k,n)}$ is defined in the obvious way, and we have $\P^{(n)} = \P^{(0,n)}$.
+\item By abuse of notation, define $\RR^{[k]} := \bigcup_{n>k} \A^{(k,n)}$, which is an algebra.
+\item $\P^{[k]}$ on $\RR^{[k]}$ is defined in the obvious way, similar to $(*)$. Of course it is finitely additive. So $\P^{[0]} = \P$.
+\end{itemize}
+
+Now consider the following lemma, whose proof is left as an easy exercise:
+\begin{center}
+A finitely additive measure on a ring (algebra) of set is $\sigma$-additive on $\RR$ if and only if it's continuous at $\emptyset$.
+\end{center}
+Let $(B_n)$ be a a sequence in $\RR = \RR^{[0]}$ such that $B_n \searrow 0$. Thanks to the lemma, if we show that $\P^{[0]}[B_n] \searrow 0$ we are done. Of course $B_n \in \A^{(k_n)}$ for some $k_n \in \N$. Observe that we can suppose w.l.o.g. that $(k_n)_{n \in \N}$ is strictly ascending (because otherwise we can simply define $\ol{k_1} := k_1$ and $\ol{k_n} := \max\{k_n, \ol{k_{n-1}}+1\}$), and therefore, again w.l.o.g. $B_n \in \A^{(n)}$ (because if there is a ``jump'', between some $k_n$ and $k_{n+1}$, we can just fill it ``extending'' the sequence ??? giusto?).\\
+Now assume towards a contradiction $\P^{[0]}[B_n] \searrow \epsilon > 0$. We will show that this implies $\bigcup_{n \in \N} B_n \neq \emptyset$, which is a contradiction.\\
+For $E \in \RR$ and $(\omega_1,...,\omega_n) \in \Omega_1 \times ... \times \Omega_n$, define
+\[
+E(\omega_1,\ldots,\omega_n) := \{ \boldsymbol{\omega} = (\omega_{n+1}, \omega_{n+2},\ldots) \in \Omega^{[n]} \mid (\omega_1,\ldots,\omega_n,\boldsymbol{\omega}) \in E \} \in \RR^{[n]}.
+\]
+Let $C_n := \{ \omega_1 \in \Omega_1 \mid \P^{[0]}[B_n(\omega_1)] > \frac{\epsilon}{2} \}$. So we have
+\[
+\epsilon \leq \P[B_n] = \int_{\Omega_1} \P^{(1,n)}[B_n(\omega_1)] \ d\P_1(\omega_1) = \int_{C_n} ... + \int_{\Omega_1 \sm C_n} ... \leq \P_1[C_n]+\frac{\epsilon}{2}.
+\]
+Thus $\P_1[C_n] \geq \frac{\epsilon}{2}$ for all $n \in \N$, and since $(C_n)_{n \in \N}$ is clearly decreasing, this means $\bigcap_{n \in \N} C_n \neq \emptyset$. So there exists $a_1 \in \bigcap_{n \in \N} C_n$.\\
+Now continue with $B_n(a_1) \in \A^{(1,n)} \sse \RR^{[1]}$. We have that $B_n(a_n) \searrow$ and $\P^{[1]}[B_n(a_1)] \geq \frac{\epsilon}{2}$. Following the same argument we can find $a_2 \in \Omega_2$ such that $B_n(a_1,a_2) \searrow$ and $\P^{[2]}[B_n(a_1,a_2)] \geq \frac{\epsilon}{4}$.
+By induction, for all $k$ we can find $a_1,...,a_k$ such that
+\[
+B_n(a_1,\ldots,a_k) \searrow \quad \text{and} \quad \P^{[k]}[B_n(a_1,\ldots,a_k)] \geq \frac{\epsilon}{2^k}.
+\]
+We claim $(a_1,a_2,...) \in \bigcap_{n \in \N} B_n$. Observe that
+\[
+B_n(a_1,\ldots,a_n) = 
+\begin{cases}
+\emptyset, &\text{if no element of $B_n$ begins with $(a_1,\ldots,a_n)$}\\
+\Omega_{n+1} \times \Omega_{n+2} \times \ldots, &\text{otherwise (??? perché?)}.
+\end{cases}
+\]
+Since $\P^{[n]}[B_n(a_1,\ldots,a_n)] \geq \frac{\epsilon}{2^n}$, the first case can never happen. Therefore 
+\[
+(a_1,...,a_n,a_{n+1},a_{n+2},...) \in B_n
+\]
+for all $n \in \N$.
+\end{proof}
+\end{theorem}
+
+\section{Birkhoff's ergodic theorem}
+
+\begin{definition}
+Let $(\Omega,\A,\P)$ be a probability space. A measurable function $T \colon \Omega \to \Omega$ is called \emph{measure preserving} if for all $A \in \A$
+\[
+\P[T^{-1}[A]] = \P[A].
+\]
+\end{definition}
+
+\begin{remark}
+$T$ is measure preserving if and only if $\E[f \circ T] = \E[f]$ for all $f \in L^1(\Omega,\A,\P)$.
+\begin{proof}
+Exercise.
+\end{proof}
+\end{remark}
+
+\begin{examples}\ 
+\begin{enumerate}
+\item Let $\Omega := [0,1)$, $\A := \B_{[0,1)}$, $\P := \lambda$, where $\lambda$ is the Lebesgue measure on $[0,1)$. It's easy to check that $T(x) := \langle 2x \rangle := 2x - \lfloor 2x \rfloor$ is measure preserving.
+\item \label{constr-iid} Let $X$ be a real-valued random variable with distribution $P := P^X$. More in general: let $\mathfrak{X}$ be a separable complete metrix space, $\B$ the Borel $\sigma$-algebra, $P$ a probability measure on $\B$. We can construct a sequence $(X_n)$ of $\mathfrak{X}$-valued iid random variables with distribution $P$ as follows: we define
+\[
+(\Omega,\A,\P) := \bigotimes_{n=1}^\infty (\mathfrak{X},\B,P) = (\mathfrak{X}^{\N}, \B \otimes \B \otimes \ldots, P^{\N}).
+\]
+So we can write every $\omega \in \mathfrak{X}^{\N}$ as $\omega = (x_1,x_2,...)$. Defining $X_n(\omega) := x_n$ for all $n \in \N$, we obtain what we wanted.\\
+Furthermore, defining $T(\omega) := (x_2,x_3,...)$ we get a measure preserving function, since $A \in \A \imp T^{-1}[A] = \mathfrak{X} \times A$. $T$ is called \emph{shift}.
+\end{enumerate}
+\end{examples}
+
+Let $f \in L^1(\Omega,\A,\P)$, $T$ m.p. (measure preserving). We define for all $n \geq 0$
+\[
+\S_n f(\omega) := \sum_{k=0}^{n-1} f(T^k (\omega)).\footnote{Recall that the empty sum is defined as $0$.}
+\]
+We call $\frac{1}{n} \S_n f$ \emph{time average} and $\E(f) = \int_\Omega f \ d\P$ \emph{space average}. \\
+We will soon prove that $\S_n f \to \E(f)$ a.s.
+
+\begin{theorem}[Maximal Ergodic Lemma]
+\renewcommand{\F}{\operatorname{F}}
+Let $\F_n(\omega) := \max\{\S_j f(\omega) \mid j = 0,...,n\}$. Then
+\[
+\int_{[\F_n > 0]} f \ d\P \geq 0.
+\]
+\begin{proof}
+First observe that $\F_n \in L^1(\Omega,\A,\P)$ (because $f$ is integrable, so also the sum is integrable, and thus also the maximum). We have
+\begin{align*}
+& \F_n \geq \S_j f \\
+\imp & \F_n \circ T \geq \S_j f \circ T \\
+\imp & f + \F_n \circ T \geq f + \S_j f \circ T = \S_{j+1} f \\
+\imp & f + \F_n \circ T \geq \max\{\S_j f \mid j = 1,...,n\}.
+\end{align*}
+If $\F_n(\omega)>0$, then $\max\{\S_j f(\omega) \mid j = 1,...,n\} = \F_n(\omega)$. This means that on $[\F_n>0]$ we have $f \geq \F_n - \F_n \circ T$. Thus
+\begin{align*}
+\int_{[\F_n>0]} f \ d\P 
+\geq & \int_{[\F_n>0]} \F_n \ d\P - \int_{[\F_n>0]} \F_n \circ T \ d\P \\
+\geq & \int_\Omega \F_n \ d\P - \int_\Omega \F_n \circ T \ d\P \\
+= & \E[\F_n] - \E[F_n \circ T] = 0,
+\end{align*}
+where the last equality follows by the last remark.
+\end{proof}
+\end{theorem}
+
+\begin{corollary}\label{corollary-time_average_positive}
+\renewcommand{\F}{\operatorname{F}}
+Suppose $f \in L^1$ and $\E[f] = \int_\Omega f \ d\P > 0$. Then 
+\[
+\exists \omega \in \Omega \ \forall n \geq 1 \ (\S_n f(\omega) > 0).
+\]
+\begin{proof}
+Assume to the contrary that
+\[
+\forall \omega \in \Omega \ \exists n \geq 1 \ (\S_n f(\omega) \leq 0).
+\]
+Let $0 < \epsilon < \E[f]$. Define $g := \epsilon - f$. We trivially have $\S_n g = n\epsilon - \S_n f$. Thus
+\[
+\forall \omega \in \Omega \ \exists n \geq 1 \ (\S_n g(\omega) \geq n\epsilon >0),
+\]
+Which implies 
+\[
+\forall \omega \in \Omega \ \exists n \geq 1 \ (\F_n g(\omega)>0).
+\]
+Define $A_n := [\F_n g >0]$. We have that $A_n \nearrow \Omega$. Applying maximal ergodic lemma we obtain
+\[
+\int_\Omega \1_{A_n} g \ d\P = \int_{A_n} g \ d\P \geq 0.
+\]
+Observe that $|\1_{A_n} g| \leq |g| \in L^1$. By dominated convergence we obtain
+\[
+\int_\Omega g \ d\P \geq 0.
+\]
+But since $f = \epsilon - g$ this implies
+\[
+E[f] = \int_\Omega f \ d\P = \int_\Omega \epsilon \ d\P - \int_\Omega g \ d\P \leq \int_\Omega \epsilon \ d\P = \epsilon,
+\]
+contradiction.
+\end{proof}
+\end{corollary}
+
+\begin{definition}
+Let $(\Omega,\A,\P)$ be a probability space, $T \colon \Omega \to \Omega$ measure preserving. The \emph{$T$-invariant $\sigma$-algebra} is 
+\[
+\J := \{A \in \A \mid T^{-1}[A]=A \text{ a.s.}\}.\footnotemark
+\]
+\footnotetext{We say that $A=B$ a.s. if $\P[(A \sm B) \cup (B \sm A)]=0$. Observe that $\P[A]=0 \iff A=\emptyset$ a.s. and $\P[A]=1 \iff A=\Omega$ a.s.}
+$T$ is called \emph{ergodic} if $\J$ is \emph{trivial w.r.t. $\P$}, i.e. if
+\[
+A \in \J \imp \P[A] \in \{0,1\}.
+\]
+\end{definition}
+
+\begin{lemma}\label{char-J-meas_and_J_trivial}\ 
+\begin{enumerate}
+\item $f \colon (\Omega,\A) \to (\R,\B)$ is $\J$-measurable iff $f=f \circ T$ a.s.
+\item $\J$ is trivial iff every $\J$-measurable function is a.s. constant.
+\end{enumerate}
+\begin{proof}
+Exercise.
+\end{proof}
+\end{lemma}
+
+\begin{remark}
+Suppose that $T \colon \Omega \to \Omega$ is such that $T^{-1}[A]=A$ a.s. Define
+\[
+\tilde{A} := \limsup T^{-n}[A] = \bigcap_{k \in \N} \underbrace{\bigcup_{n \geq k} T^{-n}[A]}_{=:B_k} \stackrel{\text{a.s.}}{=} \bigcap_{k \in \N} \bigcup_{n \geq k} A.
+\]
+Then $T^{-1}[B_k] \stackrel{\text{a.s.}}{=} T^{-1}[\bigcup_{n \geq k} A] = \bigcup_{n \geq k} T^{-1}[A] \stackrel{\text{a.s.}}{=} \bigcup_{n \geq k} A \stackrel{\text{a.s.}}{=} B_k$, i.e. $T^{-1}[\tilde{A}] \stackrel{\text{a.s.}}{=} \tilde{A}$. (??? questo remark è da rivedere. Il senso qui è proprio riuscire a eliminare l'a.s. tra $T^{-1}[\tilde{A}]$ e $\tilde{A}$...ma non riesco a capire come).
+\end{remark}
+
+\begin{theorem}[Birkhoff's pointwise ergodic theorem]
+\renewcommand{\M}{\operatorname{M}}
+Let $(\Omega,\A,\P)$ be a probability space, $T \colon \Omega \to \Omega$ measure preserving, and $\J$ the $T$-invariant $\sigma$-algebra. Suppose $f \in L^1(\Omega,\A,\P)$ and $\E[f] = \int_\Omega f \ d\P > 0$. Then there exists $\M f \in L^1(\Omega,\J,\P)$ such that the following hold:
+\begin{enumerate}
+\item $\displaystyle \frac{1}{n} \S_n f \to \M f$ a.s.
+\item $\displaystyle \int_A f \ d\P = \int_A \M f \ d\P$, for all $A \in \J$.
+\end{enumerate}
+In particular, if $\J$ is trivial, by last lemma this implies
+\[
+\M f = \int_\Omega f \ d\P.
+\]
+\begin{proof}
+Define 
+\[
+\M^+ f(\omega) := \limsup \frac{1}{n} \S_n f(\omega) \quad \text{and} \quad \M^- f(\omega) := \liminf \frac{1}{n} \S_n f(\omega).
+\]
+\begin{claim}{ 1}
+$\M^+ f$ and $\M^- f$ are $\J$-measurable.
+\begin{claimproof}
+Observe that $\S_{n+1} f = f + \S_n f \circ T$. So $\S_n f \circ T = \S_{n+1} f -f$, and thus
+\begin{multline*}
+\M^+ f \circ T (\omega) = \limsup \frac{1}{n} \S_n f \circ T (\omega) = \limsup \frac{1}{n} f + \frac{1}{n} \S_{n+1} f (\omega) \\
+\stackrel{???}{=} \limsup \frac{1}{n} \S_{n+1} f (\omega) \stackrel{???}{=} \limsup \frac{1}{n} \S_n f (\omega) = \M^+ f(\omega).
+\end{multline*}
+Thanks to last lemma we are done.
+\end{claimproof}
+\end{claim}\\
+\begin{claim}{ 2}
+$\M^+ f < \infty$ a.s. (and $\M^- f > -\infty$ a.s.).
+\begin{claimproof}
+Define $A := [\M^+ f = \infty]$. Observe that $A \in \J$ by Claim 1, since it's the preimage of a singleton under a $J$-measurable function. This implies $A=T^{-1}[A]$, whereby it immediately follows that $T[A] \sse A$.\\
+Now suppose towards a contradiction that $\P[A]>0$. Then there exists $c \in (0,\infty)$ s.t. $c\P[A] > \int_A f \ d\P$. Now define $g := c-f$. Of course $\int_A g \ d\P > 0$. Now consider the restriction
+\[
+T_{|_A} \colon (A,\A_A,\P_{|_A}) \to (A,\A_A,\P_{|_A}).
+\]
+By Corollary \ref{corollary-time_average_positive} we have
+\[
+\exists \omega_0 \in A \ \forall n \geq 1 \ (\S_n g(\omega_0) > 0).
+\]
+Now observe that trivially $\S_n g = nc - \S_n f$. So
+\[
+\frac{1}{n} \S_n f(\omega_0) = c - \frac{1}{n} \S_n g(\omega_0) < c
+\]
+for all $n \geq 1$. This implies $\infty = \M^+ f(\omega_0) \leq c < \infty$, contradiction.
+\end{claimproof}
+\end{claim}\\
+For all $N \in \N$ define $\Omega_N := [-N \leq \M^- f \leq \M^+ f \leq N]$. Clearly we have $\Omega_N \nearrow [-\infty < \M^- f \leq \M^+ f < \infty] \stackrel{\text{a.s.}}{=} \Omega$. Furthermore $T[\Omega_N] \sse \Omega_N$ by the same argument as above, since $\Omega_N \in \J$.
+\begin{claim}{ 3}
+$\int_{\Omega_N} \M^+ f \ d\P \leq \int_{\Omega_N} f \ d\P$ and $\int_{\Omega_N} f \ d\P \leq \int_{\Omega_N} \M^- f \ d\P$.
+\begin{claimproof}
+Suppose to the contrary that $\int_{\Omega_N} \M^+ f \ d\P > \int_{\Omega_N} f \ d\P$. Then there exists $\epsilon>0$ such that
+\[
+\int_{\Omega_N} \M^+ f \ d\P > \int_{\Omega_N} f+\epsilon \ d\P.
+\]
+We have
+\[
+g := (\M^+ f - f - \epsilon)_{|_{\Omega_N}} \in L^1(\Omega_N,\A_{\Omega_N},\P)
+\]
+and obviously $\int_{\Omega_N} g \ d\P > 0$. By Corollary \ref{corollary-time_average_positive} we get
+\[
+\exists \omega_0 \in \Omega_N \ \forall n \geq 1 \ (\S_n g(\omega_0) > 0).
+\]
+Now consider
+\[
+\frac{1}{n} \S_n g = \frac{1}{n} \S_n (\M^+ f) - \frac{1}{n} \S_n f - \frac{n}{n} \epsilon,
+\]
+Observe that $\frac{1}{n} \S_n (\M^+ f) = \M^+ f$, because $\M^+ f \circ T = \M^+$ (cfr. proof of Claim 1). Thus
+\[
+\frac{1}{n} \S_n f(\omega_0) < \M^+ f(\omega_0) - \epsilon.
+\]
+Taking the latter inequality to the limit $n \to \infty$ we obtain
+\[
+\M^+ f(\omega_0) \leq \M^+ f(\omega_0) - \epsilon,
+\]
+and since by Claim 2 $\M^+ f(\omega_0)$ is finite almost surely (??? eh ok, ma se per caso non lo è?), we get $\epsilon \leq 0$, contradiction.\\
+The other inequality follows by the very same argument.
+\end{claimproof}
+\end{claim}\\
+So
+\[
+\int_{\Omega_N} f \ d\P \leq \int_{\Omega_N} \M^- f \ d\P \leq \int_{\Omega_N} \M^+ f \ d\P \leq \int_{\Omega_N} f d\P
+\]
+that is, the equality holds. Hence
+\[
+\int_{\Omega_N} \M^+ f - M^- f \ d\P = 0.
+\]
+But $\M^+ f - \M^- f \geq 0$ immediately by definition, and so we trivially get $\M^+ f - \M^- f = 0$ a.s. on $\Omega_N$, i.e. $\M^+ f = \M^- f =: \M f = \lim_{n \to \infty} \frac{1}{n} \S_n f$ a.s. on $\Omega_N$. Since $\Omega_N \nearrow \Omega$ a.s., this means $\lim_{n \to \infty} \frac{1}{n} \S_n f = \M f$ a.s. on $\Omega$, so (1) is proved.\\
+Now write $f = f^+ - f^-$ and $\M f = \M f^+ - \M f^-$. Since $\int_{\Omega_N} \M f d\P = \int_{\Omega_N} f \ d\P$, we have
+\[
+\int_\Omega \M f^\pm \ \1_{\Omega_N} \ d\P = \int_\Omega f^\pm \ \1_{\Omega_N} \ d\P,
+\]
+and applying monotone convergence we get
+\[
+\int_\Omega \M f \ d\P = \int_\Omega f \ d\P.
+\]
+Therefore $\M f \in L^1(\Omega,\J,\P)$.\\
+Now let $A \in \J$. We must show that
+\[
+\int_A \M f \ d\P = \int_A f \ d\P. \tag{$*$}
+\]
+\begin{itemize}
+\item If $\P[A]=0$, $(*)$ is trivially true.
+\item If $\P[A]>0$ and $T^{-1}[A]=A$, repeating the the proof all over again on $(A,\A_A,\P_{|_A})$ we find that $(*)$ holds. 
+\item If $\P[A]>0$ and $T^{-1}[A]=A$ a.s., then consider $\tilde{A} := \limsup T^{-n}[A] \stackrel{\text{a.s.}}{=} A$. By last remark, $T^{-1}[\tilde{A}]=\tilde{A}$, and so by last point $(*)$ holds for $\tilde{A}$. Since $\tilde{A} = A$ a.s., $(*)$ also holds for $A$.
+\end{itemize}
+So (2) is proved, and the proof is complete.
+\end{proof}
+\end{theorem}
+
+\section{The Strong Law of Large Numbers}
+
+By Birkhoff's pointwise ergodic theorem we can deduce the Strong Law of Large Numbers. Let's repeat the statement:
+
+\begin{theorem}[Strong law of large numbers]
+Let $(X_n)$ be iid and suppose $\E[X_n] = \mu < \infty$ for all $n \in \N$. Then $\ol{X}_n \to \mu$ a.s.
+\begin{proof}
+Let $P$ be the distribution of the random variables. We can assume w.l.o.g. that the random variables live in the probability space $(\R,\B,P)^{\N}$.\footnote{From the third sheet of exercises: \emph{The distribution of a given function of a sequence of i.i.d. random variables $(X_n)$ does not depend on the concrete realisation of those random variables. That is, you may choose your favorite model for the underlying probability space and construction of the random variables.} So, if we start with a random variable $X$ on $(\Omega,\A,\P)$, and its distribution is $P^X$, we can actually look at it as the identity function on $(\R,\B,P^X)$ (??? giusto?).} That is, $\Omega = \R^{\N}$, $\P := P^{\N}$ is the product measure on the product $\sigma$-algebra $\A$ (cfr. \ref{count-prod}), and for all $\Omega \ni \omega = (x_n)$ with $x_n \in \R$ we define $X_n(\omega) := x_n$. This way, the $X_n$ are iid and have distribution $P$ (cfr. second example at page \pageref{constr-iid}).\\
+Now define $T(\omega) := (x_{n+1})$, which is measure preserving (cfr. same example). Finally, define $f(\omega) := x_1$, i.e. $f = X_1$. So
+\[
+\int_\Omega f \ d\P = \E[X_1] = \mu. \tag{$*$}
+\]
+Of course $f \circ T^n(\omega) = x_n$. So
+\[
+\S_n f = \sum_{k=0}^{n-1} X_k.
+\]
+By Birkhoff's pointwise ergodic theorem, there is $\operatorname{M} f$ $\J$-measurable such that $\frac{1}{n} \S_n f \to \operatorname{M} f$ a.s.
+\begin{claim}{}
+$T$ is ergodic.
+\begin{claimproof}
+Later.
+\end{claimproof}
+\end{claim}\\
+Putting together $(*)$ and Lemma \ref{char-J-meas_and_J_trivial}(2), we obtain $\operatorname{M} f = \mu$ a.s., and so 
+\[
+\frac{1}{n} \S_n f \to \mu
+\]
+a.s., as wanted.
+\end{proof}
+\end{theorem}
+
+\begin{definition}
+Let $(\Omega,\A,\P)$ be a probability space and let $(X_n)_{n \geq 1}$ be a sequence of (real) random varables. We call this \emph{stochastic process with discrete time $n$}. Let
+\[
+\A(X_1,\ldots,X_n) := \sigma(X_1,\ldots,X_n) = \{[(X_1,\ldots,X_n) \in B] \mid B \in \B_{\R^n}\} \sse \A.\footnotemark
+\]
+\footnotetext{We can see at this $\sigma$-algebra as the family of events it is possible to observe after the first $n$ ``experiments''.}
+Let
+\[
+\A(X_1,X_2,\ldots) := \bigvee_{n=1}^\infty \A(X_1,\ldots,X_n) := \sigma \left( \bigcup_{n=1}^\infty \A(X_1,\ldots,X_n) \right).\footnotemark
+\]
+\footnotetext{We can see at this $\sigma$-algebra as the family of events it is possible to observe after a finite amount of ``experiments''. (??? giusto? non sono mica troppo sicuro...)}
+The \emph{tail $\sigma$-algebra of $(X_n)_{n \geq 1}$} is
+\[
+\T := \bigcap_{k=1}^\infty \A(X_k,X_{k+1},\ldots).\footnotemark
+\]
+\footnotetext{``The tail sigma-algebra is the sigma-algebra of sets $B$ such that, for every integer $N$ one can build $B$ from the sets $A_n$ with $n\ge N$ only. For example the limsup/liminf of $(A_n)_n$ is also the limsup/liminf of $(A_{n+N})_n$ hence the limsup/liminf is in the tail sigma-algebra. There is no measure involved here.\\
+In the independent case with respect to a probability $P$, the tail sigma-algebra is trivial in the sense that it contains only sets of $P$-probability zero or one. For example the limsup/liminf of any sequence which is independent for $P$ has $P$-probability zero or one. This is a property of $P$ in relation with the sigma-algebras considered but definitely not a property of the sigma-algebras alone.'' (\href{http://math.stackexchange.com/questions/38242/tail-sigma-algebra-for-a-sequence-of-sets/38250\#38250}{source})}
+\end{definition}
+
+\begin{theorem}[Kolmogorov's 0--1 Law]
+If $(X_n)$ are independent, then $\T$ is trivial, so $\P[\T] = \{0,1\}$.
+\begin{proof}
+Take $A \in \T$. Of course $A \in \A(X_{k+1},X_{k+2},...)$ for all $k \in \N$. But it's easy to check (nota: aggiungere cfr a esercizi) that $\A(X_{k+1},X_{k+2},...)$ is independent of $\A(X_1,...,X_k)$ for all $k \in \N$. This means that $A$ is independent of every set in $\bigcup_{k=1}^\infty \A(X_1,...,X_k)$, and thus (nota: aggiungere perché, o almeno cfr al libro) of every set in $\sigma(\bigcup_{k=1}^\infty \A(X_1,...,X_k)) = \A(X_1,X_2,...)$. But of course $A \in \A(X_1,X_2,...)$. So
+\[
+\P[A \cap A] = \P[A] \cdot \P[A] = \P[A]^2,
+\]
+i.e. $\P[A]=\{0,1\}$.
+\end{proof}
+\end{theorem}
+
+We finally prove the claim in the proof of the Strong law of large numbers:
+
+\begin{lemma}
+$T$ is ergodic.
+\begin{proof}
+Take $A \in \J$, i.e. $T^{-1}[A]=A$ a.s. We can assume w.l.o.g. that $T^{-1}[A]=A$, because otherwise we consider $\tilde{A} := \limsup T^{-1}[A]$ and we have already seen that $\tilde{A}=A$ a.s. and $T^{-1}[\tilde{A}]=\tilde{A}$.\\
+So $T^{-1}[A]=A$. Recall that $A$ is a set of sequences and $T$ is the shift. So
+\[
+T^{-1}[A] = \R \times A,
+\]
+and thus
+\[
+T^{-k}[A] = \R^k \times A = A.
+\]
+But $\R^k \times A$ is clearly in $\A(X_{k+1},X_{k+2},...)$. This means
+\[
+A \in \bigcap_{k \in \N} \A(X_{k+1},X_{k+2},\ldots) = \T,
+\]
+and so $\P[A] \in \{0,1\}$ by Kolmogorov's 0--1 law.
+\end{proof}
+\end{lemma}
+
+\begin{remark}
+The shift is defined on a product space. If you don't have one: see exercise sheet.
+\end{remark}
+
+
+\chapter{Weak convergence and Central Limit Theorem}
+
+\begin{definition}
+Let $P_n$ be probability measures on $(\R,\B)$ and $P$ another (probability\footnote{Actually $P$ doesn't have to me a \emph{probability} measure, because if $P_n$ converges weakly to $P$ then taking $f:=1 \in C_\infty(\R)$ we have $\int_{\R} f \ d\P = 1$.}) measure. We say that $(P_n)$ \emph{converges weakly to $P$} if 
+\[
+\int_{\R} f \ dP_n \to \int_{\R} f \ dP
+\]
+for all $f \in C_\infty(\R)$.
+\end{definition}
+
+\begin{examples}
+Let $P_n \sim N(0,\frac{1}{n^2})$. We want to show that $P_n \to \delta_0$ weakly, i.e. that
+\[
+\int_{\R} f(x) \frac{n}{\sqrt{2\pi}} e^{-n^2 \frac{x^2}{2}} \ dx \to f(0)
+\]
+for all $f \in C_\infty(\R)$. This is true because
+\[
+\int_{\R} |f(x)-f(0)| \frac{n}{\sqrt{2\pi}} e^{-n^2 \frac{x^2}{2}} \ dx \to 0.
+\]
+\end{examples}
+
+We know by the Law of Large Numbers that $\frac{1}{n} \ol{X}_n - \mu \to 0$. Now we want to study the ``speed'' of convergence.
+
+\begin{definition}
+A sequence $(X_n)$ of random variables \emph{converges weakly to} a probability measure $P$ (a random variable $X$) if $P^{X_n} \to P$ weakly (resp. $P^{X_n} \to P^X$ weakly).
+\end{definition}
+
+Recall that a probability measure on $\R$ defines a distribution function $F_P(x) = \P[(-\infty,x]]$. By Exercise 15, also the converse holds, that is: there exists a unique probability measure $P$ on $(\R,\B)$ s.t. $P[(a,b]] = F(b)-F(a)$ for all $a<b$.
+
+\begin{lemma}
+If $F: \R \to \R$ is monotone increasing, then its set of discontinuities is at most countable.
+\begin{proof}
+Let $F(x^-),F(x^+)$ denote the left and right hand limits of $F$ in $x$ respectively. Let $A$ be the set of points where $F$ is not continuous. Then for any $x \in A$, there is a rational, say, $f(x)$ such that $F(x^-) < f(x) < F(x^+)$. For $x_1 < x_2$, we have that $F(x_1^+) \leq F(x_2^-)$. Thus $f(x_1) \neq f(x_2)$ if $x_1 \neq x_2$. Thus $f$ is an injection $A \to \Q$.
+\end{proof}
+\end{lemma}
+
+\begin{definition}
+Let $F \colon \R \to \R$ be a function. The \emph{continuities of $F$} are the elements of
+\[
+\Cont(F) := \{x \mid F \text{ is continuous at } x\}.
+\]
+\end{definition}
+
+\begin{remark}
+$\Cont(F)$ is dense for every function (trivial by last lemma).
+\end{remark}
+
+\begin{lemma}[Helly-Bray]
+Let $F_n$, $F$ be distribution functions in the extended sense. If $F_n(x) \to F(x)$ for all $x \in \Cont(F)$, then
+\[
+\int_{(a,b]} g(x) \ dF_n(x) \to \int_{(a,b]} g(x) \ dF(x)
+\]
+for all $g \in C(\R)$ and $(a,b] \in \Cont(F)$.
+\begin{remark}
+The presence of $(a,b]$ instead of $[a,b]$ in the statement is important. For example
+\[
+\int_{\{a\}} g(x) \ dF(x) = g(a) (F(a^+)-F(a^-)) \underbrace{\neq 0}_{\text{if $g(a) \neq 0$ and $F(a^+) \neq F(a^-)$}},
+\]
+i.e. a singleton might not have measure zero. (??? comunque mi piacerebbe capire esattamente perché $P[\{a\}]=F(a^+)-F(a^-)$...)
+\end{remark}
+\begin{proof}
+Every continuous function over a closed bounded interval is uniformly continuous\footnote{cfr. \href{http://en.wikipedia.org/wiki/Heine-Cantor_theorem}{Heine-Cantor Theorem}.}. Thus $g$ is uniformly continuous on every interval $[a,b]$, that is
+\[
+\forall \epsilon>0 \ \exists \delta \ \forall x,y \in [a,b] \ \left( |x-y|<\delta \imp |g(x)-g(y)|<\frac{\epsilon}{4} \right). \tag{$*$}
+\]
+Since $\Cont(F)$ is dense, we can find
+\[
+a = x_0 < x_1 < \ldots < x_k = b
+\]
+such that $x_i \in \Cont(F)$ and $x_i - x_{i-1} < \delta$.
+Now define
+\[
+R_n := \sum_{i=1}^k g(x_i) (F_n(x_i)-F_n(x_{i-1})) \quad \text{and} \quad R := \sum_{i=1}^k g(x_i) (F(x_i)-F(x_{i-1})).
+\]
+We have
+\begin{align*}
+\Big| \int_{(a,b]} g \ dF - R \Big|
+&= \Big| \sum_{i=1}^k \int_{(x_{i-1},x_i]} (g(x)-g(x_i)) \ dF(x) \Big| \\
+&\leq \Big| \sum_{i=1}^k \int_{(x_{i-1},x_i]} (g(x)-g(x_i)) \ dF(x) \Big| \tag{by $(*)$}\\
+&= \sum_{i=1}^k \frac{\epsilon}{4} (F(x_i)-F(x_{i-1})) \\
+&= \frac{\epsilon}{4} (F(b)-F(a)) \\
+&\leq 1 \cdot \frac{\epsilon}{4}. \tag{because $F$ distr. fun. in the ext. sense}
+\end{align*}
+In the same way, we can show that $|\int_{(a,b]} g \ dF_n - R_n| \leq \epsilon/4$. Now observe that, since $x_i \in \Cont(F)$,
+\[
+|R_n-R| = \Big| \sum_{i=1}^k g(x_i) \Big( \underbrace{F_n(x_i)-F(x_{i-1})}_{\to 0} - \underbrace{(F_n(x_{i-1}) -F(x_{i-1}))}_{\to 0} \Big) \Big| \underbrace{< \epsilon/2}_{\text{for $n$ big enough}}
+\]
+So 
+\begin{align*}
+\Big| \int_{(a,b]} g \ dF_n - \int_{(a,b]} g \ dF \Big| - |R_n - R| &\leq \Big| \int_{(a,b]} g \ dF_n - R_n - \int_{(a,b]} g \ dF + R \Big| \\
+&\leq \Big| \int_{(a,b]} g \ dF_n - R_n \Big| + \Big| \int_{(a,b]} g \ dF - R \Big| \\
+&\leq \frac{\epsilon}{2}.
+\end{align*}
+Thus $\Big| \int_{(a,b]} g \ dF_n - \int_{(a,b]} g \ dF \Big| \leq \epsilon/2 + |R_n - R| < \epsilon$ for $n$ big enough, and therefore
+\[
+\int_{(a,b]} g \ dF_n \to \int_{(a,b]} g \ dF.
+\]
+The proof is complete.\\
+Observe that
+\[
+\int_{\{a\}} g(x) \ dF(x) = g(a) (F(a^+)-F(a^-)) \to 0.
+\]
+(??? non ho capito a cosa serve quest'ultima osservazione)
+\end{proof}
+\end{lemma}
+
+\begin{theorem}
+Let $P_n$, $P$ be probability measures on $\R$ and $F_n$, $F$ their distribution functions. Then
+\[
+P_n \to P \text{ weakly} \IFF \forall x \in \Cont(F) \ [F_n(x) \to F(x)].
+\]
+\begin{proof}
+``$\imp$'': Let $x \in \Cont(F)$. Of course $F_n(x) = \int_{\R} \1_{(-\infty,x]} \ dP_n$. We replace $\1_{(-\infty,x]}$ by
+\[
+g_\delta(y) :=
+\begin{cases}
+1, & y \leq x \\
+... & x < y < x+\delta \\
+0, & y \geq x+\delta,
+\end{cases}
+\]
+so that
+\[
+INSERIRE DISEGNO
+\]
+We define also $h_\delta(y)$ in this way:
+\[
+INSERIRE DISEGNO
+\]
+Now take $\epsilon > 0$. Since $P_n \to P$ weakly, we have that (??? $g_\delta$ e $h_\delta$ sono chiaramente non $C_\infty$)
+\[
+\Big| \int_{\R} g_\delta \ dP_n - \int_{\R} g_\delta \ dP \Big| < \frac{\epsilon}{6}
+\]
+for $n$ big enough, and the same holds for $h_\delta$. Observe also that, since $x \in \Cont(F)$, there exists $\delta$ such that
+\[
+|F(x \pm \delta) - F(x)| < \frac{\epsilon}{6}. \tag{$*$}
+\]
+Putting everything together we obtain
+\begin{align*}
+\int_x^{x+\delta} g_\delta \ dP_n 
+&\leq \int_{x-\delta}^{x+\delta} h_\delta \ dP_n \\
+&< \int_{x-\delta}^{x+\delta} h_\delta \ dP + \frac{\epsilon}{2} \\
+&\leq F(x+\delta) - F(x-\delta) + \frac{\epsilon}{6} \tag{because $h_\delta \leq 1$} \\
+&< \frac{\epsilon}{2} \tag{by $(*)$}
+\end{align*}
+for $n$ big enough. So
+\begin{align*}
+|F(x)-F_n(x)| 
+&= \Big| \int_{\R} g_\delta \ dP - \int_{\R} g_\delta \ dP_n - \int_x^{x+\delta} g_\delta \ dP + \int_x^{x+\delta} g_\delta \ dP_n \Big| \\
+&\leq \Big| \int_{\R} g_\delta \ dP - \int_{\R} g_\delta \ dP_n \Big| + \Big| \int_x^{x+\delta} g_\delta \ dP \Big| + \underbrace{\Big| \int_x^{x+\delta} g_\delta \ dP_n \Big|}_{\leq |F(x+\delta)-F(x)|} \\
+&< \frac{\epsilon}{6} + \frac{\epsilon}{2} + \frac{\epsilon}{6} < \epsilon
+\end{align*}
+for $n$ big enough.
+\\[6pt]
+``$\pmi$'': Suppose $F_n(x) \to F(x)$ for all $x \in \Cont(F)$. Let $g \in C_\infty(\R)$, and suppose $|g(x)| \leq M$ for all $x \in \R$. Choose $c \in \Cont(F)$ big enough that
+\[
+F(-c) < \frac{\epsilon}{8M} \quad \text{and} \quad 1-F(c) < \frac{\epsilon}{8M}.
+\]
+By hypothesis it's possible to find $n$ big enough that
+\[
+|F_n(\pm c) - F(\mp c)| \leq \frac{\epsilon}{8M}.
+\]
+Now observe that
+\begin{align*}
+\left| \int_{\R} g \ dP_n - \int_{\R} g \ dP \right|
+&\leq \left| \int_{-c}^c g \ dP_n - \int_{-c}^c g \ dP \right| + \int_{|x| \geq c} |g| \ dP + \int_{|x| \geq c} |g| \ dP_n \\
+&\leq \frac{\epsilon}{8} + M(F_n(-c)+1-F_n(c^-)) + M(F(-c)+1-\underbrace{F(c^-)}_{=F(c)}) \\
+&< \frac{\epsilon}{8} + M(F_n(-c) + 1 - F_n(c^-)) + \frac{\epsilon}{4} \\
+&< \frac{\epsilon}{8} + \frac{\epsilon}{4} + \frac{\epsilon}{8} + \frac{\epsilon}{4} < \epsilon.
+\end{align*}
+The proof is complete.\\
+If $F$ is a distribution function in the extended sense, everything works for $g \in C_0(\R)$ (the limit measure is a sub-probability-measure) (??? non ho capito tutta quest'ultima osservazione)\\
+(??? tutta la dimostrazione è fatta supponendo $g$ bounded...se non lo è cosa succede?)
+\end{proof}
+\end{theorem}
+
+\begin{definition}
+Let $P_n$ be finite measures on $(\R,\B)$ and $P$ another measure. We say that $(P_n)$ \emph{converges vaguely to $P$} if 
+\[
+\int_{\R} f \ dP_n \to \int_{\R} f \ dP
+\]
+for all $f \in C_0(\R)$ such that $\lim_{|x| \to \infty} f(x) = 0$.
+\end{definition}
+
+\begin{remark}
+Of course if $P_n \to P$ weakly then $P_n \to P$ vaguely.
+\end{remark}
+
+\begin{theorem}
+Let $P_n$, $P$ be probability measures on $(\R,\B)$.
+\begin{enumerate}
+\item If $P_n(B) \to P(B)$ for all $B \in \B$, then $P_n \to P$ weakly.
+\item Let $\theta$ be a $\sigma$-finite measure on $(\R,\B)$. Suppose that
+\[
+P_n(dx) = f_n(x) d\theta(x) \quad \text{and} \quad P(dx) = f(x) d\theta(x),
+\]
+that is
+\[
+P_n(B) = \int_{\R} f \ d\theta \quad \text{and} \quad P(B) = \int_{\R} f \ d\theta.
+\]
+If $f_n \to f$ $\sigma$-almost everywhere, then $P_n \to P$ weakly.
+\end{enumerate}
+\begin{proof}
+No proof.
+\end{proof}
+\end{theorem}
+
+\begin{theorem}[Helly's theorem]
+Let $F_n$ be a sequence of distribution functions on $\R$ in the extended sense. Then there exists a distribution function (in the extended sense) $F$ and a subsequence $F_{n_k}$ such that
+\[
+F_{n_k}(x) \to F(x)
+\]
+for all $x \in \Cont(F)$.
+\begin{proof}
+We split the proof in two parts.
+\begin{enumerate}
+\item Let $D$ be a dense countable set (e.g. $\Q$). Of course $(F_n(x))_{n \in \N}$ is a bounded sequence for all $x \in D$. (??? non capisco come procede...chiedere)\\
+So there exist $(n_k)_{k \in \N}$ and $F_0 \colon D \to \R$ such that
+\[
+F_{n_k}(x) \to F_0(x)
+\]
+for all $x \in D$.
+\item Suppose $F_n(x) \to F_0(x)$ for all $x \in D$. We now want to show that we can find an $F$ from $F_0$ such that the property is preserved. First observe that clearly on $D$ we have $0 \leq F_0 \leq 1$ and $F_0$ is monotone increasing.
+\begin{enumerate}
+\item Since $D$ is dense, for all $x \in \R$ there is a sequence $(x_k)$ in $D$ such that $x_k \searrow x$ strictly. We define
+\[
+F(x) := \lim_{k \to \infty} F_0(x_k).
+\]
+(??? perché esiste? credo sia perché $F_0$ è chiaramente anche continua a destra su $D$. In caso aggiungere.)
+\item $F$ is well define. Indeed, take two sequences in $D$ such that $x_k \searrow x$ and $y_l \searrow x$ strictly. Now fix $l$. Of course there exists $k(l)$ such that $x_{k(l)} < y_l$. By monotonicity we get
+\begin{align*}
+& F_0(x_k) \leq F_0(y_l) & \text{ for all } k \geq k(l)\\
+\imp & \lim_{k \to \infty} F_0(x_k) \leq F_0(y_l) & \text{ for all } l \in \N \\
+\imp & \lim_{k \to \infty} F_0(x_k) \leq \lim_{l \to \infty} F_0(y_l).
+\end{align*}
+The other inequality follows by the very same argument.
+\item We have that $0 \leq F \leq 1$, and $F$ is monotone increasing. Furthermore, $F(-\infty)=0$ (exercise).
+\item If $x<y<z$ with $x,z \in D$, then $F_0(x) \leq F(y) \leq F_0(z)$. Indeed, take $(y_k)$ in $D$ such that $y_k \searrow y$. Then $x < y_k < z$ for all $k$ big enough. Since $F_0$ is monotone, we get $F_0(x) \leq F_0(y_k) \leq F_0(z)$ for all $k$ big enough, and because $F_0(y_k) \to F(y)$ the assertion follows.
+\item $F$ is right-continuous. Indeed, let $x \in \R$ and let $(x_n)$ be a sequence in $\R$ such that $x_n \searrow$ strictly. Then, since $D$ is dense, there exists a sequence $(y_n)$ in $D$ such that $y_n \searrow x$ strictly and $y_n > x_n$ for all $n \in \N$. By monotonicity and by point (d) we obtain
+\[
+F(x) \leq F(x_n) \leq F_0(y_n) \to F(x).
+\]
+\item If $x \in \Cont(F)$, $(x_n)$ is a sequence in $D$ and $x_n \nearrow x$ strictly, then $F_0(x_n) \nearrow F(x)$. Indeed, since $x_n - 2^{-n} < x_n < x$, (almost) by point (d) we get
+\[
+\underbrace{F(x_n - 2^{-n})}_{\to F(x) \text{ by continuity}} \leq F_0(x_n) \leq F(x).
+\]
+\item Let $x \in \Cont(F)$. Then we can find sequences $(x_k)$ and $(y_k)$ in $D$ such that $x_k < x_{k+1} < x < y_{k+1} < y_k$ and $x_k \to x$ and $y_k \to x$. Then
+\[
+F_n(x_k) \leq F_n(x) \leq F_n(y_k),
+\]
+and so, taking the limit $n \to \infty$,
+\[
+F_0(x_k) \leq \liminf_n F_n(x) \leq \limsup_n F_n(x) \leq F_0(y_k),
+\]
+and so, taking the limit $k \to \infty$,
+\[
+F(x) \leq \liminf_n F_n(x) \leq \limsup_n F_n(x) \leq F(x),
+\]
+which finally means $\lim_{n \to \infty} F_n(x) = F(x)$.
+\end{enumerate}
+\end{enumerate}
+\end{proof}
+\end{theorem}
+
+\section{Characteristic functions}
+
+\begin{definition}
+Let $(\Omega,\A,\P)$ be a probability space and let $X$ be an a.s. finite random variable, $P$ its distribution on $\R$ and $F$ the associated distribution function (in the extended sense). The assciated \emph{characteristic function} $\phi_X \colon \R \to \C$ (also called $\phi_P$ or $\phi_F$) is defined by
+\[
+\phi_X(t) := \E \left[ e^{itX} \right] = \int_\Omega e^{itX} \ d\P = \int_{\R} e^{itx} \ dP(x) = \int_{\R} e^{itx} \ dF(x).
+\]
+\end{definition}
+
+\begin{remark}
+Clearly, if $X_n \to P$ weakly, we have that
+\[
+\E[e^{itX_n}] = \int_{\R} e^{itx} \ dP_{X_n}(x) \stackrel{\footnotemark}{\to} \int_{\R} e^{itx} \ dP(x) = \E[e^{itX}],
+\]
+i.e. $\phi_{P_{X_n}}(t) \to \phi_P(t)$ for all $t \in \R$.
+\footnotetext{Recall that $\int_A f(x)+ig(x) d\mu := \int_A f(x) d\mu + i\int_A g(x)d\mu$. Since $e^{itx} = \cos(tx)+i\sin(tx)$ and of course $\cos,\sin \in C_\infty(\R)$, everything works.}
+\end{remark}
+
+\subsection{Properties of characteristic functions}
+
+\begin{definition}
+The first derivative of $\phi(t)$ is defined as
+\[
+\phi'(t) := \lim_{n \to 0} \frac{\phi(t+h)-\phi(t)}{h}
+\]
+if the limit exists. We also defined for all $k \in \N$ the \emph{$k$-th moment of $X$} as
+\[
+m_k := m_k(X) := \E[X^k]
+\]
+if $X^k$ is integrable. Sometimes we write $m_k(P)$ or $m_k(F)$ instead of $m_k(X)$. We also defined for all $k \in \N$ the \emph{$k$-th absolute moment of $X$} as
+\[
+|m|_k := |m|_k(X) := \E[|X|^k]
+\]
+if $X^k$ is integrable.
+\end{definition}
+
+\begin{remark}
+Of course $m_k(F) = \int_{\R} x^k \ dF_k(x)$. Furthermore, if $m_k < \infty$ then $m_l < \infty$ for all $l \leq k$ (??? perché? non c'è qualche problema con indici pari/dispari?).\\
+Moreover, if $F$ is a distribution function in a generalized sense, then trivially $m_0(F)=F(\infty)-F(-\infty)=F(\infty)-0=F(\infty) \leq 1$.
+\end{remark}
+
+\begin{theorem}
+Let $X$ be a random variable. Call $\phi := \phi_X$. We have:
+\begin{enumerate}
+\item $|\phi(t)| \leq 1$, $\phi(0)=1$.
+\item $\phi$ is uniformly continuous.
+\item If $m_k$ exists, then $\phi$ is $k$ times differentiable and
+\[
+\phi^{(l)}(0) = i^l m_l
+\]
+for all $l=0,...,k$.
+\item If $\phi^{(2n)}(0)$ exists, then $m_{2n}$ is finite.
+\end{enumerate}
+\begin{proof}\ 
+\begin{enumerate}
+\item Of course $|e^{itx}=1|$, so by complex analysis we know that $|\E[e^{itx}]| \leq 1$.
+\item Observe that 
+\[
+\phi(t+h)-\phi(t) = \int_{\R} (e^{i(t+h)x} - e^{itx}) \ dF(x) = \int_{\R} e^{itx}(e^{ihx} - 1) \ dF(x).
+\]
+So
+\[
+|\phi(t+h)-\phi(t)| = \int_{\R} \underbrace{|e^{itx}(e^{ihx} - 1)|}_{\leq 2 \text{ (thus integrable)}} \ dF(x) \stackrel{h \to 0}{\longrightarrow} 0
+\]
+by Dominated convergence. Since the $t$ has disappeared, $\phi$ is uniformly continuous (??? pensarci e poi in caso chiedere meglio).
+\item If we show the following we are done:
+\[
+\phi^{(l)}(t) = \int_{\R} (ix)^l e^{itx} \ dF(x).
+\]
+The proof proceeds by induction on $l$. Suppose $l=1$. Then
+\[
+\frac{\phi(t+h)-\phi(t)}{h} = \int_{\R} e^{itx} \frac{e^{ihx-1}}{h} \ dF(x).
+\]
+Observe that
+\begin{align*}
+\left| \frac{e^{ihx-1}}{h} \right|
+&=\left| \frac{\cos(hx)-1}{h} + i\frac{\sin(hx)-\sin(0h)}{h} \right| \\
+&= |-x \sin(S_1 x) + i \cos(S_2 x)| \tag{by Mean value theorem} \\
+&\leq 2|x|,
+\end{align*}
+which is integrable since $|m|_1$ exists. So by Dominated convergence we get
+\[
+\lim_{h \to 0} \frac{\phi(t+h)-\phi(t)}{h} = \int_{\R} e^{itx} ix \ dF(x).
+\]
+The inductive case is very similar.
+\item For any $f \colon \R \to \R$, we define the \emph{difference operator}
+\[
+\Delta_h f(t) := f(t+h)-f(t-h),
+\]
+and so we define recursively
+\[
+\Delta_h^k f(t) := \Delta_h (\Delta_h^{k-1} f)(t).
+\]
+So 
+\[
+f^{(2n)}(0) = \lim_{h \to 0} \frac{\Delta_h^{2n}f(0)}{(2h)^{2n}}.
+\]
+Now take $f(t) := e^{ixt}$ (with $x$ fixed).
+It's easy to check that
+\[
+\Delta_h f(t) = e^{ixt} (e^{ixh} - e^{-ixh}) \quad \text{and} \quad 
+\Delta_h^k f(t) = e^{ixt} (e^{ixh} - e^{-ixh})^k.
+\]
+Observe that the last factor doesn't depend on $t$. So
+\[
+\phi^{(2n)}(0) = \lim_{h \to 0} \int_{\R} \frac{1}{(2h)^{2n}} e^{ix0} (2i \sin(hx))^{2n} \ dF(x) = \lim_{h \to 0} \int_{\R} \left( \frac{i\sin(hx)}{h} \right)^{2n} \ dF(x).
+\]
+Now define
+\[
+f_h(x) :=
+\begin{cases}
+\left( \frac{\sin(hx)}{h} \right)^{2n}, & \text{if } h \neq 0 \\
+x^{2n}, & \text{if } h=0.
+\end{cases}
+\]
+We have
+\begin{align*}
+|\phi^{(2n)}(0)|
+&= \lim_{h \to 0} \inf \int_{\R} f_h(x) \ dF(x) \\
+&\geq \int_{\R} \liminf_{h \to 0} f_h(x) \ dF(x) \tag{by Fatou lemma} \\
+&= \int_{\R} \lim_{h \to 0} f_h(x) \ dF(x) \tag{since the limit exists} \\ 
+&= \int_{\R} x^{2n} \ dF(x) = m_{2n}.
+\end{align*}
+\end{enumerate}
+This implies $m_{2n} \leq \infty$. Now apply point (c) and we are done.
+\end{proof}
+\end{theorem}
+
+So, if $|m|_n < \infty$, then $m_k$ is finite for all $k \leq n$ and
+\begin{itemize}
+\item
+\begin{align*}
+\phi(t)
+&= \sum_{k=0}^{n-1} m_k \frac{(it)^k}{k!} + \underbrace{t^n \int_0^1 \frac{(1-u)^{n-1}}{(n-1)!} \phi^{(n)}(tu) \ du}_{\text{error term}} \tag{Taylor's series} \\
+&= \sum_{k=0}^n m_k \frac{(it)^k}{k!} + t^n \underbrace{\int_0^1 \frac{(1-u)^{n-1}}{(n-1)!} \left( \phi^{(n)}(tu) - \phi^{(n)}(0) \right) \, du}_{=: E_n}.
+\end{align*}
+\item $|\phi^{(n)}(t)| \leq |m|_n$, because $\phi^{(l)}(t) = \int_{\R} (ix)^l e^{itx} \ dF(x)$.
+\item $|E_n| \leq 2 \frac{|m|_n}{n!}$.
+\end{itemize}
+
+Suppose now that all moments exist. If
+\[
+|t| <\!\!\footnote{replace $|m_k|$ by $|m|_k$.} \ g = \frac{1}{\limsup_{k \to \infty} \left( \frac{|m|_k}{k!} \right)^{1/k}}, \tag{radius of convergence}
+\]
+then $t^n E_n \to 0$ and $\phi(t) = \sum_{k=0}^\infty m_k \frac{(it)^k}{k!}$.
+
+\begin{corollary}
+If $\limsup_{k \to \infty} \left( \frac{|m|_k}{k!} \right)^{1/k} = 0$, then
+\[
+\phi(t) = \sum_{k=0}^\infty m_k \frac{(it)^k}{k!}
+\]
+for all $t \in \R$.
+\end{corollary}
+
+\begin{examples}
+One important application of the last corollary is the computation of the moments of the normal distribution (see exercises sheet).
+\end{examples}
+
+\begin{theorem}[Inversion Theorem]
+Let $F(x)$ be a distribution function in the extended sense and $\phi(t)$ its characteristic function. Then, for all $a,b \in \Cont(F)$ such that $a<b$ we have
+\[
+F(b) - F(a) = \lim_{c \to \infty} \frac{1}{2\pi} \int_{-c}^c \frac{e^{-ita} - e^{-itb}}{it} \phi(t) \, dt.
+\]
+\begin{proof}
+First of all, observe that the integrand function has no pole, since it is equal to $b-a$ in $t=0$ (just apply l'Hopital's rule). Recall that
+\[
+\lim_{c \to \infty} \int_{-c}^c \frac{\sin t}{t} \ dt = \pi \quad \text{and} \quad \lim_{c \to \infty} \int_0^c \frac{\sin t}{t} \ dt = \frac{\pi}{2}.
+\]
+Now define
+\[
+I_c(a,b) := \frac{1}{2\pi} \int_{-c}^c \frac{e^{-ita} - e^{-itb}}{it} \phi(t) \, dt = \frac{1}{2\pi} \int_{-c}^c \frac{e^{-ita} - e^{-itb}}{it} \int_{\R} e^{itx} \, dF(x) \ dt
+\]
+Observe that 
+\[
+g(t,x) := \frac{1}{2\pi} \frac{e^{-ita} - e^{-itb}}{it} e^{itx}
+\]
+is bounded and continuous. Applying Fubini's Theorem on the product measure $\lambda_{[-c,c]} \times P_F$ we get
+\begin{align*}
+I_c(a,b) 
+&= \frac{1}{2\pi} \int_{\R} \int_{-c}^c \frac{e^{-it(x-a)} - e^{-it(x-b)}}{it} \ dt \, dF(x) \\
+&= \frac{1}{2\pi} \int_{\R} \left[ \int_{-c}^c \underbrace{\frac{\cos t(x-a) - \cos t(x-b)}{it}}_{\text{even function}} \ dt + \int_{-c}^c \underbrace{\frac{\sin t(x-a) - \sin t(x-b)}{t}}_{\text{odd function}} \ dt \right] dF(x) \\
+&= \frac{1}{\pi} \int_{\R} \left[ \int_0^c \frac{\sin t(x-a)}{t} \ dt \right] \, dF(x) - \frac{1}{\pi} \int_{\R} \left[ \int_0^c \frac{\sin t(x-b)}{t} \ dt \right] \, dF(x) \\
+&=\!\!\footnotemark \ \frac{1}{\pi} \int_{\R} \underbrace{\int_{c(x-b)}^{c(x-a)} \frac{\sin u}{u} \ du}_{=: f_c(x)} \, dF(x).
+\end{align*}
+\footnotetext{We use the substitution $u := t(x-a)$, and so $dt = \frac{du}{x-a}$. We do the same with $t(x-b)$.}
+Observe that
+\[
+f_c(x) \stackrel{c \to \infty}{\longrightarrow}
+\begin{cases}
+0, & x<a \vee x>b; \\
+\pi, & a<x<b; \\
+\frac{\pi}{2}, & x=a \vee x=b.
+\end{cases}
+\]
+Therefore
+\begin{align*}
+\lim_{c \to \infty} I_c(a,b) 
+&= \lim_{c \to \infty} \frac{1}{\pi} \int_{\R} f_c(x) \ dF(x) \\
+&=\!\!\footnotemark \ \frac{1}{\pi} \int_{\R} \lim_{c \to \infty} f_c(x) \ dF(x) \\
+&= \frac{1}{\pi} \left[ \pi(F(b^-)-F(a)) + \frac{\pi}{2} (F(a)-F(a^-)) + \frac{\pi}{2} (F(b)-F(b^-)) \right] \\
+&= F(b) - F(a). \tag{since $a,b \in \Cont(F)$}
+\end{align*}
+\footnotetext{$h(\xi) := \int_0^\xi \frac{\sin t}{t} \ dt$ is continuous and $\lim_{\xi \to \infty} h(\xi) = \frac{\pi}{2}$. So $h(\xi)$ is bounded, and thus $f_c$ is bounded (???) and integrable (???). Hence we can apply Dominated convergence.}
+\end{proof}
+\end{theorem}
+
+\begin{examples}[important]
+Let $(X_n)$ be a sequence of iid random variables with $\E[X_n] = \mu$, $\Var[X_n] = \sigma^2$, and so $\Var[\ol{X}_n] = \frac{1}{n^2} \Var[X_1+...+X_n]$. We want to consider
+\[
+\frac{\ol{X}_n - \mu}{\sigma/\sqrt{n}}.
+\]
+W.l.o.g. $\mu=0$ (otherwise replace $X_n$ by $X_n - \mu$ in the definition of $\ol{X}_n$). We have
+\[
+\phi(t) := \phi_{X_n}(t) \stackrel{\text{Taylor}}{=} m_0 + m_1 \frac{it}{1!} + m_2 \frac{(it)^2}{2!} + t^2 E_2(t) = 1 - \sigma^2 \frac{t^2}{2} + t^2 E_2(t), \tag{$*$}
+\]
+where $E_2(t)$ is as above, and so
+\[
+|E_2| = \left| \int_0^1 \frac{1-u}{1!} [\phi''(tu) - \phi''(0)] \ du \right| \leq \frac{1}{2} \sup_{\substack{0 \leq u \leq t \\ (\text{w.l.o.g. } t \geq 0)}} |\phi''(u) - \phi''(0)|.
+\]
+So
+\begin{align*}
+\phi_{\ol{X}_n/(\sigma/\sqrt{n})}(t)
+&= \phi_{\sqrt{n} \frac{\ol{X}_n}{\sigma}}(t) \\
+&= \phi_{\frac{1}{\sqrt{n} \sigma} (X_1 + \ldots + X_n)}(t) \\
+&= \left( \phi_{\frac{X_1}{\sqrt{n} \sigma}}(t) \right)^n \\
+&= \phi \left( \frac{t}{\sqrt{n} \sigma} \right)^n \tag{$\phi_{aX}(t) = \E[e^{itax}] = \phi_X(at)$} \\
+&= \left( 1 - \frac{\sigma^2 t^2}{2n\sigma^2} + \frac{t^2}{n\sigma^2} E_2 \left( \frac{t}{\sqrt{n} \sigma} \right) \right)^n \tag{by $(*)$} \\
+&\to e^{-\frac{t^2}{2}} \text{ for } n \to \infty,
+\end{align*}
+where the last asymptotic evaluation holds because $\frac{t}{\sqrt{n} \sigma} \to 0$ and thus $\frac{t^2}{n\sigma^2} E_2 \left( \frac{t}{\sqrt{n} \sigma} \right) = O(\frac{t}{\sqrt{n} \sigma})$ for $n \to \infty$. Finally, recall that $(1+\frac{x}{n})^n \to e^x$. Therefore
+\[
+\phi_{\frac{\ol{X}_n - \mu}{\sigma/\sqrt{n}}}(t) \stackrel{n \to \infty}{\longrightarrow} e^{-\frac{t^2}{2}} = \phi_{N(0,1)}(t),
+\]
+where the last equality follows by the exercises.
+\end{examples}
+
+\begin{theorem}[Continuity Theorem]
+Let $F_n(x)$ be a sequence of distribution functions in the strict sense. Then
+\begin{enumerate}
+\item If $P_{F_n} \to P$ (probability on $\R$) weakly (and thus $F_n(x) \to F(x)$ for all $x \in \Cont(F)$, where $F$ is distribution function in the strict sense), then
+\[
+\phi_{F_n}(t) \to \phi_F(t) = \phi_P(t),
+\]
+where $P$ is the distribution associated to $F$.
+\item If $\phi_n := \phi_{F_n}$ converges pointwise to a function $\phi$ which is continuous in $t=0$, then $\phi$ is the characteristic function of a (strict) distribution function $F$, and
+\[
+F_n(x) \to F(x)
+\]
+for all $x \in \Cont(F)$.
+\end{enumerate}
+\begin{proof}
+The statement (a) is immediate. Let's prove (b). Observe that $\phi_n(t)$ is integrable, since the real and the imaginary parts are both bounded and continuous. So, by Dominated convergence,
+\[
+\int_0^u \phi_n(t) \ dt \to \int_0^u \phi(t) \ dt \tag{$(*)$}
+\]
+for all $u \in \R$. Now
+\[
+\int_0^u \phi_n(t) \ dt = \int_0^u \int_{\R} e^{itx} \, dF_n(x) \ dt = \int_{\R} \frac{e^{iux}-1}{ix} \ dF_n(x),
+\]
+where the last equality holds by Fubini's theorem, since everything is bounded and continuous. Now observe that the integrand function goes to $u$ for $x \to 0$, and so it's in $C_0(\R)$. Now apply Helly's Theorem: let $(n_k)_{k \in \N}$ be a sequence and $F$ a distribution function in the \emph{extended} sense such that
+\[
+F_{n_k} \to F(x)
+\]
+for all $x \in \Cont(F)$. Then, by weak convergence we get
+\[
+\int_0^u \phi_{n_k}(t) \ dt = \int_{\R} \frac{e^{iux}-1}{ix} \ dF_{n_k}(x) \to \int_{\R} \frac{e^{iux}-1}{ix} \ dF(x) = \int_0^u \phi_F(t) \ dt =: h_2(u)
+\]
+and also, by $(*)$,
+\[
+\int_0^u \phi_{n_k}(t) \ dt \int_0^u \phi(t) \ dt =: h_1(u).
+\]
+So $h_1(u) = h_2(u)$ for all $u \in \R$. Now observe that $\phi_F$ is continuous everywhere on $\R$ because it's a characteristic function. So $h'_2(t)=\phi_F(t)$. Furthermore, $\phi$ is continuous at $0$, so $h'_1(0)=\phi(0)$. Hence
+\[
+\phi_F(0) = \int_{\R} e^{i0x} \ dF(x) = \int_{\R} 1 \ dF(x) = F(+\infty)-F(-\infty) = F(+\infty)
+\]
+is equal to
+\[
+\lim_{n \to \infty} \phi_n(0) = \lim_{n \to \infty} \int_{\R} e^{i0x} dP(x) = \lim_{n \to \infty} 1 = 1,
+\]
+so $F(+\infty)=1$, i.e. $F$ is a distribution function in the strict sense. Moreover, $\phi_F(t)=h'_1(t)$, which depends only on $\phi$.\\
+Summing up: for every subsequence $(F_{n_k})$ which converges to a function $F$ on $\Cont(F)$, $F$ is the distribution function on a probability measure and $\phi_F(t) = h'_1(t)$. By the inversion theorem, we have that $F$ is determined by $h'_1(\bullet)$, so $F$ is determined by $\phi(\bullet)$.
+\begin{claim}{}
+$F_n(x) \to F(x)$ for all $x \in \Cont(F)$.
+\begin{claimproof}
+Assume to the contrary that $F(x_0) \not\to F(x_0)$ for some $x_0 \in \Cont(F)$. This means that there exists a subsequence $(n_k)$ such that
+\[
+F_{n_k}(x_0) \to y_0 \neq F(x_0).
+\]
+Thus, by Helly's theorem, there exist a (sub-)subsequence $(n_{k_l})$ and a distribution function (in the extended sense) $G$ such that
+\[
+F_{n_{k_l}}(x) \to G(x)
+\]
+for all $x \in \Cont(G)$. But since $\phi_G = h'_1 = \phi_F$, we get $G=F$, i.e. $F_{n_{k_l}}(x_0) \to F(x_0)$, contradiction.
+\end{claimproof}
+\end{claim}\\
+Conclusion: $F$ is strict and $F_n(x) \to F(x)$ for all $x \in \Cont(F)$. Observe that this also means (a posteriori) that $\phi=\phi_F$.
+\end{proof}
+\end{theorem}
+
+\begin{theorem}[Central Limit Theorem]
+Let $(X_n)$ be a sequence of iid random variables with expected value $\mu$ and finite variance $\sigma^2$. Define $\ol{X}_n := \frac{1}{n} (X_1 + ... + X_n)$. Then
+\[
+\frac{\ol{X}_n - \mu}{\sigma/\sqrt{n}} \to N(0,1) \text{ weakly.}
+\]
+\begin{proof}
+Call $Y_n := \frac{\ol{X}_n - \mu}{\sigma/\sqrt{n}}$. We know that
+\[
+\phi_{Y_n}(t) \to e^{-\frac{t^2}{2}} = \phi_{N(0,1)}(t).
+\]
+Apply point (b) of Continuity Theorem and we are done.
+\end{proof}
+\end{theorem}
+
+What follows is historically the oldest version of the Central Limit Theorem.
+
+\begin{remark}[De Moive - Laplace, 1718]
+Let $(X_n)$ be iid, $X_n \sim B(1,\theta)$, $S_n := X_1 + ... + X_n \sim B(n,\theta)$. By the exercise sheets we know that
+\[
+\phi_{S_n}(t) = (\phi_{X_1}(t))^n = (1-\theta+\theta e^{it})^n
+\]
+and $\E[S_n]=n\theta$, $\Var[S_n] = n\theta(1-\theta)$. Now:
+\[
+Y_n := \frac{\ol{X}_n - \mu}{\sigma/\sqrt{n}} \frac{S_n-n\theta}{\sqrt{n\theta(1-\theta)}} = \frac{\ol{X}_n-\theta}{\sqrt{\frac{\theta(1-\theta)}{n}}}.
+\]
+Recall that $\phi_{aX+b}(t)=e^{itb}\phi_X(at)$. We obtain
+\begin{align*}
+\phi_{Y_n}(t) 
+&= e^{-it \frac{n\theta}{\sqrt{n\theta(1-\theta)}}} \left( 1 - \theta + \theta e^{i \frac{t}{\sqrt{n\theta(1-\theta)}}} \right)^n \\
+&= \left( (1-\theta) e^{-it \frac{1}{\sqrt{n}} \sqrt{\frac{\theta}{1-\theta}}} + \theta e^{it \frac{1}{\sqrt{n}} \sqrt{\frac{\theta}{1-\theta}}} \right)^n \\
+&= \left( \sum_{k=0}^\infty \frac{1}{k!} \left( \frac{it}{\sqrt{n}} \right)^k \left[ (1-\theta) \left( \sqrt{\frac{\theta}{1-\theta}} \right)^k (-1)^k + \theta \left( \sqrt{\frac{1-\theta}{\theta}} \right)^k \right] \right)^n \\
+&= \left( 1-0t - \frac{t^2}{2n} \cdot 1 + O \left( \frac{t^3}{n^{3/2}} \right) \right)^n \to e^{-\frac{t^2}{2}}.
+\end{align*}
+\end{remark}
+
+
+\chapter{Conditional expectation and Martingales}
+
+\section{Conditional expectation on atomic algebras}
+
+\begin{definition}
+Let $(\Omega,\A,\P)$ be a probability space. A sub-$\sigma$-algebra $\F \sse \A$ is called \emph{atomic} if it has at most countably many smallest nonempty sets. More precisely: $\Omega = \biguplus_{j \in J} C_j$, where $C_j \in \A$, $J$ is countable and $\F = \sigma(\{C_j : j \in J\})$, i.e.
+\[
+\F = \left\{ \biguplus_{j \in I} C_j : I \sse J \right\}.
+\]
+\end{definition}
+
+\begin{remark}\ 
+\begin{itemize}
+\item Let $Y$ be a random variable, and suppose that the value set $\{y_j : j \in J\} \sse \R$ is at most countable. Define $C_j := Y^{-1}[\{y_j\}] = [Y=y_j]$ and $\F := \sigma(Y)$. Of course $\F$ is atomic. 
+\item If $\F$ is atomic, then $f \colon (\Omega,\F) \to (\Omega',\A')$ is $\F$-measurable iff it is constant on each $C_j$ (??? secondo me ``$\imp$'' non vale in generale...dipende da come è fatta $\A'$).
+\end{itemize}
+\end{remark}
+
+Let $X \colon (\Omega,\A,\R) \to (\R,\B)$ an integrable random variable (not necessarily $\F$-measurable) and let $\F \sse \A$ be atomic. We look for a ``simplified version'' of $X$ which is $\F$-measurable, i.e. we want $Y$ $\F$-measurable such that
+\[
+\forall F \in \F: \ \ \int_F X \ d\P = \int_F Y \ d\P,
+\]
+which is equivalent to
+\[
+\forall F \in \F: \ \ \E[X \1_F] = \E[Y \1_F],
+\]
+which, since $\F$ is atomic, is equivalent to
+\[
+\text{for all atoms } C_j \in \F: \ \ \E[X \1_{C_j}] = \E[Y \1_{C_j}],
+\]
+and also $Y_{|_{C_j}} = y_j$ is constant on $C_j$. How should we take $y_j$? Observe that we are asking for the following to hold:
+\[
+\E[X \1_{C_j}] = \E[y_j \1_{C_j}] = y_j \cdot \P[C_j],
+\]
+so
+\[
+y_j =
+\begin{cases}
+\frac{\E[X \1_{C_j}]}{\P[C_j]}, & \P[C_j] > 0 \\
+k, & \P[C_j]=0,
+\end{cases}
+\]
+where $k$ is arbitrary, but the preferred choice is $k=0$. Observe that intuitively $y_j$ turns out to be the local average of $X$ over the block $C_j$.\\
+Hence our conditions determine $Y$ uniquely a.s.
+
+\begin{examples}
+If $X = \1_A$, where $A \in \A$, then
+\[
+y_j = \P[A|C_j] = \frac{\P[A \cap C_j]}{\P[C_j]}.
+\]
+\end{examples}
+
+\begin{definition}
+Let $Y$ be as above. $Y$ is called \emph{conditional expectation of $X$ w.r.t. $\F$}. We denote it by $\E[X|\F]$. Keep in mind that it is determined only a.s.
+\end{definition}
+
+\begin{proposition}
+The following hold:
+\begin{enumerate}
+\item $X$ $\F$-measurable $\imp$ $\E[X|\F]=X$. In particular, $\E[k|\F]=k$ for all $k$ constant.
+\item $X \geq 0$ a.s. $\imp$ $\E[X|\F] \geq 0$ a.s.
+\item $\E[\lambda_1 X_1 + \lambda_2 X_2 \mid \F] = \lambda_1 \E[X_1|\F] + \lambda_2\E[X_2|\F]$ a.s.
+\item If $W$ is an $\F$-measurable random variable such that $W \cdot X$ is integrable, then $\E[W \cdot X \mid \F] = W \cdot \E[X|\F]$.
+\item Let $\F_1 \sse \F_2 \sse \A$ be two atomic sub-$\sigma$-algebras. Then $\E[X|\F_1] = \E[\E[X|\F_2]|\F_1]$.
+\item If $X$ is independent of $\F$ (i.e. $\sigma(X)$ is independent of $\F$), then $\E[X|\F]=\E[X]$.
+\item If $0 \leq X_n \nearrow X$, then $\E[X_n|\F] \nearrow \E[X|\F]$.
+\item \textbf{Jensen's inequality.} If $g \colon \R \to \R$ is convex and $\E[g(X)]$ is finite, then $g(\E[X|\F]) \leq \E[g(x)|\F]$. (observe that a trivial example is given by $\F=\{\emptyset,\Omega\}$ and $g(x)=x^2$)
+\end{enumerate}
+\begin{proof}
+(1),(2) and (3) are clear.
+\begin{enumerate}
+\item[4.] Call $Y := \E[WX|\F]$. First observe that $WY$ is $\F$-measurable (pensarci), so the equality actually makes sense. To prove that it holds, ew follow the steps of the construction of the integral:
+\begin{enumerate}
+\item Suppose $W = \1_E$ for some $E \in \F$. Then, for all $F \in \F$, we have
+\begin{multline*}
+\int_F WX \ d\P = \int_F \1_E X \ d\P = \int \1_{E \cap F} X \ d\P = \int_{E \cap F} X \ d\P = \\
+\int_{E \cap F} Y \ d\P = \int_F \1_E Y \ d\P = \int_F WY \ d\P,
+\end{multline*}
+i.e. $\E[WX|\F]=W\E[X|\F]$.
+\item Suppose $W = \sum_{j \in J_0} w_j \1_{E_j}$ with $J_0$ finite. Then
+\begin{align*}
+\E[WX|\F]
+&= \E \left[ \sum_{j \in J_0} w_j \1_{E_j} X | \F \right] \\
+&= \sum_{j \in J_0} w_j \E[\1_{E_j} X | \F] \tag{by (3)} \\
+&= \sum_{j \in J_0} w_j \1_{E_j} \E[X | \F] \tag{by (a)} \\
+&= W\E[X|F].
+\end{align*}
+\item As usual, suppose $W \geq 0$ and find a sequence $0 \leq W_n \nearrow W$. Then use monotone convergence.
+\item Write $W=W^+-W^-$ and proceed as always.
+\end{enumerate}
+\item[5.] Later.
+\item[6.] Write $\Omega = \biguplus_{j \in J} C_j$ and call $Y := \E[X|\F]$. By definition of $Y$, $Y=y_i$ on $C_i$. Observe that since $X$ and $\F$ are independent, $X$ and $\1_F$ are independent random variables for all $F \in \F$. So
+\[
+y_j = \frac{\E[X \1_{C_j}]}{\P[C_j]} = \frac{\E[X] \E[\1_{C_j}]}{\P[C_j]} = \E[X] \frac{\P[C_j]}{\P[C_j]} = \E[X]
+\]
+\item[7.] Easy.
+\item[8.] A convex function is not necessarily differentiable, but $g'(a^-)$ exists for all $a \in \R$.
+\end{enumerate}
+\end{proof}
+\end{proposition}
+
+\section{Conditional expectation on general algebras}
+
+So far, we defined the conditional expectation w.r.t. atomic $\sigma$-algebras only. We now want to extend the definition to any $\sigma$-algebra. Furthermore, $g(x) \geq g(a)+g'(a^-)(x-a)$ (??? perché?). Now take $a := \E[X|\F]$. We get
+\[
+g(X) \geq g(\E[X|\F]) + g'(\E[X|\F]^-)(X-\E[X|\F]).
+\]
+Observe that $g(\E[X|\F])$ and $g'(\E[X|\F]^-)$ are $\F$-measurable, while $X$ might not be. So, by (b) and (d) we obtain
+\[
+\E[g(X)|\F] \geq g(\E[X|\F]) + g'(\E[X|\F]^-) \underbrace{\E[X-\E[X|\F] | \F]}_{\E[X|\F] - \E[\E[X|\F]|\F] =0} = g(\E[X|\F]).
+\]
+
+\begin{definition}
+Let $(\Omega,\A,\P)$ be a probability space, $X$ an integrable random variable and $\F \sse \A$ a sub-$\sigma$-algebra. An $\F$-measurable random variable $Y$ is called \emph{conditional expectation of $X$ with respect to $\F$} if
+\[
+\int_F X \ d\P = \int_F Y \ d\P
+\]
+for all $F \in \F$.
+\end{definition}
+
+The problems now are: does there always exist such an $Y$? And if it exists, is it unique?
+
+\begin{lemma}
+If it exists, the conditional expectation is unique.
+\begin{proof}
+Suppose $\int_F Y \ d\P = \int_F Y' d\P$ (finite) for all $F \in \F$, where $Y$ and $Y'$ are measurable. Then $\int_F Y-Y' \ d\P =0$ for all $F \in \F$. Now consider $E := [Y \geq Y']$. Of course $E \in \F$ (bah...). So $\int_E Y-Y' \ d\P =0$ means\footnote{Define $E_n := [Y-Y' \geq \frac{1}{n}] \in \F$. Then $0=\int_{E_n} Y-Y' \ d\P \geq \frac{1}{n} \P[E_n]$, so $\P[E_n]=0$. Of course $E_n \nearrow E$, so passing to the limit: $\P[Y-Y \geq 0]=\lim_n \P[E_n]=0$.} that $Y=Y'$ a.s. on $E$. Repeating the same argument exchanging $Y$ and $Y'$ shows that $Y=Y$ a.s. on $E^c$, and we are done.
+\end{proof}
+\end{lemma}
+
+So we have proved the uniqueness. The proof of existence is less trivial, and it requires the Theorem of Radon-Nikodym. So we skip it in this course.
+
+\section{Martingales}
+
+\begin{definition}
+	Let $(\F_n)_{n \geq 1}$ be an increasing sequence of sub-$\sigma$-algebras of $\A$ (i.e. a \emph{filtration} on $\A$).\footnote{Intuitively, as $n$ increases, you can distinguish more and more things.} A \emph{martingale} (resp. \emph{sub-martingale}, \emph{super-martingale}) \emph{w.r.t.} $(\F_n)_{n \geq 1}$ is a sequence of random variables $(X_n)_{n \geq 1}$ with the following properties (everything a.s.):
+	\begin{enumerate}
+		\item $X_n$ is $\F_n$-measurable for all $n \in \N$ (adaptedness).
+		\item $\E[|X_n|] < \infty$ for all $n \in \N$.
+		\item $\E[X_n | \F_{n-1}] = X_{n-1}$ (resp. $\leq X_{n-1}$, $\geq X_{n-1}$).
+	\end{enumerate}
+\end{definition}
+
+\begin{remark}
+	The typical case of a martingale is a stochastic process $(Y_n)_{n \geq 1}$ defined on $(\Omega,\A,\P)$. $Y_n \colon (\Omega,\A) \to (\R,\B_{\R})$, or more generally $\to (\R^d,\B_{\R^d})$, or even more generally $\to (\Omega',\A')$. Then we define $\F_n := \sigma(Y_1,...,Y_n)$ and we consider the random vector
+	\[
+	(Y_1,\ldots,Y_n) \colon (\Omega,\A) \to (\Omega',\A')^n.
+	\]
+	Finally, usually $X_n := g_n(Y_1,...,Y_n)$, where $g_n \colon (\Omega',\A')^n \to \R$ is a measurable function w.r.t. $\F_n$. We call $\E[X|Y_1,...,Y_n] := \E[X|\F_n]$. So $(X_n)_{n \in \N}$ is a martingale if $\E[|X_n|] < \infty$ and $\E[X_n | Y_1,...,Y_{n-1}] = X_{n-1}$ for all $n \in \N$.
+\end{remark}
+
+\begin{examples}\ 
+	\begin{enumerate}
+		\item Let $(Y_n)$ be a sequence of independent, integrable real random variables. Define $S_n := Y_1 + ... + Y_n$ and $S_0 := 0$ (which is a markov chain). Then
+		\[
+		\E[S_n|\F_{n-1}] = \E[Y_n + S_{n-1} | \F_{n-1}] = \E[Y_n|\F_{n-1}] + \E[S_{n-1}|\F_{n-1}] = \E[Y_n]+S_{n-1}.
+		\]
+		So:
+		\begin{itemize}
+			\item If $\E[Y_n]=0$ for all $n \in \N$, then $(S_n)$ is a martingale.
+			\item If $\E[Y_n] \leq 0$ for all $n \in \N$, then $(S_n)$ is a supermartingale.
+			\item If $\E[Y_n] \geq 0$ for all $n \in \N$, then $(S_n)$ is a submartingale.
+		\end{itemize}
+		An interesting question is: for which measurable functions $g \colon \R \to \R$ is the sequence of $g(S_n)$'s a martingale?
+		\item Let $(Y_n)$ be a sequence of independent, integrable positive random variables. Let $\F_n$ be as above. Define $A_n := Y_1 \cdot ... Y_n$. Then
+		\begin{align*}
+		\E[A_n|\F_{n-1}]
+		&= \E[A_n | Y_1, \ldots, Y_{n-1}] \\
+		&= \E[A_{n-1} \cdot Y_n \mid Y_1, \ldots, Y_{n-1}] \\
+		&= A_{n-1} \E[Y_n \mid Y_1,\ldots,Y_{n-1}] \tag{by (d)} \\
+		&= \E[Y_n] A_{n-1}.
+		\end{align*}
+		So:
+		\begin{itemize}
+			\item If $\E[Y_n]=1$ for all $n \in \N$, then $(S_n)$ is a martingale.
+			\item If $\E[Y_n] \leq 1$ for all $n \in \N$, then $(S_n)$ is a supermartingale.
+			\item If $\E[Y_n] \geq 1$ for all $n \in \N$, then $(S_n)$ is a submartingale.
+		\end{itemize}
+		\item Given a filtration $(\F_n)$ and $X$ an integrable random variable, $X_n := \E[X|\F_n]$ is a martingale by property (e).
+	\end{enumerate}
+\end{examples}
+
+\begin{remark}
+	Observe that Bikhoff's ergodic theorem states that $\operatorname{M} f = \E[f | \J]$.
+\end{remark}
+
+\begin{theorem}[Martinagale Convergence Theorem]
+	Let $(X_n)_{n \geq 1}$ be a supermartingale w.r.t. $(\F_n)_{n \geq 1}$ and suppose $\E[|X_n|] \leq M < \infty$. Then $X_n \to X$ a.s. for some random variable $X$.
+\end{theorem}
+
+\[
+COPIARE
+\]
+
+\begin{definition}
+	Given a filtration $(\F_n)$, a \emph{stopping time} is a random variable $t \colon \Omega \to \N_0 \cup \{+\infty\}$ such that $[t \geq n] \in \F_n$ for all $n \in \N$.
+\end{definition}
+
+\begin{remark}
+	An important example of stopping time is the following: let $(Y_n)$ be a stochastic process and let $\F_n := \sigma(Y_0,...,Y_n)$. Intuitively, we can see $(Y_0,...,Y_n)$ as the information up to time $n$. So, if $t$ is a stopping time for $(\F_n)$, it means that we can decide whether $t(\omega) \leq n$ or not by looking only at $Y_0(\omega),...,Y_n(\omega)$.
+\end{remark}
+
+\begin{lemma}[Stopping Lemma]
+	Let $\F_0 \sse ... \sse \F_N \sse \A$, and let $X_0,...,X_N$ be a finite supermartingale w.r.t. $(\F_n)_{0 \leq n \leq N}$. Let $s$ and $t$ be two stopping times with $s \leq t \leq N$ a.s. Then 
+	\[
+	\E[X_s] \geq \E[X_t],
+	\]
+	where $X_s(\omega) := X_{s(\omega)}(\omega)$.
+\begin{proof}
+	Observe that
+	\begin{align*}
+	X_s 
+	&= \sum_{n=0}^N X_n \1_{[s=n]} \\
+	&= \sum_{n=0}^N X_n (\1_{[s \leq n]} - \1_{[s \leq n-1]} \\
+	&= \sum_{n=0}^N X_n \1_{[s \leq n]} - \sum_{n=0}^{N-1} X_{n+1} \1_{[s \leq n]} \\
+	&= \sum_{n=0}^{N-1} (X_n-X_{n+1}) \1_{[s \leq n]} + X_N \1_{[s \leq n]} \\
+	&= \sum_{n=0}^{N-1} (X_n-X_{n+1}) \1_{[s \leq n]} + X_N.
+	\end{align*}
+	Similarly,
+	\[
+	X_t = \sum_{n=0}^{N-1} (X_n - X_{n+1}) \1_{[t \leq n]} + X_N.
+	\]
+	So
+	\[
+	X_s - X_t = \sum_{n=0}^{N-1} (X_n - X_{n+1}) (\1_{[s \leq n]} - \1_{[t \leq n]}).
+	\]
+	Define $A_n := [s \leq n] \sm [t \leq n] \in \F_n$. We get
+	\[
+	\E[X_s - X_t] = \sum_{n=0}^{N-1} \E[X_n - X_{n+1}] \1_{A_n}
+	\]
+	and we are done because $\E[X_n \1_{A_n}] - \E[X_{n+1} \1_{A_n}] \geq 0$, since
+	\[
+	\E[X_{n+1} \1_{A_n}] = \E[\E[X_{n+1} \1_{A_n} | \F_n]] = \E[\1_{A_n} \E[X_{n+1}|\F_n]] = COPIARE
+	\]
+\end{proof}
+\end{lemma}
+
+\begin{definition}
+	Let $(r_n)_{n \geq 0}$ be a sequence in $\R$. We define $\D((r_n)|[a,b]) \in \N \cup \{+\infty\}$ as
+	\begin{align*}
+	\D((r_n)|[a,b])
+	&:= \text{number of down-crossings of $[a,b]$ by $(r_n)$} \\
+	&= \lim_{N \to \infty} \D_N(r_0,\ldots,r_n \mid [a,b]) \\
+	&= \text{maximum number of pairs $(r_{n_i},r_{m_i})$ with} \\
+	&\quad \ldots < n_i < m_i < n_{i+1} < m_{i+1} < \ldots \text{ and } r_{n_i} > b, r_{m_i} < a.
+	\end{align*}
+\end{definition}
+
+\begin{theorem}[Downcrossing Theorem]
+	Let $X_0,...,X_N$ be a (finite) martingale w.r.t. $\F_0 \sse ... \sse \F_N$. Define $\D_N := \D_N(X_0,...,X_n | [a,b])$. Then
+	\[
+	\E[\D_N] \leq \frac{\E[X_0] + \E[|X_n|] + |b|}{b-a}.
+	\]
+\end{theorem}
+
+We will prove the Downcrossing theorem later. We can now provide a proof of the super-Martingale Convergence Theorem.
+
+\begin{proof}
+	Observe that 
+	\[
+	\E[\D_N( (X_0,\ldots,X_N) \mid [a,b]) \leq \frac{2M+|b|}{b-a}
+	\]
+	for all $n \in \N$. By monotone convergence we can deduce that
+	\[
+	\E[\D( (X_n)_{n \geq 0} \mid [a,b])] \leq \frac{2M+|b|}{b-a} < \infty,
+	\]
+	and so $\D((X_n) \mid [a,b]) < \infty$ a.s. for all $[a,b]$. Now define
+	\[
+	\Omega_{[a,b]} := \{\omega \in \Omega : \D( (X_n(\omega)) \mid [a,b]) < \infty\},
+	\]
+	which is a measurable set (boring exercise). By what we just showed, $\P[\Omega_{[a,b]}] = 1$ for all $[a,b]$. Now, defining
+	\[
+	\Omega_0 := \bigcap_{\substack{[a,b] \\ a,b \in \Q}} \Omega_{[a,b]}
+	\]
+	we easily get $\P[\Omega_0]=1$ (just pass to the complement). Pick $\omega \in \Omega_0$ arbitrarily and define $r_n := X_n(\omega)$. We claim that $(r_n)$ converges. First observe that we just proved $\D( (r_n) \mid [a,b]) < \infty$ for all $[a,b]$ with $a,b \in \Q$. Suppose towards a contradiction that $\limsup r_n > \liminf r_n$. So there exists $[a,b]$ with $a,b \in \Q$ which is strictly in the middle. By definition of $\limsup$ and $\liminf$, it's easy to see that this implies $\D( (r_n) \mid [a,b])=\infty$, contradiction. Thus, for all $\omega \in \Omega_0$ there exists $X(\omega) := \lim_n X_n(\omega) \in [-\infty,+\infty]$.\\
+	It is left to show that $X$ is a.s. finite (??? perché? mica è nell'enunciato...). By hypothesis $\E[|X_n|] \leq M$ for all $n \in \N$, and hence by Fatou's Lemma $\E[|X|] \leq M$, whereby $X$ is a.s. finite.
+\end{proof}
+
+Now we prove the Downcrossing theorem:
+
+\begin{proof}
+	Define $t_0 := 0$ and $t_n$ as follows: if $n$ is odd, then
+	\[
+	t_n :=
+	\begin{cases}
+	\min\{ i \leq t_{n-1} : i \leq N, X_i \geq b \}, & \text{if such $i$ exists} \\
+	N, & \text{otherwise}.
+	\end{cases}
+	\]
+	If $n$ is even:
+	\[
+	t_n :=
+	\begin{cases}
+	\min\{ i \leq t_{n-1} : i \leq N, X_i \leq a \}, & \text{if such $i$ exists} \\
+	N, & \text{otherwise}.
+	\end{cases}
+	\]
+	These are stopping times (exercise). If $t_n=N$, it means that $n \geq N$ or $n \geq 2\D_n +2$. Let $m \geq \frac{N+1}{2}$. Of course $D_N \leq N$ by definition. So $2m+1 \geq 2\D_N + 2$. Define
+	\begin{align*}
+	\tilde{X} 
+	&:= X_{t_1} + \sum_{j=1}^m (X_{t_{2j+1}} - X_{t_{2j}}) \tag{$*$} \\
+	&= X_{t_1} - X_{t_2} + X_{t_3} - \ldots + X_{t_{2m-1}} - X_{t_{2m}} + X_{t_{2m+1}} \\
+	&= \sum_{i=1}^{\D_N} (X_{t_{2i-1}} - X_{t_{2i}}) + X_{t_{2\D_n +1}}, \tag{$**$}
+	\end{align*}
+	where the last equality holds because $t_{2\D_N+2}=t_{2\D_N+3}=...=N$. Now look at $(*)$:
+	\[
+	\E[\tilde{X}] = \E[X_{t_1}] + \sum_{j=1}^m \underbrace{(\E[X_{t_{2j+1}}] - \E[X_{t_{2j}}])}_{\leq 0 \text{ by stopping lemma}} \leq \E[X_{t_1}] \leq \E[X_0].
+	\]
+	Look at $(**)$: of course $\tilde{X} \leq (b-a)\D_N + X_{t_{2\D_n +1}}$. Now:\\
+	\textsc{Case 1.} If $t_{2\D_n +1} < N$, then $X_{t_{2\D_n +1}} \geq b$.\\
+	\textsc{Case 2.} If $t_{2\D_n +1} = N$, then $X_{t_{2\D_n +1}} = X_N$.\\
+	Thus $X_{t_{2\D_n +1}} \geq \min\{b,X_N\}$. So
+	\[
+	(b-a) \D_N \leq \tilde{X} + \max\{-b,-X_N\} \leq
+	\begin{cases}
+	\tilde{X} + |b| + |X_N| \\
+	\tilde{X} - X_N + (X_n-b)^+.
+	\end{cases}
+	\]
+	Therefore, looking at $(*)$ again,
+	\[
+	(b-a)\E[\D_N] \leq
+	\begin{cases}
+	\E[X_0] + |b| + \E[|X_N|], & \text{which is our bound} \\
+	\E[X_0] - \E[X_N] + \E[(X_n-b)^+] = \E[(X_n-b)^+), & \text{if martingale}.
+	\end{cases}
+	\]
+	
+\end{proof}
+
+\begin{lemma}[Stopping Lemma for Martingales]
+	Let $\F_0 \sse ... \sse \F_N \sse \A$, and let $X_0,...,X_N$ be a finite w.r.t. $(\F_n)_{0 \leq n \leq N}$. Let $s$ and $t$ be two stopping times with $s \leq t \leq N$ a.s. Then 
+	\[
+	\E[X_s] = \E[X_t],
+	\]
+	where $X_s(\omega) := X_{s(\omega)}(\omega)$.
+\end{lemma}
+
+\noindent\textbf{Question.} What if $t < \infty$ a.s., but is not bounded. For example, let $(Y_n)$ be a sequence of iid random variables with $\P[Y_n=\pm 1] = \frac{1}{2}$. Define $S_0 := 0$ and $S_n := \sum_{k=1}^{n} Y_k$, which is a martingale. It's easy to check that $\P[\exists n : S_n=1]=1$. Now define $t := \inf\{n : S_n = 1\}$ (although $\inf$ and $\min$ are the same on a set with probability $1$), which is a stopping time. So we have that $\E[S_t]=1$, while obviously $\E[S_n]=0$. Thus the equality claimed in the Stopping Lemma does not hold in this case.
+
+\begin{remark}
+	In general, let $t$ be a stopping time and suppose $\P[t < \infty]$. Define $t_n := \min\{t,n\}$, which is a stopping time. We have
+	\[
+	X_t - X_{t_n} := X_t \1_{[t>n]} - X_n \1_{[t>n]},
+	\]
+	so
+	\[
+	\E[X_t] = \underbrace{\E[X_{t_n}]}_{=\E[X_0] \text{ by stopping lemma}} + \E[X_t \1_{[t>n]}] - \E[X_n \1_{[t>n]}].
+	\]
+	If $\E[|X_t|] < \infty$, then $|X_t| \1_{[t>n]} \searrow 0$ a.s., and so by dominated convergence we get
+	\[
+	\E[|X_t| \1_{[t>n]}] \stackrel{n \to \infty}{\longrightarrow} 0.
+	\]
+\end{remark}
+
+\begin{theorem}[Optional Sampling Theorem]
+	Let $(X_n)$ be a martingale w.r.t. $(\F_n)$, $t$ a stopping time. If
+	\begin{enumerate}
+		\item $\E[|X_t|]<\infty$;
+		\item $\E[|X_t| \1_{[t<n]}] \to 0$,
+	\end{enumerate}
+	then $\E[X_t]=\E[X_0]$.
+\begin{proof}
+	See last remark.
+\end{proof}
+\end{theorem}
+
+How can we verify in practice whether condition (2) of last theorem holds?
+
+\begin{definition}
+	Let $(X_i)_{i \in I}$ be a family of random variables. $(X_i)_{i \in I}$ is called \emph{uniformly integrable} if
+	\[
+	\forall \epsilon>0 \ \exists \delta_\epsilon > 0 \ \Big[ A \in \A \wedge \P[A]<\delta \imp \forall i \in I \ \E[|X_i| \1_A]<\epsilon \Big].
+	\]
+\end{definition}
+
+\noindent The following is a variant of the Optional Sampling Theorem:
+\begin{center}
+	If $(X_n)$ is a uniformly integrable martingale and $t$ is an a.s. finite stopping time with $\E[|X_t|]<\infty$, then $\E[X_t]=\E[X_0]$.
+\end{center}
+
+\begin{lemma}
+	If $\E[|X_i|^2] \leq c < \infty$ for all $i \in I$, then $(X_i)_{i \in I}$ is uniformly integrable.
+\begin{proof}
+	Let $\epsilon>0$, $\delta := \frac{\epsilon^2}{nc}$ and $A \in \A$ with $\P[A]<\delta$. Then
+	\begin{align*}
+	\E[|X_i| \1_A]
+	&= \E \left[ |X_i| \1_{A \cap [|X_i| \geq \frac{2c}{\epsilon}]} \right] + \E \left[ |X_i| \1_{A \cap [|X_i| < \frac{2c}{\epsilon}]} \right] \\
+	&\leq \sqrt{\E[X_i^2]} \cdot \sqrt{\P[A \cap [|X_i| \geq \frac{2c}{\epsilon}]]} + \frac{2c}{\epsilon} \P[A \cap [|X_i| < \frac{2c}{\epsilon}]] \tag{by Cauchy-Schwarz and $\1^2=\1$} \\
+	&\leq \sqrt{c} \cdot \sqrt{\underbrace{\Var[X_i]}_{\leq c} \cdot \frac{\epsilon^2}{4c^2}} + \frac{2c}{\epsilon} \P[A] \tag{by Tchebychef} \\
+	&\leq \frac{\epsilon}{2} + \frac{\epsilon}{2} = \epsilon.
+	\end{align*}
+\end{proof}
+\end{lemma}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+\end{document}
