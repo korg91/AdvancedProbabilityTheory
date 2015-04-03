@@ -472,13 +472,10 @@ $X_1,...,X_n$ are independent if and only if $P_{X_1,...,X_n}(x_1,...,x_n)=p(x_1
 \end{lemma}
 \end{examples}
 \begin{proposition}
-Let $X_1,...,X_n$ be continuous random variables. Suppose they have density functions $f_1,...,f_n$ w.r.t. Lebesgue measure. Now consider the random vector $(X_1,...,X_n) \colon (\Omega,\A,\P) \to (\R^n, \B_{\R^n})$. Suppose it has density function $f(x_1,...,x_n)$ w.r.t. Lebesgue measure on $\R^n$. Then
-\begin{enumerate}
-\item $\P[(X_1,...,X_n) \in B] = \int_B f \ d\lambda_n$, where $\lambda_n$ is the Lebesgue measure on $\R_n$ and $B \in \B_{\R^n}$.
-\item  The following are equivalent:
+Let $X_1,...,X_n$ be continuous random variables. Let $f_1,...,f_n$ be their density functions w.r.t. Lebesgue measure. Now consider the random vector $(X_1,...,X_n) \colon (\Omega,\A,\P) \to (\R^n, \B_{\R^n})$. We say that $f(x_1,...,x_n) \colon \R \to \R$ is the \emph{density function of} $(X_1,...,X_n)$ (w.r.t. Lebesgue measure on $\R^n$) if $\P[(X_1,...,X_n) \in B] = \int_B f \ d\lambda_n$ for all $B \in \B_{\R^n}$, where $\lambda_n$ is the Lebesgue measure on $\R^n$. Such a function might not exist. Nevertheless, the following are equivalent:
 \begin{enumerate}
 \item $X_1,...,X_n$ are independent.
-\item $f(x_1,...,x_n)=f_1(x_1) \ldots f_n(x_n)$ a.s.
+\item The density function $f(x_1,...,x_n)$ exists and $f(x_1,...,x_n)=f_1(x_1) \ldots f_n(x_n)$ a.s.
 \end{enumerate}
 \begin{proof}\ \\
 (b)$\imp$(a): By hypothesis
@@ -490,9 +487,8 @@ for all $B \in B_{\R^n}$. Now take $B_i \in \B_{\R}$. So we have
 \P[X_1 \in B_1, \ldots, X_n \in B_n] = \int_{B_1 \times \ldots \times B_n} f_1(x_1) \ldots f_n(x_n) \ d\lambda_n(x_1,\ldots,x_n) \\ 
 = \int_{B_1} f_1 \ d\lambda \int_{B_2} f_2 \ d\lambda \ldots \int_{B_n} f_n \ d\lambda = \P[x_1 \in B_1] \ldots \P[x_n \in B_n].
 \end{multline*}
-(a)$\imp$(b): This is now clear. (??? ho solo un'uguaglianza di integrali...come faccio a passare all'uguaglianza puntuale?)
+(a)$\imp$(b): Copiare se si ha tempo.
 \end{proof}
-\end{enumerate}
 \end{proposition}
 
 
@@ -787,9 +783,13 @@ Exercise.
 \begin{remark}
 Suppose that $T \colon \Omega \to \Omega$ is such that $T^{-1}[A]=A$ a.s. Define
 \[
-\tilde{A} := \limsup T^{-n}[A] = \bigcap_{k \in \N} \underbrace{\bigcup_{n \geq k} T^{-n}[A]}_{=:B_k} \stackrel{\text{a.s.}}{=} \bigcap_{k \in \N} \bigcup_{n \geq k} A.
+\tilde{A} := \limsup T^{-n}[A] = \bigcap_{k \in \N} \bigcup_{n \geq k} T^{-n}[A] \stackrel{\text{a.s.}}{=} \bigcap_{k \in \N} \bigcup_{n \geq k} A = A.
 \]
-Then $T^{-1}[B_k] \stackrel{\text{a.s.}}{=} T^{-1}[\bigcup_{n \geq k} A] = \bigcup_{n \geq k} T^{-1}[A] \stackrel{\text{a.s.}}{=} \bigcup_{n \geq k} A \stackrel{\text{a.s.}}{=} B_k$, i.e. $T^{-1}[\tilde{A}] \stackrel{\text{a.s.}}{=} \tilde{A}$. (??? questo remark è da rivedere. Il senso qui è proprio riuscire a eliminare l'a.s. tra $T^{-1}[\tilde{A}]$ e $\tilde{A}$...ma non riesco a capire come).
+Observe also that
+\[
+T^{-1}[\tilde{A}] = T^{-1} \left[ \bigcap_{k \in \N} \bigcup_{n \geq k} T^{-n}[A] \right] = \bigcap_{k \in \N} \bigcup_{n \geq k} T^{-(n+1)}[A] = \bigcap_{k \geq 1} \bigcup_{n \geq k} T^{-n}[A] = \tilde{A}.
+\]
+So $T^{-1}[\tilde{A}] = \tilde{A}$ and $\tilde{A} \stackrel{\text{a.s.}}{=} A$.
 \end{remark}
 
 \begin{theorem}[Birkhoff's pointwise ergodic theorem]
@@ -814,7 +814,7 @@ $\M^+ f$ and $\M^- f$ are $\J$-measurable.
 Observe that $\S_{n+1} f = f + \S_n f \circ T$. So $\S_n f \circ T = \S_{n+1} f -f$, and thus
 \begin{multline*}
 \M^+ f \circ T (\omega) = \limsup \frac{1}{n} \S_n f \circ T (\omega) = \limsup \frac{1}{n} f + \frac{1}{n} \S_{n+1} f (\omega) \\
-\stackrel{???}{=} \limsup \frac{1}{n} \S_{n+1} f (\omega) \stackrel{???}{=} \limsup \frac{1}{n} \S_n f (\omega) = \M^+ f(\omega).
+= \limsup \frac{1}{n} \S_{n+1} f (\omega) = \limsup \frac{1}{n} \S_n f (\omega) = \M^+ f(\omega).
 \end{multline*}
 Thanks to last lemma we are done.
 \end{claimproof}
@@ -991,6 +991,9 @@ The shift is defined on a product space. If you don't have one: see exercise she
 
 \chapter{Weak convergence and Central Limit Theorem}
 
+\textbf{Notation.} $C_\infty(\R)$ is the family of all the functions $\R \to \R$ which are continuous and bounded. $C_0(\R)$ is the family of all the functions $\R \to \R$ which are continuous and such that $\lim_{x \to \pm \infty} = 0$. 
+
+
 \begin{definition}
 Let $P_n$ be probability measures on $(\R,\B)$ and $P$ another (probability\footnote{Actually $P$ doesn't have to me a \emph{probability} measure, because if $P_n$ converges weakly to $P$ then taking $f:=1 \in C_\infty(\R)$ we have $\int_{\R} f \ d\P = 1$.}) measure. We say that $(P_n)$ \emph{converges weakly to $P$} if 
 \[
@@ -1047,7 +1050,7 @@ The presence of $(a,b]$ instead of $[a,b]$ in the statement is important. For ex
 \[
 \int_{\{a\}} g(x) \ dF(x) = g(a) (F(a^+)-F(a^-)) \underbrace{\neq 0}_{\text{if $g(a) \neq 0$ and $F(a^+) \neq F(a^-)$}},
 \]
-i.e. a singleton might not have measure zero. (??? comunque mi piacerebbe capire esattamente perché $P[\{a\}]=F(a^+)-F(a^-)$...)
+i.e. a singleton might not have measure zero. Of course this can't happen if $a \in \Cont(F)$.
 \end{remark}
 \begin{proof}
 Every continuous function over a closed bounded interval is uniformly continuous\footnote{cfr. \href{http://en.wikipedia.org/wiki/Heine-Cantor_theorem}{Heine-Cantor Theorem}.}. Thus $g$ is uniformly continuous on every interval $[a,b]$, that is
@@ -1087,11 +1090,10 @@ Thus $\Big| \int_{(a,b]} g \ dF_n - \int_{(a,b]} g \ dF \Big| \leq \epsilon/2 + 
 \int_{(a,b]} g \ dF_n \to \int_{(a,b]} g \ dF.
 \]
 The proof is complete.\\
-Observe that
+Observe also that if $a \in \Cont(F)$
 \[
-\int_{\{a\}} g(x) \ dF(x) = g(a) (F(a^+)-F(a^-)) \to 0.
+\int_{\{a\}} g(x) \ dF_n(x) = g(a) (F_n(a^+)-F_n(a^-)) \to 0.
 \]
-(??? non ho capito a cosa serve quest'ultima osservazione)
 \end{proof}
 \end{lemma}
 
@@ -1118,7 +1120,7 @@ We define also $h_\delta(y)$ in this way:
 \[
 INSERIRE DISEGNO
 \]
-Now take $\epsilon > 0$. Since $P_n \to P$ weakly, we have that (??? $g_\delta$ e $h_\delta$ sono chiaramente non $C_\infty$)
+Now take $\epsilon > 0$. Since $P_n \to P$ weakly, we have that
 \[
 \Big| \int_{\R} g_\delta \ dP_n - \int_{\R} g_\delta \ dP \Big| < \frac{\epsilon}{6}
 \]
@@ -1160,8 +1162,7 @@ Now observe that
 &< \frac{\epsilon}{8} + \frac{\epsilon}{4} + \frac{\epsilon}{8} + \frac{\epsilon}{4} < \epsilon.
 \end{align*}
 The proof is complete.\\
-If $F$ is a distribution function in the extended sense, everything works for $g \in C_0(\R)$ (the limit measure is a sub-probability-measure) (??? non ho capito tutta quest'ultima osservazione)\\
-(??? tutta la dimostrazione è fatta supponendo $g$ bounded...se non lo è cosa succede?)
+The following observation will be useful: if $F$ is a distribution function in the extended sense, everything works for $g \in C_0(\R)$ (the limit measure is a sub-probability-measure).
 \end{proof}
 \end{theorem}
 
@@ -1455,7 +1456,7 @@ Therefore
 &= \frac{1}{\pi} \left[ \pi(F(b^-)-F(a)) + \frac{\pi}{2} (F(a)-F(a^-)) + \frac{\pi}{2} (F(b)-F(b^-)) \right] \\
 &= F(b) - F(a). \tag{since $a,b \in \Cont(F)$}
 \end{align*}
-\footnotetext{$h(\xi) := \int_0^\xi \frac{\sin t}{t} \ dt$ is continuous and $\lim_{\xi \to \infty} h(\xi) = \frac{\pi}{2}$. So $h(\xi)$ is bounded, and thus $f_c$ is bounded (???) and integrable (???). Hence we can apply Dominated convergence.}
+\footnotetext{$h(\xi) := \int_0^\xi \frac{\sin t}{t} \ dt$ is continuous and $\lim_{\xi \to \infty} h(\xi) = \frac{\pi}{2}$. So $h(\xi)$ is bounded, let's say $|h(\xi)| \leq M$. Thus $|f_c(x)| = |h(\xi_1)+h(\xi_2)| \leq 2M$ is bounded and hence integrable. Hence we can apply Dominated convergence.}
 \end{proof}
 \end{theorem}
 
